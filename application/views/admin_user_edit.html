@@ -1,0 +1,72 @@
+{% extends "admin.html" %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+<div class="container">
+    <h1>用户管理: {{user.name}}</h1>
+    <hr>
+
+    {{form_open("/admin/user/save/" ~ user.id, "class=\"form-horizontal\"")|raw}}
+    <div class="control-group">
+        <label class="control-label" for="inputUsername">登录名</label>
+        <div class="controls">
+            {{form_input("username", user.username, "id=\"inputUsername\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputName">用户名</label>
+        <div class="controls">
+            {{form_input("name", user.name, "id=\"inputName\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEmail">Email</label>
+        <div class="controls">
+            {{form_input("email", user.email, "id=\"inputEmail\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputRole">用户类型</label>
+        <div class="controls">
+            {{form_dropdown("role", param.role, user.role, "id=\"inputRole\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">是否可用</label>
+        <div class="controls">
+            {{form_dropdown("enable", param.enable, user.enable, "id=\"inputEnable\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputRemark">备注</label>
+        <div class="controls">
+            {{form_textarea("remark", user.reamrk, "id=\"inputRemark\"")|raw}}
+        </div>
+    </div>
+
+    {% if user.id %}
+    <div class="control-group">
+        <label class="control-label" for="inputRemark">首次登录时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{user.frist_logged|default("没有登录过")}}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputRemark">最后登录时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{user.last_logged|default("没有登录过")}}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </div>
+
+    </form>
+</div>
+{% endblock %}

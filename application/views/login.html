@@ -1,16 +1,21 @@
-{% extends "base_admin.html" %}
+{% extends "site.html" %}
 {% block content %}
     <div id="login">
-        <form class="form-signin">
+        {{validation_errors()}}
+        {{form_open("validate", 'class="form-signin"')|raw}}
             <h2 class="form-signin-heading">请登录</h2>
-            <input type="text" class="input-block-level" placeholder="用户名">
-            <input type="password" class="input-block-level" placeholder="密码">
-            <img src="{{site_url()}}/captcha/" />
-            <input type="text" class="input-block-level" placeholder="验证码">
+            <p id="msg"></p>
+            <input type="text" class="input-block-level" name="username" placeholder="用户名">
+            <input type="password" class="input-block-level" name="pwd" placeholder="密码">
+            <p class="help-block" id="p-captcha">
+                <img src="{{site_url()}}/captcha/" id="image-captcha"/><span class="btn btn-link" id="span-captcha" >看不清，换一张</span>
+            </p>
+            <input type="text" class="input-block-level" name="captcha" placeholder="验证码">
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> 记住我
+                <input type="checkbox" name="remember" value="remember-me"> 记住我
             </label>
             <button class="btn btn-large btn-primary" type="submit">登录</button>
+            <input type="hidden" name="baseurl" value="{{site_url()}}" />
         </form>
     </div>
 {% endblock %}

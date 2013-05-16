@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block head %}
+    <meta charset="utf-8">
+    <title>{{title}} - 我爱我车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{base_url()}}assets/css/admin.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="{{base_url()}}assets/js/html5shiv.js"></script>
+    <![endif]-->
+    <script src="{{base_url()}}assets/js/jquery.min.js"></script>
+    <script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{base_url()}}assets/js/site.min.js"></script>
+{% endblock %}
+{% block content %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand pull-right" href="#">Title</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">首页</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li><a href="{{site_url()}}/login/">登录</a></li>
+                        <li><a href="{{site_url()}}/admin/">管理</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}

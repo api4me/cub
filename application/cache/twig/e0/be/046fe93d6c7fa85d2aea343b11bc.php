@@ -57,10 +57,14 @@ class __TwigTemplate_e0be046fe93d6c7fa85d2aea343b11bc extends Twig_Template
         // line 15
         echo twig_escape_filter($this->env, base_url(), "html", null, true);
         echo "assets/bootstrap/js/bootstrap.min.js\"></script>
+    <script src=\"";
+        // line 16
+        echo twig_escape_filter($this->env, base_url(), "html", null, true);
+        echo "assets/js/admin.min.js\"></script>
 ";
     }
 
-    // line 17
+    // line 18
     public function block_footer($context, array $blocks = array())
     {
     }
@@ -77,6 +81,6 @@ class __TwigTemplate_e0be046fe93d6c7fa85d2aea343b11bc extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  64 => 17,  58 => 15,  54 => 14,  49 => 12,  44 => 10,  40 => 9,  32 => 3,  29 => 2,);
+        return array (  68 => 18,  62 => 16,  58 => 15,  54 => 14,  49 => 12,  44 => 10,  40 => 9,  32 => 3,  29 => 2,  39 => 9,  31 => 3,  28 => 2,);
     }
 }

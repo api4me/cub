@@ -125,11 +125,12 @@ class Lcaptcha {
 		// -----------------------------------
 		//  Generate the image
 		// -----------------------------------
-        $this->CI->session->set_userdata("captcha", $this->word);
+        $this->CI->lsession->set("captcha", $this->word);
         ob_clean();
         header("Content-type: image/jpeg");
 		imagejpeg($im);
 		imagedestroy($im);
 	}
 /*}}}*/
+
 }
