@@ -2,11 +2,11 @@
 
 {% block operate %}
 <div class="container">
-    <h1>用户一览</h1>
-    {{form_open("/admin/user/index", "class=\"form-inline\"")|raw}}
-        <span class="label">登录名</span>
-        {{form_input("username", search.username, "placeholder=\"登录名\"")|raw}}
-        <span class="label">用户类型</span>
+    <h1>汽车销售一览</h1>
+    {{form_open("/admin/car/index", "class=\"form-inline\"")|raw}}
+        <span class="label">车牌号</span>
+        {{form_input("car_num", search.car_num, "placeholder=\"车牌号\"")|raw}}
+        <span class="label">发动机号</span>
         {{form_dropdown("role", param.role, search.role)|raw}}
         <span class="label">是否可用</span>
         {{form_dropdown("enable", param.enable, search.enable, "class=\"input-small\"")|raw}}
@@ -31,20 +31,20 @@
         </tr>
     </thead>
     <tbody>
-    {% for item in users %}
+    {% for item in cars %}
         <tr>
             <td>{{loop.index + search.start}}</td>
-            <td><a href="{{site_url()}}/admin/user/edit/{{item.id}}">{{item.username}}</a></td>
+            <td><a href="{{site_url()}}/admin/car/edit/{{item.id}}">{{item.carname}}</a></td>
             <td>{{item.name}}</td>
             <td>{{item.phone}}</td>
             <td>{{option_value("role", item.role)}}</td>
             <td>
             {% if item.enable == 'Y' %}
-            <a class="label label-success" href="{{site_url()}}/admin/user/disable/{{item.id}}">
+            <a class="label label-success" href="{{site_url()}}/admin/car/disable/{{item.id}}">
             {{option_value("enable", item.enable)}}
             </a>
             {% else %}
-            <a class="label" href="{{site_url()}}/admin/user/enable/{{item.id}}">
+            <a class="label" href="{{site_url()}}/admin/car/enable/{{item.id}}">
             {{option_value("enable", item.enable)}}
             </a>
             {% endif %}
@@ -56,7 +56,7 @@
     {% endfor %}
     </tbody>
     </table>
-    <a class="btn span2" href="{{site_url()}}/admin/user/edit/0">新增</a>
+    <a class="btn span2" href="{{site_url()}}/admin/car/edit/0">新增</a>
     {{pagination|raw}}
 </div>
 

@@ -63,8 +63,93 @@ class LCommon {
         return array();
     }
 /*}}}*/
+/*{{{ model */
+    /**
+     * Data struct: brand+model, 101+001
+     * Get all data: model()
+     * Get name of code: model("101001")
+     *
+     */
+    public function model($code = null) {
+        static $data;
+        if (!isset($data)) {
+            $data = array();
+            $q = "SELECT * FROM #car_model ORDER BY sort";
+            $query = $this->CI->db->query($q);
+            foreach($query->result() as $row) {
+                list($brand, $model) = str_split($row->code, 3);
+                $data[$brand][$model] = $row->name;
+            }
+        }
 
-/*{{{ validate area */
+        if (is_array($data)) {
+            // Get all data
+            if (!isset($code)) {
+                return $data;
+            }
+
+            // Get model full name
+            list($brand, $model) = str_split($code, 3);
+            $name = array();
+            if (isset($data[$brand])) {
+                $name[] = $data[$brand]["000"];
+                if (isset($data[$brand][$model])) {
+                    $name[] = $data[$brand][$model];
+                }
+            }
+
+            return implode("->", $name);
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ area */
+    /**
+     * Data struct: province+city+district, 32+01+04
+     * Get all data: area()
+     * Get name of code: area("320104")
+     *
+     */
+    public function area($code = null) {
+        static $data;
+        if (!isset($data)) {
+            $data = array();
+            $q = "SELECT * FROM #area ORDER BY sort";
+            $query = $this->CI->db->query($q);
+            foreach($query->result() as $row) {
+                list($province, $city, $district) = str_split($row->code, 2);
+                $data[$province][$city][$district] = $row->name;
+            }
+        }
+
+        if (is_array($data)) {
+            // Get all data
+            if (!isset($code)) {
+                return $data;
+            }
+
+            // Get model full name
+            list($province, $city, $district) = str_split($code, 2);
+            $name = array();
+            if (isset($data[$province])) {
+                $name[] = $data[$province]["00"]["00"];
+                if (isset($data[$province][$city])) {
+                    $name[] = $data[$province][$city]["00"];
+                    if (isset($data[$province][$city][$district])) {
+                        $name[] = $data[$province][$city][$district];
+                    }
+                }
+            }
+
+            return implode("->", $name);
+        }
+
+        return false;
+    }
+/*}}}*/
+
+/*{{{ validate func */
 /*{{{ is_empty */
     public function is_empty($str) {
         if (isset($str) && !empty($str)) {
@@ -88,6 +173,12 @@ class LCommon {
         return (! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
     }
 /*}}}*/
+/*{{{ is_phone */
+    public function is_phone($str) {
+        return (!preg_match("/^13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$/", $str)) ? FALSE : TRUE;
+    }
 /*}}}*/
+/*}}}*/
+
 
 }

@@ -1,0 +1,207 @@
+{% extends "admin.html" %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+<div id="test" class="container">
+    <h1>车辆检测: {{car.user_name}}</h1>
+    <hr>
+
+    <p id="msg"></p>
+    {{form_open("/admin/car/test/" ~ car.id ~ "/save/", "class=\"form-horizontal\" enctype=\"multipart/form-data\"")|raw}}
+
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#prebook">预约信息</a></li>
+        <li><a href="#detect">车辆检测</a></li>
+        <li><a href="#sale">销售指导</a></li>
+        <li><a href="#albums">图片管理</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- start prebook -->
+        <div class="tab-pane active" id="prebook">
+            <div class="control-group">
+                <label class="control-label" for="inputName">姓名</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.user_name}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPhone">手机号</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.user_phone}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputModel">型号</label>
+                <div class="controls">
+                    {{model_dropdown("model", car.model, "id=\"inputModel\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputArea">地区</label>
+                <div class="controls">
+                    {{area_dropdown("area", car.area, "id=\"inputArea\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputBuyDate">购买日期</label>
+                <div class="controls">
+                    <div class="input-append date datepick">
+                    {{form_input("buy_date", car.buy_date, "id=\"inputBuyDate\" readonly")|raw}}
+                    <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputMileage">里程</label>
+                <div class="controls">
+                    {{form_input("mileage", car.mileage, "id=\"inputMileage\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputRemark">备注</label>
+                <div class="controls">
+                    {{form_textarea("remark", car.remark, "id=\"inputRemark\"")|raw}}
+                </div>
+            </div>
+
+            {% if car.id %}
+            <div class="control-group">
+                <label class="control-label">预约日期</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.created}}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <!-- end prebook -->
+
+        <!-- start detect -->
+        <div class="tab-pane" id="detect">
+            <div class="control-group">
+                <label class="control-label" for="inputCarNum">车牌号</label>
+                <div class="controls">
+                    {{form_input("car_num", car.car_num, "id=\"inputCarNum\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFactoryDate">出厂日期</label>
+                <div class="controls">
+                    <div class="input-append date datepick">
+                    {{form_input("factory_date", car.factory_date, "id=\"inputFactoryDate\" readonly")|raw}}
+                    <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEngineNum">发动机号</label>
+                <div class="controls">
+                    {{form_input("engine_num", car.engine_num, "id=\"inputEngineNum\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputChassisNum">车架号</label>
+                <div class="controls">
+                    {{form_input("chassis_num", car.chassis_num, "id=\"inputChassisNum\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputColor">车身颜色</label>
+                <div class="controls">
+                    {{form_input("color", car.color, "id=\"inputColor\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputDisplacement">排量</label>
+                <div class="controls">
+                    {{form_input("displacement", car.displacement, "id=\"inputDisplacement\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputTransmission">变速箱</label>
+                <div class="controls">
+                    {{form_dropdown("transmission", param.transmission, car.transmission, "id=\"inputTransmission\" class=\"span5\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFuel">燃料种类</label>
+                <div class="controls">
+                    {{form_dropdown("fuel", param.fuel, car.fuel, "id=\"inputFuel\"")|raw}}
+                </div>
+            </div>
+        </div>
+        <!-- end detect -->
+
+        <!-- start sale -->
+        <div class="tab-pane" id="sale">
+            <div class="control-group">
+                <label class="control-label" for="inputSaleType">销售类型</label>
+                <div class="controls">
+                    {{form_dropdown("sale_type", param.sale_type, car.sale_type, "id=\"inputSaleType\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputMarketPrice">市场价</label>
+                <div class="controls">
+                    {{form_input("market_price", car.market_price, "id=\"inputMarketPrice\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputConditionScore">车况级别评分</label>
+                <div class="controls">
+                    {{form_dropdown("condition_score", param.condition_score, car.condition_score, "id=\"inputConditionScore\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputAccidentLevel">事故等级</label>
+                <div class="controls">
+                    {{form_dropdown("accident_level", param.accident_level, car.accident_level, "id=\"inputAccidentLevel\" class=\"span5\"")|raw}}
+                </div>
+           </div>
+
+            <div class="control-group">
+                <label class="control-label" for="inputSalePrice">出让价</label>
+                <div class="controls">
+                    {{form_input("sale_price", car.sale_price, "id=\"inputSalePrice\"")|raw}}
+                </div>
+            </div>
+        </div>
+        <!-- end sale -->
+
+
+        <!-- start albums -->
+        <div class="tab-pane" id="albums">
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="fileupload-preview thumbnail" style="width: 200px; height: 150px;"></div>
+                <div>
+                    <span class="btn btn-file"><span class="fileupload-new">选择图片</span><span class="fileupload-exists">更改</span><input type="file" /></span>
+                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+                </div>
+            </div>
+            <div class="well">
+                <h3>注意事项</h3>
+                <ul>
+                    <li>图片大小不能超过<strong>5 MB</strong></li>
+                    <li>图片类型 (<strong>JPG, GIF, PNG</strong>)</li>
+                    <li>图片预览仅支持IE10+, FF3.6+, Chrome6.0+, 别的浏览器仅显示文件名</li>
+                </ul>
+            </div>
+            <br>
+        </div>
+        <!-- end albums -->
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="submit" class="btn btn-info" name="invalid" value="invalid">检测完成</button>
+            <a href="{{site_url()}}/admin/car/test/" class="btn">返回</a>
+        </div>
+    </div>
+
+
+    </form>
+</div>
+{% endblock %}

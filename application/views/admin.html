@@ -1,30 +1,50 @@
 {% extends "base.html" %}
 {% block head %}
     <meta charset="utf-8">
-    <title>管理平台 - 我爱我车</title>
+    <title>管理平台 - 仁人易车</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Le styles -->
     <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{base_url()}}assets/bootstrap/css/datetimepicker.css" rel="stylesheet">
+    <link href="{{base_url()}}assets/bootstrap/css/bootstrap-fileupload.min.css" rel="stylesheet">
     <link href="{{base_url()}}assets/css/admin.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="{{base_url()}}assets/js/html5shiv.js"></script>
     <![endif]-->
     <script src="{{base_url()}}assets/js/jquery.min.js"></script>
     <script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{base_url()}}assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="{{base_url()}}assets/bootstrap/js/bootstrap-fileupload.min.js"></script>
     <script src="{{base_url()}}assets/js/admin.min.js"></script>
+    {{library_src|raw}}
+    {{script_head|raw}}
 {% endblock %}
 {% block content %}
+    {% block nav %}
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><span class="icon-home icon-white"></span></a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="{{site_url()}}/admin/user">用户</a></li>
-                        <li><a href="{{site_url()}}/admin/car">车辆</a></li>
-                        <li><a href="{{site_url()}}/admin/article">文章</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle{%if common.control == "car" %} active{%endif%}" data-toggle="dropdown">车辆<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{site_url()}}/admin/car/prebook/">预约确认</a></li>
+                                <li><a href="{{site_url()}}/admin/car/test/">车辆检测</a></li>
+                                <li><a href="{{site_url()}}/admin/car/auction/">拍卖管理</a></li>
+                                <li><a href="{{site_url()}}/admin/car/deal/">交易登记</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{site_url()}}/admin/car/list/">车辆一览</a></li>
+                            </ul>
+                        </li>
+                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">文章</a></li>
+                        {% if common.user.role == "super" %}
+                        <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户</a></li>
+                        <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav pull-right">
                         <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><span class="icon-off icon-white"></span></a></li>
@@ -33,6 +53,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 
     {% block operate %}
     {% endblock %}

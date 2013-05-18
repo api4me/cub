@@ -2,18 +2,12 @@
 
 class Home extends CI_Controller {
 
-    public function  __construct(){
-        parent::__construct();
-        $this->load->helper(array("form"));
-        $this->load->library("twig");
-    }
-
     public function index() {
-        // Default to car
-        $this->car();
+        $user = $this->lsession->get("user");
+        if ($user->role == "super") {
+            redirect("/admin/user");
+        } else {
+            redirect("/admin/car");
+        }
     }
-    public function car() {
-        $this->twig->display("admin_home_index.html");
-    }
-
 }

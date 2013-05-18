@@ -4,10 +4,11 @@
 {% endblock %}
 
 {% block data %}
-<div class="container">
+<div id="user" class="container">
     <h1>用户管理: {{user.name}}</h1>
     <hr>
 
+    <p id="msg"></p>
     {{form_open("/admin/user/save/" ~ user.id, "class=\"form-horizontal\"")|raw}}
     <div class="control-group">
         <label class="control-label" for="inputUsername">登录名</label>
@@ -19,6 +20,12 @@
         <label class="control-label" for="inputName">用户名</label>
         <div class="controls">
             {{form_input("name", user.name, "id=\"inputName\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputPhone">手机号</label>
+        <div class="controls">
+            {{form_input("phone", user.phone, "id=\"inputPhone\"")|raw}}
         </div>
     </div>
     <div class="control-group">
@@ -64,6 +71,7 @@
     <div class="control-group">
         <div class="controls">
             <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{{site_url()}}/admin/user/" class="btn">返回</a>
         </div>
     </div>
 

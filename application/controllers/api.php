@@ -10,9 +10,30 @@
 */
 
 class Api extends CI_Controller {
+
+/*{{{ index */
     public function index() {
-        $data = new stdClass();
-        $data->a = "aa";
-        echo json_encode($data);
+        $out = array();
+        $out["data"] = "load...";
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($out));
     }
+/*}}}*/
+/*{{{ area */
+    public function area() {
+        $out = array();
+        $out["data"] = $this->lcommon->area();
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($out));
+    }
+/*}}}*/
+/*{{{ model */
+    public function model() {
+        $out = array();
+        $out["data"] = $this->lcommon->model();
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($out));
+    }
+/*}}}*/
+
 }

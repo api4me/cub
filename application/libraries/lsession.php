@@ -31,6 +31,7 @@ class LSession {
         if(isset($_SESSION[$key])){
             return $_SESSION[$key];
         }
+
         return false;
     }
 /*}}}*/

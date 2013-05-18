@@ -30,8 +30,7 @@ class MUser extends CI_Model {
     }
 /*}}}*/
 /*{{{ select */
-    public function select($param) {
-        // Search
+    private function _where($param) {
         if (isset($param["username"]) && $param["username"]) {
             $this->db->like("username", $param["username"]);
         }
@@ -41,12 +40,16 @@ class MUser extends CI_Model {
         if (isset($param["enable"]) && $param["enable"]) {
             $this->db->where("enable", $param["enable"]);
         }
-
+    }
+    public function select($param) {
+        // For search
+        $this->_where($param);
         $this->db->select("COUNT(1) AS num");
         $query = $this->db->get("#user");
 
         if ($num = $query->row(0)->num) {
             $this->db->select();
+            $this->_where($param);
             $query = $this->db->get("#user", $param["per_page"], $param["start"]);
             $data = $query->result();
 
@@ -64,6 +67,69 @@ class MUser extends CI_Model {
         $this->db->where("id", $id);
         $query = $this->db->get("#user");
         return $query->row();
+    }
+/*}}}*/
+/*{{{ save */
+    public function save($param, $id) {
+        if (!$id) {
+            $this->db->set("created", "now()", false);
+            $this->db->set("updated", "now()", false);
+            if ($this->db->insert("#user", $param)) {
+                return $this->db->insert_id();
+            }
+        } else {
+            $this->db->set("updated", "now()", false);
+            return $this->db->update("#user", $param, array("id"=>$id));
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ change_enable */
+    public function change_enable($param, $id) {
+        if (!$id) {
+            $this->db->set("updated", "now()", false);
+            return $this->db->update("#user", $param, array("id"=>$id));
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ get_data_by_phone */
+    public function get_data_by_phone($phone) {
+        $this->db->where("phone", $phone);
+        $query = $this->db->get("#user");
+        return $query->row();
+    }
+/*}}}*/
+/*{{{ exists_username */
+    public function exists_username($str, $id = 0) {
+        if ($id) {
+            $this->db->where('id <>', $id);
+        }
+        $this->db->where("username", $str);
+        $query = $this->db->get("#user");
+        return ($query->row()) ? true : false;
+    }
+/*}}}*/
+/*{{{ exists_phone */
+    public function exists_phone($str, $id = 0) {
+        if ($id) {
+            $this->db->where('id <>', $id);
+        }
+        $this->db->where("phone", $str);
+        $query = $this->db->get("#user");
+        return ($query->row()) ? true : false;
+    }
+/*}}}*/
+/*{{{ exists_email */
+    public function exists_email($str, $id = 0) {
+        if ($id) {
+            $this->db->where('id <>', $id);
+        }
+        $this->db->where("email", $str);
+        $query = $this->db->get("#user");
+        return ($query->row()) ? true : false;
     }
 /*}}}*/
 

@@ -1,0 +1,99 @@
+{% extends "admin.html" %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+<div id="prebook" class="container">
+    <h1>车辆预约: {{prebook.name}}</h1>
+    <hr>
+
+    <p id="msg"></p>
+    {{form_open("/admin/car/prebook/" ~ prebook.id ~ "/save/", "class=\"form-horizontal\"")|raw}}
+    <div class="control-group">
+        <label class="control-label" for="inputName">姓名</label>
+        <div class="controls">
+            {{form_input("name", prebook.name, "id=\"inputName\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputPhone">手机号</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{prebook.phone}}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputUsername">登录名</label>
+        {% if param.username %}
+        <div class="controls">
+            <label class="checkbox inline"><input type="checkbox" name="chk-username" value="exists"><span class="label label-inverse">登录名是: {{param.username}} ?</span>
+            <span class="label label-warning">检测到此手机号曾经交易过</span>
+            </label>
+        </div>
+        {% endif %}
+        <div class="controls">
+            {{form_input("username", "", "id=\"inputUsername\"")|raw}}
+        </div>
+
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEmail">Email</label>
+        <div class="controls">
+            {{form_input("email", prebook.email, "id=\"inputEmail\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputModel">型号</label>
+        <div class="controls">
+            {{model_dropdown("model", prebook.model, "id=\"inputModel\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputArea">地区</label>
+        <div class="controls">
+            {{area_dropdown("area", prebook.area, "id=\"inputArea\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputBuyDate">购买日期</label>
+        <div class="controls">
+            <div class="input-append date datepick">
+            {{form_input("buy_date", prebook.buy_date, "id=\"inputBuyDate\" readonly")|raw}}
+            <span class="add-on"><i class="icon-th"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputMileage">里程</label>
+        <div class="controls">
+            {{form_input("mileage", prebook.mileage, "id=\"inputMileage\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputRemark">备注</label>
+        <div class="controls">
+            {{form_textarea("remark", prebook.reamrk, "id=\"inputRemark\"")|raw}}
+        </div>
+    </div>
+
+    {% if prebook.id %}
+    <div class="control-group">
+        <label class="control-label">登记日期</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{prebook.created}}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-info">信息有效并预约</button>
+            <button type="submit" class="btn btn-danger" name="invalid" value="invalid">信息无效</button>
+            <a href="{{site_url()}}/admin/car/prebook/" class="btn">返回</a>
+        </div>
+    </div>
+
+
+    </form>
+</div>
+{% endblock %}
