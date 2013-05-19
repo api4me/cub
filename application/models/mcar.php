@@ -25,12 +25,12 @@ class MCar extends CI_Model {
         // For search
         $this->_where($param);
         $this->db->select("COUNT(1) AS num");
-        $query = $this->db->get("#car");
+        $query = $this->db->get("##car");
 
         if ($num = $query->row(0)->num) {
             $this->db->select();
             $this->_where($param);
-            $query = $this->db->get("#car", $param["per_page"], $param["start"]);
+            $query = $this->db->get("##car", $param["per_page"], $param["start"]);
             $data = $query->result();
 
             return array(
@@ -45,7 +45,7 @@ class MCar extends CI_Model {
 /*{{{ load */
     public function load($id) {
         $this->db->where("id", $id);
-        $query = $this->db->get("#car");
+        $query = $this->db->get("##car");
         return $query->row();
     }
 /*}}}*/
@@ -54,12 +54,12 @@ class MCar extends CI_Model {
         if (!$id) {
             $this->db->set("created", "now()", false);
             $this->db->set("updated", "now()", false);
-            if ($this->db->insert("#car", $param)) {
+            if ($this->db->insert("##car", $param)) {
                 return $this->db->insert_id();
             }
         } else {
             $this->db->set("updated", "now()", false);
-            return $this->db->update("#car", $param, array("id"=>$id));
+            return $this->db->update("##car", $param, array("id"=>$id));
         }
 
         return false;

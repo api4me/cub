@@ -310,7 +310,7 @@ class Car extends Cub_Controller {
             $this->load->library("pagination");
             $this->pagination->uri_segment = 4;
             $this->pagination->total_rows = $data["num"];
-            $this->pagination->base_url = site_url() . "/admin/prebook";
+            $this->pagination->base_url = site_url() . "/admin/test";
             $out["pagination"] = $this->pagination->create_links();
         }
 
@@ -335,6 +335,7 @@ class Car extends Cub_Controller {
         $out["car"] = $car;
 
         $param = array();
+        $param["color"] = $this->lcommon->form_option("color"); 
         $param["transmission"] = $this->lcommon->form_option("transmission"); 
         $param["fuel"] = $this->lcommon->form_option("fuel"); 
         $param["sale_type"] = $this->lcommon->form_option("sale_type"); 
@@ -343,12 +344,527 @@ class Car extends Cub_Controller {
 
         $out["param"] = $param;
 
-
         $this->render("admin_car_test_edit.html", $out);
     }
 /*}}}*/
-    public function test_upload() {
-        $this->load->library("uploadhander");
+/*{{{ test_save */
+    public function test_save($id = 0) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $param = array();
+        // Test when form.status is "complete"
+        $status = null;
+        if($this->input->post("status")) {
+            $status = "test";
+            $param["status"] = "test";
+        }
+
+        // model
+        $param["model"] = $this->input->post("brand").$this->input->post("model");
+        // area
+        $param["area"] = $this->input->post("province").$this->input->post("city").$this->input->post("district");
+        // remark
+        $param["remark"] = trim($this->input->post("remark", true));
+        // mileage
+        $param["mileage"] = $this->input->post("mileage");
+        if ($status && $this->lcommon->is_empty($param["mileage"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写里程";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["mileage"]) 
+            && !is_numeric($param["mileage"])) {
+            $out["status"] = 1;
+            $out["msg"] = "里程是半角数值型，请调整一下。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // car_num
+        $param["car_num"] = $this->input->post("car_num");
+        if ($status && $this->lcommon->is_empty($param["car_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车牌号";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["car_num"]) 
+            && $this->lcommon->get_size($param["car_num"]) > 16) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写车牌号。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // factory_date
+        $param["factory_date"] = $this->input->post("factory_date");
+        if ($status && $this->lcommon->is_empty($param["factory_date"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写出厂日期。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // engine_num
+        $param["engine_num"] = $this->input->post("engine_num");
+        if ($status && $this->lcommon->is_empty($param["engine_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写发动机号";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["engine_num"]) 
+            && $this->lcommon->get_size($param["car_num"]) > 16) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写发动机号。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // chassis_num
+        $param["chassis_num"] = $this->input->post("chassis_num");
+        if ($status && $this->lcommon->is_empty($param["chassis_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车架号";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["chassis_num"]) 
+            && $this->lcommon->get_size($param["chassis_num"]) > 16) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写手架号。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // color
+        $param["color"] = $this->input->post("color");
+        if ($status && $this->lcommon->is_empty($param["color"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择车身颜色";
+            echo json_encode($out);
+
+            return false;
+        }
+        // displacement
+        $param["displacement"] = $this->input->post("displacement");
+        if ($status && $this->lcommon->is_empty($param["displacement"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写排量";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["displacement"]) 
+            && !is_numeric($param["displacement"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写排量。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // transmission
+        $param["transmission"] = $this->input->post("transmission");
+        if ($status && $this->lcommon->is_empty($param["transmission"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择变速箱种类";
+            echo json_encode($out);
+
+            return false;
+        }
+        // fuel
+        $param["fuel"] = $this->input->post("fuel");
+        if ($status && $this->lcommon->is_empty($param["fuel"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择燃料种类";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // sale_type
+        $param["sale_type"] = $this->input->post("sale_type");
+        if ($status && $this->lcommon->is_empty($param["sale_type"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择销售类型";
+            echo json_encode($out);
+
+            return false;
+        }
+        // market_price
+        $param["market_price"] = $this->input->post("market_price");
+        if ($status && $this->lcommon->is_empty($param["market_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写市场价";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["market_price"]) 
+            && !is_numeric($param["market_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写市场价。";
+            echo json_encode($out);
+
+            return false;
+        }
+        // condition_score
+        $param["condition_score"] = $this->input->post("condition_score");
+        if ($status && $this->lcommon->is_empty($param["condition_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择车况级别评分";
+            echo json_encode($out);
+
+            return false;
+        }
+        // accident_level
+        $param["accident_level"] = $this->input->post("accident_level");
+        if ($status && $this->lcommon->is_empty($param["accident_level"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择事故等级";
+            echo json_encode($out);
+
+            return false;
+        }
+        // sale_price
+        $param["sale_price"] = $this->input->post("sale_price");
+        if ($status && $this->lcommon->is_empty($param["sale_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写出让价";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$this->lcommon->is_empty($param["sale_price"]) 
+            && !is_numeric($param["sale_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请正确填写出让价。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $this->load->model("mcar");
+        // images
+        if ($status) {
+            $car = $this->mcar->load($id);
+            if (!$car->images) {
+                $out["status"] = 1;
+                $out["msg"] = "请上传车辆相关图片";
+                echo json_encode($out);
+
+                return false;
+            }
+        }
+
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "保存失败。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "保存成功。";
+        echo json_encode($out);
+
+        return true;
     }
+/*}}}*/
+/*{{{ upload */
+    public function upload($id) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // File upload
+        $config = array();
+        $config["upload_path"] = FCPATH . "assets/upload";
+        $config["allowed_types"] = "gif|jpg|png";
+        $config["max_size"] = 2*1024*1024;
+        $config["max_width"] = "1024";
+        $config["max_height"] = "768";
+        $config["remove_spaces"] = true;
+        $config["encrypt_name"] = true;
+        $this->load->library("upload", $config);
+        if (!$this->upload->do_upload("upload")) {
+            $out["status"] = 1;
+            $out['msg'] = $this->upload->display_errors();
+            echo json_encode($out);
+
+            return false;
+        }
+        $upload = $this->upload->data();
+
+        // Thumb
+        $config = array();
+        $config["source_image"] = $upload["full_path"];
+        $config["create_thumb"] = true;
+        $config["maintain_ratio"] = true;
+        $config["width"] = 150;
+        $config["height"] = 100;
+        $config["master_dim"] = (($upload["image_width"]/$upload["image_height"]) > ($config["width"]/$config["height"])) ? "width" : "height";
+        $config["thumb_marker"] = "_i";
+        $this->load->library("image_lib", $config);
+        $this->image_lib->resize();
+
+        // Update in DB
+        $this->load->model("mcar");
+        $car = $this->mcar->load($id);
+        $images = json_decode($car->images, true);
+        if (!$images) {
+            $images = array();
+        }
+        $image_name = $upload["raw_name"] . "_i" . $upload["file_ext"];
+        $images[] = $image_name;
+        $this->mcar->save(array("images"=>json_encode($images)), $id);
+
+        $out["status"] = 0;
+        $out['name'] = $image_name;
+        $out['msg'] = "上传成功";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}*/
+/*{{{ delimage */
+    public function delimage($id){
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        $name = $this->input->post("name");
+        if (!$id || !is_numeric($id) || !$name || !strpos($name, '.')) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // File delete
+        $file = array();
+        $file["upload_path"] = FCPATH . "assets/upload/";
+        list($file["raw_name"], $file["file_ext"]) = explode('.', $name);
+        if (substr($file["raw_name"], -2) == "_i") {
+            $file["thumb_name"] = $file["raw_name"] . "." . $file["file_ext"];
+            $file["file_name"] = substr($file["raw_name"], 0, -2) . "." . $file["file_ext"];
+        } else {
+            $file["thumb_name"] = $file["raw_name"] . "_i." . $file["file_ext"];
+            $file["file_name"] = $file["raw_name"] . "." . $file["file_ext"];
+        }
+
+        $this->load->model("mcar");
+        $car = $this->mcar->load($id);
+        $images = json_decode($car->images, true);
+        if (is_array($images)) {
+            foreach ($images as $k => $v) {
+                if ($v == $file["thumb_name"]) {
+                    unlink($file["upload_path"] . $file["thumb_name"]);
+                    unlink($file["upload_path"] . $file["file_name"]);
+                    unset($images[$k]);
+                    $this->mcar->save(array("images"=>json_encode($images)), $id);
+                }
+            }
+        }
+
+        $out["status"] = 0;
+        $out['msg'] = "删除成功";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}*/
+
+/*{{{ auction */
+    public function auction($start = 0, $func = "index") {
+        if (!method_exists($this, "auction_".$func)) {
+            $func = "index";
+        }
+        $func = "auction_" . $func;
+        $this->$func($start);
+    }
+/*}}}*/
+/*{{{ auction_index */
+    public function auction_index($start = 0){
+        $out = array();
+
+        $this->config->load("pagination");
+        // Search
+        $search = array();
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
+        if ($this->input->post()) {
+            $search["phone"] = $this->input->post("phone");
+            $search["status"] = $this->input->post("status");
+            $this->lsession->set("car_auction_search", $search);
+        } else {
+            // Get search data from session
+            if ($tmp = $this->lsession->get("car_auction_search")) {
+                $search = $tmp;
+            }
+        }
+        // Only show auction data
+        $search["status"] = "test";
+        $out["search"] = $search;
+
+        // The data of search
+        $this->load->model("mcar");
+        if($data = $this->mcar->load_all($search)) {
+            $out["cars"] = $data["data"];
+
+            // Pagaination
+            $this->load->library("pagination");
+            $this->pagination->uri_segment = 4;
+            $this->pagination->total_rows = $data["num"];
+            $this->pagination->base_url = site_url() . "/admin/auction";
+            $out["pagination"] = $this->pagination->create_links();
+        }
+
+        $this->render("admin_car_auction_index.html", $out);
+    }
+/*}}}*/
+/*{{{ auction_edit */
+    public function auction_edit($id = 0) {
+        if (!$id || !is_numeric($id)) {
+            redirect("/admin/car/auction/");
+        }
+        // The data of search
+        $this->load->model("mcar");
+        if (!$car = $this->mcar->load($id)) {
+            redirect("/admin/car/auction/");
+        }
+        if ($car->status != "test") {
+            redirect("/admin/car/auction/");
+        }
+
+        $out = array();
+        $out["car"] = $car;
+
+        $param = array();
+        $param["color"] = $this->lcommon->form_option("color"); 
+        $param["transmission"] = $this->lcommon->form_option("transmission"); 
+        $param["fuel"] = $this->lcommon->form_option("fuel"); 
+        $param["sale_type"] = $this->lcommon->form_option("sale_type"); 
+        $param["condition_score"] = $this->lcommon->form_option("condition_score"); 
+        $param["accident_level"] = $this->lcommon->form_option("accident_level"); 
+
+        $out["param"] = $param;
+
+        $this->render("admin_car_auction_edit.html", $out);
+    }
+/*}}}*/
+/*{{{ auction_save */
+    public function auction_save($id = 0) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $param = array();
+        // Rewrite test data
+        $param["status"] = "prebook";
+        // Auction when form.status is "complete"
+        $status = null;
+        if($this->input->post("status")) {
+            $status = "auction";
+            $param["status"] = "auction";
+        }
+
+        // sale_start_date
+        if ($status) {
+            $param["sale_start_date"] = $this->input->post("sale_start_date");
+            if ($this->lcommon->is_empty($param["sale_start_date"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写销售开始时间";
+                echo json_encode($out);
+
+                return false;
+            }
+            // sale_end_date
+            $param["sale_end_date"] = $this->input->post("sale_end_date");
+            if ($this->lcommon->is_empty($param["sale_end_date"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写销售结束时间";
+                echo json_encode($out);
+
+                return false;
+            }
+            if ($param["sale_start_date"] > $param["sale_end_date"]) {
+                $out["status"] = 1;
+                $out["msg"] = "结束时间应大于开始时间";
+                echo json_encode($out);
+
+                return false;
+            }
+        }
+
+        $this->load->model("mcar");
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "保存失败。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "保存成功。";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}*/
+
 
 }

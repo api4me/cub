@@ -29,4 +29,5 @@ body {
     padding: 7px 9px;
 }
 
-    
+span.del { cursor: pointer; position: relative; top: 20px; right: 5px; }    
+span.simplecolorpicker.icon {margin-top: 4px; border-color: black;}

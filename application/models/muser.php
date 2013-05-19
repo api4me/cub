@@ -18,7 +18,7 @@ class MUser extends CI_Model {
      * @param param["pwd"]: password of user, the md5 value
      */
     public function login($param) {
-        $this->db->from("#user");
+        $this->db->from("##user");
         $this->db->where("username", $param["username"]);
         $this->db->where("pwd", $param["pwd"]);
         $query = $this->db->get();
@@ -45,12 +45,12 @@ class MUser extends CI_Model {
         // For search
         $this->_where($param);
         $this->db->select("COUNT(1) AS num");
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
 
         if ($num = $query->row(0)->num) {
             $this->db->select();
             $this->_where($param);
-            $query = $this->db->get("#user", $param["per_page"], $param["start"]);
+            $query = $this->db->get("##user", $param["per_page"], $param["start"]);
             $data = $query->result();
 
             return array(
@@ -65,7 +65,7 @@ class MUser extends CI_Model {
 /*{{{ load */
     public function load($id) {
         $this->db->where("id", $id);
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
         return $query->row();
     }
 /*}}}*/
@@ -74,12 +74,12 @@ class MUser extends CI_Model {
         if (!$id) {
             $this->db->set("created", "now()", false);
             $this->db->set("updated", "now()", false);
-            if ($this->db->insert("#user", $param)) {
+            if ($this->db->insert("##user", $param)) {
                 return $this->db->insert_id();
             }
         } else {
             $this->db->set("updated", "now()", false);
-            return $this->db->update("#user", $param, array("id"=>$id));
+            return $this->db->update("##user", $param, array("id"=>$id));
         }
 
         return false;
@@ -89,7 +89,7 @@ class MUser extends CI_Model {
     public function change_enable($param, $id) {
         if (!$id) {
             $this->db->set("updated", "now()", false);
-            return $this->db->update("#user", $param, array("id"=>$id));
+            return $this->db->update("##user", $param, array("id"=>$id));
         }
 
         return false;
@@ -98,7 +98,7 @@ class MUser extends CI_Model {
 /*{{{ get_data_by_phone */
     public function get_data_by_phone($phone) {
         $this->db->where("phone", $phone);
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
         return $query->row();
     }
 /*}}}*/
@@ -108,7 +108,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("username", $str);
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }
 /*}}}*/
@@ -118,7 +118,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("phone", $str);
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }
 /*}}}*/
@@ -128,7 +128,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("email", $str);
-        $query = $this->db->get("#user");
+        $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }
 /*}}}*/

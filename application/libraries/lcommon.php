@@ -24,7 +24,7 @@ class LCommon {
         static $data;
         if (!isset($data)) {
             $data = array();
-            $q = "SELECT * FROM #options";
+            $q = "SELECT * FROM ##options";
             $query = $this->CI->db->query($q);
             foreach($query->result() as $row) {
                 $data[$row->type][$row->code] = $all ? $row : $row->name;
@@ -45,16 +45,21 @@ class LCommon {
 /*{{{ form_option */
     public function form_option($type, $blankline = true, $remove = false) {
         if ($data = $this->option($type)) {
-            if ($blankline) {
-                array_unshift($data, "");
-            }
-
             if (is_array($remove)) {
                 foreach ($remove as $val) {
                     if (isset($data[$val])) {
                         unset($data[$val]);
                     }
                 }
+            }
+
+            if ($blankline) {
+                //array_unshift($data, "");
+                $tmp = array("0" => "--");
+                foreach ($data as $key => $val) {
+                    $tmp[$key] = $val;
+                }
+                $data = $tmp;
             }
 
             return $data;
@@ -74,7 +79,7 @@ class LCommon {
         static $data;
         if (!isset($data)) {
             $data = array();
-            $q = "SELECT * FROM #car_model ORDER BY sort";
+            $q = "SELECT * FROM ##car_model ORDER BY sort";
             $query = $this->CI->db->query($q);
             foreach($query->result() as $row) {
                 list($brand, $model) = str_split($row->code, 3);
@@ -115,7 +120,7 @@ class LCommon {
         static $data;
         if (!isset($data)) {
             $data = array();
-            $q = "SELECT * FROM #area ORDER BY sort";
+            $q = "SELECT * FROM ##area ORDER BY sort";
             $query = $this->CI->db->query($q);
             foreach($query->result() as $row) {
                 list($province, $city, $district) = str_split($row->code, 2);
