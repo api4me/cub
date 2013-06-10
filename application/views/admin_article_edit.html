@@ -1,0 +1,63 @@
+{% extends "admin.html" %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+<div id="article" class="container">
+    <h1>文章管理: {{article.name}}</h1>
+    <hr>
+
+    <p id="msg"></p>
+    {{form_open("/admin/article/save/" ~ article.id, "class=\"form-horizontal\"")|raw}}
+    <div class="control-group">
+        <label class="control-label" for="inputTitle">名称</label>
+        <div class="controls">
+            {{form_input("title", article.title, "id=\"inputTitle\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputTag">类型</label>
+        <div class="controls">
+            {{form_dropdown("tag", param.tag, article.tag, "id=\"inputTag\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">是否可用</label>
+        <div class="controls">
+            {{form_dropdown("enable", param.enable, article.enable, "id=\"inputEnable\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputContent">内容</label>
+        <div class="controls">
+            {{form_textarea("content", article.content, "id=\"inputContent\"")|raw}}
+        </div>
+    </div>
+
+    {% if article.id %}
+    <div class="control-group">
+        <label class="control-label" for="inputCreated">创建时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{article.created}}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputUpdated">更新时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{article.updated}}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{{site_url()}}/admin/article/" class="btn">返回</a>
+        </div>
+    </div>
+    <input type="hidden" name="base" value="{{base_url()}}" />
+
+    </form>
+</div>
+{% endblock %}

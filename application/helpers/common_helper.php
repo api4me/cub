@@ -130,3 +130,40 @@ EOF;
     }
 }
 /*}}}*/
+/*{{{ session_value */
+if (!function_exists("session_value")) {
+    function session_value($code) {
+        $ci =& get_instance();
+        $ci->load->library("lsession");
+        if ($val = $ci->lsession->get($code)) {
+            return $val;
+        }
+
+        return false;
+    }
+}
+/*}}}*/
+/*{{{ sale_status */
+if (!function_exists("sale_status")) {
+    /**
+     * For car status is auction
+     *
+     */
+    function sale_status($start, $end) {
+        $ci =& get_instance();
+        // presale 售前
+        // selling 售中
+        // sold 售后
+        $now = time();
+        $start = strtotime($start);
+        $end = strtotime($end);
+        if ($start > $now) {
+            return "presale";
+        } else if ($end < $now) {
+            return "sold";
+        }
+
+        return "selling";
+    }
+}
+/*}}}*/

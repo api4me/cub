@@ -55,7 +55,7 @@ class MPrebook extends CI_Model {
 /*{{{ valid */
     public function valid($param, $id) {
         // TODO procedure
-        $prebook = $this->prebook_load($id);
+        $prebook = $this->load($id);
         // has been update, return
         if ($prebook->status == 'valid') {
             return false;

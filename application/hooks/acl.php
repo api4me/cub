@@ -40,11 +40,12 @@ class Acl {
             if (isset($controllers[$this->control])) {
                 $actions = $controllers[$this->control];
                 if (in_array("*", $actions) || in_array($this->action, $actions)) {
-                    show_error('您无权访问该功能，该错误已经被记录！点击<a href="'. site_url('login') .'">返回</a>');
+                    redirect("/login");
+                    //show_404('您无权访问该功能，该错误已经被记录！点击<a href="'. site_url('login') .'">返回</a>');
                 }
             }
         } else {
-            show_error('错误的用户类型，该错误已经被记录！点击<a href="'. site_url('login') .'">返回</a>');
+            show_404('错误的用户类型，该错误已经被记录！点击<a href="'. site_url('login') .'">返回</a>');
         }
     }
 /*}}}*/

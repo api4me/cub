@@ -7,7 +7,9 @@ class Login extends CI_Controller {
         $this->load->helper(array("form"));
         $this->load->library("twig");
 
-        $this->twig->display("login.html");
+        $out = array();
+        $out["title"] = "登录";
+        $this->twig->display("login.html", $out);
     }
 /*}}}*/
 /*{{{ validate */

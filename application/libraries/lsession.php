@@ -18,7 +18,9 @@ class LSession {
       
         session_cache_limiter('private');
         session_cache_expire($time / 60);
-        session_start();
+        if (!isset($_SESSION)) {
+            session_start();
+        }
     }
 /*}}}*/
 /*{{{ set */

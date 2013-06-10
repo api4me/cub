@@ -20,7 +20,9 @@ class Home extends CI_Controller {
 	public function index() {
         $this->load->helper(array("form"));
         $this->load->library("twig");
-        $this->twig->display("home_index.html");
+        $out = array();
+        $out["title"] = "首页";
+        $this->twig->display("home_index.html", $out);
 	}
 }
 

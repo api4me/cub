@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <!-- Le styles -->
     <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{base_url()}}assets/css/admin.css" rel="stylesheet">
+    <link href="{{base_url()}}assets/css/site.css" rel="stylesheet">
     <!--[if lt IE 9]>
         <script src="{{base_url()}}assets/js/html5shiv.js"></script>
     <![endif]-->
@@ -19,21 +19,38 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand pull-right" href="#">Title</a>
+                <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><span class="icon-home icon-white"></span></a>
                 <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li class="active"><a href="#">首页</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                    </ul>
                     <ul class="nav pull-right">
+                        {% set user = session_value("user") %}
+                        {% if not user %}
                         <li><a href="{{site_url()}}/login/">登录</a></li>
+                        {% else %}
+                        <li><a href="#">您好, {{user.name}}</a></a>
+                        {%if user.role in ["admin", "super"] %}
                         <li><a href="{{site_url()}}/admin/">管理</a></li>
+                        {% endif %}
+                        <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><span class="icon-off icon-white"></span></a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+    {% block data %}
+    {% endblock %}
 {% endblock %}
 {% block footer %}
+<footer class="footer">
+    <div class="container">
+        <p>仁人易车全新的二手车交易理念，一站式服务，全程让您满意</p>
+        <p>&copy;仁人易车 苏ICP备xxxxxx号</p>
+        <ul class="footer-links">
+            <li><a href="{{base_url()}}">关于仁人易车</a></li>
+            <li class="muted">|</li>
+            <li><a href="{{base_url()}}">服务声明</a></li>
+        </ul>
+    </div>
+</footer>
+
 {% endblock %}

@@ -98,7 +98,7 @@ class Car extends Cub_Controller {
             $this->load->library("pagination");
             $this->pagination->uri_segment = 4;
             $this->pagination->total_rows = $data["num"];
-            $this->pagination->base_url = site_url() . "/admin/prebook";
+            $this->pagination->base_url = site_url() . "/admin/car/prebook";
             $out["pagination"] = $this->pagination->create_links();
         }
 
@@ -226,7 +226,7 @@ class Car extends Cub_Controller {
         // Email
         $param["email"] = trim($this->input->post("email"));
         if (!$this->lcommon->is_empty($param["email"])) {
-            if ($this->lcommon->is_phone($param["email"])) {
+            if ($this->lcommon->is_mail($param["email"])) {
                 $out["status"] = 1;
                 $out["msg"] = "Email输入有误，请检查一下。";
                 echo json_encode($out);
@@ -310,7 +310,7 @@ class Car extends Cub_Controller {
             $this->load->library("pagination");
             $this->pagination->uri_segment = 4;
             $this->pagination->total_rows = $data["num"];
-            $this->pagination->base_url = site_url() . "/admin/test";
+            $this->pagination->base_url = site_url() . "/admin/car/test";
             $out["pagination"] = $this->pagination->create_links();
         }
 
@@ -755,7 +755,7 @@ class Car extends Cub_Controller {
             $this->load->library("pagination");
             $this->pagination->uri_segment = 4;
             $this->pagination->total_rows = $data["num"];
-            $this->pagination->base_url = site_url() . "/admin/auction";
+            $this->pagination->base_url = site_url() . "/admin/car/auction";
             $out["pagination"] = $this->pagination->create_links();
         }
 
@@ -866,5 +866,156 @@ class Car extends Cub_Controller {
     }
 /*}}}*/
 
+/*{{{ deal */
+    public function deal($start = 0, $func = "index") {
+        if (!method_exists($this, "deal_".$func)) {
+            $func = "index";
+        }
+        $func = "deal_" . $func;
+        $this->$func($start);
+    }
+/*}}}*/
+/*{{{ deal_index */
+    public function deal_index($start = 0){
+        $out = array();
+
+        $this->config->load("pagination");
+        // Search
+        $search = array();
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
+        if ($this->input->post()) {
+            $search["phone"] = $this->input->post("phone");
+            $search["status"] = $this->input->post("status");
+            $this->lsession->set("car_deal_search", $search);
+        } else {
+            // Get search data from session
+            if ($tmp = $this->lsession->get("car_deal_search")) {
+                $search = $tmp;
+            }
+        }
+        // Only show auction data
+        $search["status"] = "auction";
+        $out["search"] = $search;
+
+        // The data of search
+        $this->load->model("mcar");
+        if($data = $this->mcar->load_all($search)) {
+            $out["cars"] = $data["data"];
+
+            // Pagaination
+            $this->load->library("pagination");
+            $this->pagination->uri_segment = 4;
+            $this->pagination->total_rows = $data["num"];
+            $this->pagination->base_url = site_url() . "/admin/car/deal";
+            $out["pagination"] = $this->pagination->create_links();
+        }
+
+        $this->render("admin_car_deal_index.html", $out);
+    }
+/*}}}*/
+/*{{{ deal_edit */
+    public function deal_edit($id = 0) {
+        if (!$id || !is_numeric($id)) {
+            redirect("/admin/car/deal/");
+        }
+        // The data of search
+        $this->load->model("mcar");
+        if (!$car = $this->mcar->load($id)) {
+            redirect("/admin/car/deal/");
+        }
+        if ($car->status != "auction") {
+            redirect("/admin/car/deal/");
+        }
+
+        $out = array();
+        $out["car"] = $car;
+
+        $out["sale_status"] = sale_status($car->sale_start_date, $car->sale_end_date);
+        if ($car->sale_type == "auction" && $out["sale_status"] == "sold") {
+            $chart = array();
+            // Generate to chart table
+            // Get chart
+            $this->load->model("mcarchart");
+            $chart["auction"] = $this->mcarchart->loaddata($id, "auction");
+            $out["chart"] = $chart;
+        }
+
+        $this->render("admin_car_deal_edit.html", $out);
+    }
+/*}}}*/
+/*{{{ deal_save */
+    public function deal_save($id = 0) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $param = array();
+        // Rewrite test data
+        $param["status"] = "prebook";
+        // Auction when form.status is "complete"
+        $status = null;
+        if($this->input->post("status")) {
+            $status = "auction";
+            $param["status"] = "auction";
+        }
+
+        // sale_start_date
+        if ($status) {
+            $param["sale_start_date"] = $this->input->post("sale_start_date");
+            if ($this->lcommon->is_empty($param["sale_start_date"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写销售开始时间";
+                echo json_encode($out);
+
+                return false;
+            }
+            // sale_end_date
+            $param["sale_end_date"] = $this->input->post("sale_end_date");
+            if ($this->lcommon->is_empty($param["sale_end_date"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写销售结束时间";
+                echo json_encode($out);
+
+                return false;
+            }
+            if ($param["sale_start_date"] > $param["sale_end_date"]) {
+                $out["status"] = 1;
+                $out["msg"] = "结束时间应大于开始时间";
+                echo json_encode($out);
+
+                return false;
+            }
+        }
+
+        $this->load->model("mcar");
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "保存失败。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "保存成功。";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}*/
 
 }

@@ -21,6 +21,9 @@
     <script src="{{base_url()}}assets/js/jquery.iframe-transport.js"></script>
     <script src="{{base_url()}}assets/js/jquery.fileupload.js"></script>
     <script src="{{base_url()}}assets/js/jquery.simplecolorpicker.js"></script>
+    <script src="{{base_url()}}assets/editor/ckeditor.js"></script>
+    <script src="{{base_url()}}assets/editor/ckfinder/ckfinder.js"></script>
+    <script src="{{base_url()}}assets/js/highcharts.js"></script>
     <script src="{{base_url()}}assets/js/admin.min.js"></script>
     {{library_src|raw}}
     {{script_head|raw}}
@@ -51,6 +54,7 @@
                         {% endif %}
                     </ul>
                     <ul class="nav pull-right">
+                        <li><a href="#">您好，{{common.user.name}}</a></li>
                         <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><span class="icon-off icon-white"></span></a></li>
                     </ul>
                 </div>

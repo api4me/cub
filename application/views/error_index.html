@@ -1,0 +1,15 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="error-404" class="container container-fluid">
+    <div class="row-fluid">
+        <div class="span5">
+        <!--Body content-->
+        <img class="img-rounded" src="{{base_url()}}/assets/img/cars.png" alt="页面不在，车在" title="页面不在，车在"/>
+        </div>
+        <div class="span5">
+            <h1>404</h1>
+            <span>页面不在，车在，返回<a href="{{site_url()}}">首页</a>选您钟意的爱车吧~~</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
