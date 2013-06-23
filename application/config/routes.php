@@ -43,6 +43,11 @@ $route['404_override'] = 'error';
 $route['admin'] = "admin/home";
 $route['login'] = "login";
 
+$route['news'] = "article/news/";
+$route['activity'] = "article/activity/";
+
+$route['buy'] = "buy/auction/";
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

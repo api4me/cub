@@ -49,6 +49,135 @@ class MCar extends CI_Model {
         return $query->row();
     }
 /*}}}*/
+/*{{{ load_for_auction */
+    public function load_for_auction($count) {
+        // Saling + Wait for Auction + sold
+        $q = "
+            -- Seling
+            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'selling' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date<=now() AND sale_end_date>=now())
+            UNION
+            -- Presale, Wait for auction
+            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'presale' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date>now())
+            UNION
+            -- Sold
+            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'sold' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_end_date<now())
+            LIMIT ?;
+        ";
+        $query = $this->db->query($q, array($count));
+
+        return $query->result();
+    }
+/*}}}*/
+/*{{{ load_for_consign */
+    public function load_for_consign($count) {
+        $this->db->where('status', 'auction');
+        $this->db->where('sale_type', 'consign');
+        $this->db->where('sale_start_date <=', 'now()', false);
+        $this->db->where('sale_end_date >=', 'now()', false);
+        $query = $this->db->get("##car", $count);
+
+        return $query->result();
+    }
+/*}}}*/
+/*{{{ load_auction_by_condition */
+    public function load_auction_by_condition($param) {
+        $q = "
+            -- Seling
+            (SELECT ?, 'selling' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date <= now() AND sale_end_date >= now())
+            UNION
+            -- Presale, Wait for auction
+            (SELECT ?, 'presale' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date > now())
+            UNION
+            -- Sold
+            (SELECT ?, 'sold' AS sale_status
+            FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_end_date < now())
+        ";
+
+        $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q));
+        $num = 0;
+        foreach ($query->result() as $row) {
+            $num += $row->num;
+        }
+        if ($num) {
+            $select = "id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images";
+            $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
+            $data = $query->result();
+
+            return array(
+                "num" => $num,
+                "data" => $data,
+            );
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ load_consign_by_condition */
+    public function load_consign_by_condition($param) {
+        $q = "
+            SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign'
+        ";
+
+        $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q));
+        $num = 0;
+        foreach ($query->result() as $row) {
+            $num += $row->num;
+        }
+        if ($num) {
+            $select = "id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images";
+            $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
+            $data = $query->result();
+
+            return array(
+                "num" => $num,
+                "data" => $data,
+            );
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ load_recent_by_success */
+    public function load_recent_by_success($id) {
+        $this->db->where('status', 'success');
+        $this->db->where('id <>', intval($id));
+        $this->db->order_by('updated', 'desc');
+        $query = $this->db->get('##car', 5);
+
+        return $query->result();
+    }
+/*}}}*/
+/*{{{ load_by_search */
+    public function load_by_search($param) {
+        $q = "
+            SELECT ? FROM ##car WHERE status='success'
+        ";
+
+        $where = '';
+        if ($param['model_name']) {
+            $where = ' AND model_name LIKE \'%' . $this->db->escape_like_str($param['model_name']) . '%\'';
+        }
+
+        $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q) . $where);
+        if ($num = $query->row(0)->num) {
+            $select = "*";
+            $query = $this->db->query(str_replace('?', $select, $q) . $where . ' ORDER BY updated DESC LIMIT ?, ?', array($param["start"], $param["per_page"]));
+            $data = $query->result();
+
+            return array(
+                "num" => $num,
+                "data" => $data,
+            );
+        }
+
+        return false;
+    }
+/*}}}*/
 /*{{{ save */
     public function save($param, $id) {
         if (!$id) {

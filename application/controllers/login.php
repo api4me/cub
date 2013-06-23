@@ -8,6 +8,12 @@ class Login extends CI_Controller {
         $this->load->library("twig");
 
         $out = array();
+
+        if ($this->lsession->get("user")) {
+            redirect();
+            return false;
+        }
+
         $out["title"] = "登录";
         $this->twig->display("login.html", $out);
     }

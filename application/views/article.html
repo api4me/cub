@@ -1,0 +1,30 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="article" class="container container-fluid">
+
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> {{option_value("tag", tag)}}</span></div>
+                <ul class="clearfix">
+                    {% for item in list %}
+                    <li {% if item.id == article.id%} class="active" {% endif %}> <a href="{{site_url()}}/article/index/{{tag}}/{{item.id}}">{{item.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <div id="article-content">
+                    <h3>{{article.title}}</h3>
+                    <div class="">{{article.content|raw}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,106 @@
+/* Common
+-------------------------------------------------- */
 body {
     padding-top: 40px;
     padding-bottom: 40px;
     background-color: #474747;
+    font-family: "Microsoft YaHei","微软雅黑","宋体", Arial,Helvetica,sans-serif;
 }
 
 #content { background-color: #e4e2e3; padding-bottom: 20px; }
+.navbar-inverse .navbar-inner {
+    background-color: #474747;
+    border-color: #474747;
+    background-image: -moz-linear-gradient(top,#474747,#505050);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#474747),to(#505050));
+    background-image: -webkit-linear-gradient(top,#474747,#505050);
+    background-image: -o-linear-gradient(top,#474747,#505050);
+    background-image: linear-gradient(to bottom,#474747,#505050);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff474747',endColorstr='#ff505050',GradientType=0);
+}
+
+#logo {padding: 15px 0}
+#logo div.span9 {
+    margin-top: 25px;
+    float: left;
+}
+#logo div.span9 i {
+    margin-top: 4px;
+}
+#logo form.s {
+    width: 474px;
+}
+#logo form.s div.input-append {
+    margin:0;
+    padding: 2px;
+    background-color: #68AF21;
+}
+#logo form.s div.input-append input {
+    width: 360px;
+    height: 30px;
+    line-height:30px;
+    border:0 none;
+}
+#logo form.s div.input-append button {
+    width: 98px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #68AF21;
+    margin-top: 3px;
+    border: 0 none;
+    cursor: pointer;
+}
+#logo div.block {
+    position: relative;
+}
+#logo label.tip {
+    position: absolute;
+    color: #808080;
+    font-size: 14px;
+    left: 10px;
+    top: 10px;
+    cursor: inherit;
+}
+
+#menu div.navbar-inner {
+    background-color: #4467af;
+    background-image: -moz-linear-gradient(top, #486bb5, #2a4273);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#486bb5), to(#2a4273));
+    background-image: -webkit-linear-gradient(top, #486bb5, #2a4273);
+    background-image: -o-linear-gradient(top, #486bb5, #2a4273);
+    background-image: linear-gradient(to bottom, #486bb5, #2a4273);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2a4273', endColorstr='#ff486bb5', GradientType=0);
+    border: 1px solid #536994;
+}
+#menu div.navbar-inner li.divider-vertical {
+    width:1px;
+    border-right: 1px solid #486bb5;
+    border-left: 1px solid #2a4273;
+}
+#menu div.navbar-inner li a {
+    width: 130px;
+    color: #bdd4e4;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0 0 0 #e4e2e3;
+}
+#menu div.navbar-inner li.active a, #menu div.navbar-inner li a:hover {
+    color: #ffffff;
+}
+#menu div.navbar-inner li.active a,
+#menu div.navbar-inner li.active a:hover,
+#menu div.navbar-inner li.active a:focus {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+    -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.125);
+}
 
 .feedback a, .backtop a {
     background: url(../img/icon.png) no-repeat;
@@ -42,6 +138,12 @@ body {
     background-position: -42px 0;
 }
 
+.countdown {
+    color: #333 !important;
+    font-size: 25px;
+    font-weight: bold;
+}
+
 /* Footer
 -------------------------------------------------- */
 .footer { text-align: center; padding: 30px 0; border-top: 1px solid #e5e5e5; background-color: #474747; }
@@ -55,7 +157,7 @@ body {
 .form-signin {
     max-width: 300px;
     padding: 19px 29px 29px;
-    margin: 50px auto 20px;
+    margin: 10px auto 10px;
     background-color: #fff;
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
@@ -73,12 +175,404 @@ body {
 .form-signin input[type="password"] {
     font-size: 16px;
     height: auto;
+    line-height: auto;
     margin-bottom: 15px;
     padding: 7px 9px;
+    +height: 30px;
+    +line-height: 30px;
+    +padding : 0 8px;;
+}
+#login div.block {
+    position: relative;
+}
+#login label.tip {
+    position: absolute;
+    color: #808080;
+    font-size: 14px;
+    left: 10px;
+    top: 8px;
+    cursor: inherit;
+}
+#login div.span6 {
+    padding: 14px 0 0 15px;
 }
 
 /* 404
 -------------------------------------------------- */
 #error-404 {
     padding-top: 20px;
+}
+
+/* Home
+-------------------------------------------------- */
+#home div.span8 {
+    margin-left: 0;
+}
+
+#home div.sale {
+    margin-bottom: 15px;
+}
+#home div.sale div.head {
+    background: url("../img/block-left-bg.png") no-repeat;
+    height: 30px;
+    color: #ffffff;
+}
+#home div.sale div.head span.title {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    text-indent: 55px;
+}
+#home div.sale div.head span.more {
+    display: block;
+    float: right;
+    margin-top: 4px;
+}
+#home div.sale ul {
+    display: block;
+    float: left;
+    margin: 0 0;
+    background-color: #ffffff;
+    padding-left: 20px;
+}
+#home div.sale li {
+    float: left;
+    width: 132px;
+    margin-top: 10px;
+    list-style: none;
+    padding-right: 18px;
+}
+
+#home #followme {
+    height: 95px;
+    background: url(../img/followme-bg.png) no-repeat;
+}
+#home #followme img {
+    float: right;
+    padding: 15px 10px 0 0;
+}
+
+#home div.banner {
+    margin-bottom: 15px;
+}
+#home div.banner div.head {
+    background: url("../img/block-right-bg.png") no-repeat;
+    height: 30px;
+    color: #ffffff;
+}
+#home div.banner div.head span.title {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    text-indent: 55px;
+}
+#home div.banner div.head span.more {
+    display: block;
+    float: right;
+    margin-top: 4px;
+}
+#home div.banner div.data {
+    background-color: #ffffff;
+    padding-top: 8px;
+}
+
+#home div.banner div.data .form-horizontal {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+#home div.banner div.data .form-horizontal .control-group {
+    margin-bottom: 15px;
+    *margin-bottom: 8px;
+}
+#home div.banner div.data .form-horizontal .control-label {
+    float: left;
+    width: 80px;
+    padding-top: 5px;
+    text-align: right;
+}
+#home div.banner div.data .form-horizontal .controls {
+    margin-left: 85px;
+    *margin-left: 0;
+}
+#home div.banner div.data .form-horizontal .controls input {
+    width: 180px;
+}
+#home div.banner div.data .form-horizontal div#model select,
+#home div.banner div.data .form-horizontal div#area select {
+    width: 194px;
+}
+#home div.banner div.data div#msg {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#home #weixinModal {
+    margin-right: auto;
+    margin-left: auto;
+    top: 30%;
+    left: 45%;
+    width: 156px;
+}
+/* Article
+-------------------------------------------------- */
+#article div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#article div.list div.head span.title {
+    font-weight: bold;
+}
+#article div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#article div.list ul li {
+    font-size: 12px;
+    text-indent: 25px;
+    padding-bottom: 8px;
+}
+#article div.list ul li.active {
+    background: url(../img/icon-arrow.png) no-repeat 12px 6px;
+}
+#article div.list ul li.active a,
+#article div.list ul li a:hover {
+    color: #68af21;
+}
+
+#article div.span9 {
+    background-color: #ffffff;
+}
+#article div.detail {
+    padding-left: 20px;
+}
+#article div#article-content h3 {
+    padding-top: 20px;
+    text-align: center;
+}
+
+/* Sale
+-------------------------------------------------- */
+#sale div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#sale div.list div.head span.title {
+    font-weight: bold;
+}
+#sale div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#sale div.list ul li {
+    font-size: 12px;
+    text-indent: 25px;
+    padding-bottom: 8px;
+}
+#sale div.list ul li.active {
+    background: url(../img/icon-arrow.png) no-repeat 12px 6px;
+}
+#sale div.list ul li.active a,
+#sale div.list ul li a:hover {
+    color: #68af21;
+}
+#sale div.span9 {
+    background-color: #ffffff;
+}
+
+#sale div.span9 div.page-header p {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#sale div.span9 div.data {
+    margin-top: 20px;
+}
+
+/* Buy
+-------------------------------------------------- */
+#buy div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#buy div.list div.head span.title {
+    font-weight: bold;
+}
+#buy div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#buy div.list ul li {
+    font-size: 12px;
+    text-indent: 25px;
+    padding-bottom: 8px;
+}
+#buy div.list ul li.active {
+    background: url(../img/icon-arrow.png) no-repeat 12px 6px;
+}
+#buy div.list ul li.active a,
+#buy div.list ul li a:hover {
+    color: #68af21;
+}
+#buy div.span9 {
+    background-color: #ffffff;
+}
+
+#buy div.span9 div.page-header p {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#buy div.sale {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#buy div.sale div.head {
+    background: url("../img/block-left-bg.png") no-repeat;
+    height: 30px;
+    color: #ffffff;
+}
+#buy div.sale div.head span.title {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    text-indent: 55px;
+}
+#buy div.sale ul {
+    display: block;
+    float: left;
+    margin: 0 0;
+    background-color: #ffffff;
+    padding-left: 20px;
+}
+#buy div.sale li {
+    float: left;
+    list-style: none;
+    width: 152px;
+    margin-top: 10px;
+    padding-right: 18px;
+}
+
+#buy-car div.span9 {
+    background-color: #ffffff;
+}
+#buy-car div.span7 {
+    width: 400px;
+    margin-top: 20px;
+}
+#buy-car div.car-info {
+    padding-top: 10px;
+    padding-right: 5px;
+    width: 270px;
+}
+#buy-car div.car-info h4.title {
+    border-bottom: 1px solid #E4E2E3;
+}
+#buy-car div.car-info p.tooltip-show {
+    font-size: 18px;
+    font-weight: bold;
+}
+#buy-car div.car-detail div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color: #435f9c;
+}
+#buy-car div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#buy-car div.list div.head span.title {
+    font-weight: bold;
+}
+#buy-car div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#buy-car div.list ul li {
+    font-size: 12px;
+    padding-bottom: 8px;
+    padding-left: 25px;
+    text-indent: 0;
+}
+#buy-car .auction-preview {
+    _width:178px;
+    min-width:178px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    border:1px solid #C5C5C5;
+    background:/*#fff*/#FFFFE4;
+    position:absolute;
+    margin:2px 0 0;
+    z-index: 1000;
+}
+
+/* search
+-------------------------------------------------- */
+#search div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#search div.list div.head span.title {
+    font-weight: bold;
+}
+#search div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#search div.list ul li {
+    font-size: 12px;
+    text-indent: 25px;
+    padding-bottom: 8px;
+}
+#search div.list ul li.active {
+    background: url(../img/icon-arrow.png) no-repeat 12px 6px;
+}
+#search div.list ul li.active a,
+#search div.list ul li a:hover {
+    color: #68af21;
+}
+#search div.span9 form.page-header {
+    text-align: center;
+}
+#search table {
+    background-color: #fff;
+}
+#search table#list-header {
+    margin-bottom: 0;
+    color: #fff;
+    background-color: #435f9c;
+}
+#search .tagsFix {
+    position: fixed;
+    z-index: 450;
+    top: 40px;
+    width: 700px;
+    _position: absolute;
+    _top: expression(documentElement.scrollTop);
+    display: block;
 }

@@ -17,5 +17,12 @@ $hook["post_controller_constructor"][] = array(
     "filepath" => "hooks",
 );
 
+$hook["post_controller_constructor"][] = array(
+    "class"    => "HCommon",
+    "function" => "nocache",
+    "filename" => "hcommon.php",
+    "filepath" => "hooks",
+);
+
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

@@ -1,6 +1,187 @@
 {% extends "site.html" %}
 {% block data %}
-<div class="container">
-    <img src="{{base_url()}}/assets/img/home.1_03.jpg" alt="首页截图" title="首页截图" />
+<div id="home" class="container">
+    <!-- carousel -->
+    <div id="myCarousel" class="carousel slide">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="{{base_url()}}assets/upload/img/carousel-01.jpg" alt="">
+            </div>
+            <div class="item">
+                <img src="{{base_url()}}assets/upload/img/carousel-02.jpg" alt="">
+            </div>
+            <div class="item">
+                <img src="{{base_url()}}assets/upload/img/carousel-03.jpg" alt="">
+                <div class="carousel-caption">
+                    <h4>4步骤让您轻松买车</h4>
+                    <p>预约我们 免费检测 公平竞拍 愉快成交</p>
+                </div>
+            </div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+
+    <div class="clearfix">
+        <div class="span8">
+            <!-- auction -->
+            <div id="auction" class="sale clearfix">
+                <div class="head"><span class="title">竞拍车辆</span><span class="btn-link more"><a href="{{site_url()}}/buy/auction/">更多</a></span></div>
+                <ul class="clearfix">
+                    {% for item in auction %}
+                    <li>
+                        <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
+                        <p><strong>车型: </strong>{{model_value(item.model)}}</p>
+                        <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+
+                        {% if item.sale_status == 'presale' %}
+                            <p>竞拍开始时间</p>
+                            <p>{{item.sale_start_date|date('Y-m-d H:i')}}</p>
+                            <p><a class="btn btn-info">即将开始</a></p>
+                        {% elseif item.sale_status == 'selling' %}
+                            <p>距离结束还有:</p>
+                            <p class="countdown">{{item.sale_end_date|date('Y-m-d H:i')}}</p>
+                            <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-primary">我要竞拍</a></p>
+                        {% else %}
+                            <p>竞拍结束时间</p>
+                            <p>{{item.sale_end_date|date('Y-m-d H:i')}}</p>
+                            {% if item.bid_num %}
+                            <p>竞拍人数: {{item.bid_num}}人</p>
+                            {% endif %}
+                            <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">已经结束</a></p>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if consign %}
+            <!-- consign -->
+            <div id="consign" class="sale clearfix">
+                <div class="head"><span class="title">寄售车辆</span><span class="btn-link more"><a href="{{site_url()}}/buy/consign/">更多</a></span></div>
+                <ul class="clearfix">
+                    {% for item in consign %}
+                    <li>
+                        <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
+                        <p><strong>车型: </strong>{{model_value(item.model)}}</p>
+                        <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <p>价格: {{item.sale_price|number_format(2, '.', ',')}}</p>
+                        <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">查看详情</a></p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- social -->
+            <div id="followme" class="clearfix">
+                <a href="#weixinModal" data-toggle="modal" ><img src="{{base_url()}}assets/img/icon-weixin.jpg" alt="微信" title="微信" /></a>
+                <a href="http://t.qq.com" target="_blank"><img src="{{base_url()}}assets/img/icon-tqq.jpg" alt="腾讯微博" title="腾讯微博" />
+                <a href="http://www.weibo.com" target="_blank"><img src="{{base_url()}}assets/img/icon-weibo.jpg" alt="新浪微博" title="新浪微博" /></a>
+            </div>
+            <div id="weixinModal" class="modal hide fade">
+            <div class="modal-body">
+                <p><img src="{{base_url()}}/assets/img/icon-weixin-qr.png" alt="扫描一下，关注我" title="扫描一下，关注我" /></p>
+            </div>
+            <div class="modal-footer">
+                扫描一下，关注我&nbsp;
+            </div>
+            </div>
+
+        </div>
+
+        <div class="span4">
+            <div class="banner">
+                <div class="head"><span class="title">在线预约卖车</span></div>
+                <div class="data">
+                    <form id="prebook-form" action="{{site_url()}}/api/prebook"  method="post" class="form-horizontal">
+                        <div id="msg"></div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputName">姓名</label>
+                            <div class="controls">
+                                <input type="text" id="inputName" placeholder="姓名" name="name">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPhone">手机</label>
+                            <div class="controls">
+                                <input type="text" id="inputPhone" placeholder="手机" name="phone">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputModel">品牌车型</label>
+                            <div class="controls">
+                                {{model_dropdown("model", default.model, "id=\"inputModel\"")|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputArea">地区</label>
+                            <div class="controls">
+                                {{area_dropdown("area", default.area, "id=\"inputArea\"")|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputBuyDate">购买时间</label>
+                            <div class="controls">
+                                {{buydate_dropdown()|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputMileage">公里数</label>
+                            <div class="controls">
+                                <input type="text" id="inputMileage" placeholder="公里数" name="mileage">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-primary"><i class="icon-heart icon-white"></i> 确认提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+
+            <div class="banner">
+                <div class="head"><span class="title">最新活动</span><span class="btn-link more"><a href="{{site_url()}}/news/">更多</a></span></div>
+                <div class="data">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#activity">活动专题</a></li>
+                        <li><a href="#news">新闻资讯</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="activity">
+                            <ul>
+                                {% for item in article.activity %}
+                                <li><a href="{{site_url()}}/article/activity/{{item.id}}">{{item.title}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane" id="news">
+                            <ul>
+                                {% for item in article.news %}
+                                <li><a href="{{site_url()}}/article/news/{{item.id}}">{{item.title}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

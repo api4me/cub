@@ -1,0 +1,137 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="buy-car" class="container">
+    <div class="clearfix row-fluid">
+
+        <div class="span9">
+            <div class="clearfix">
+                <!-- car-info -->
+                <div class="span4 car-info pull-right">
+                    <h4 class="title">{{model_value(car.model)}}</h4>
+                    {% set sale_status = sale_status(car.sale_start_date, car.sale_end_date) %}
+                    {% if car.status == 'auction' %}
+                    <p><span class="label{%if sale_status != 'sold'%} label-info{% endif %}">{{option_value("sale_status", sale_status)}}</span></p>
+                    {% else %}
+                    <p><span class="label">已售</span></p>
+                    {% endif %}
+                    <p>出让价: {{car.sale_price}}</p>
+
+                    {% if car.final_price %}
+                    <p>成交价: {{car.final_price}}</p>
+                    {% endif %}
+                    <p>公里数: {{car.mileage}}公里</p>
+                    <p>上牌时间: {{car.buy_date|date('Y年m月d日')}}</p>
+                    <p>排量: {{car.displacement}}ML</p>
+                    {% if car.color %}
+                    <p>颜色: {{option_value('color', car.color)}} <font style="background-color:{{car.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
+                    {% endif %}
+                    <p>新车参考价: {{car.market_price}}</p>
+                    <p class="tooltip-show">等级: <a href="#" data-toggle="tooltip" title="{{option_value('condition_score', car.condition_score)}}">{{car.condition_score}}</a><a href="#" data-toggle="tooltip" title="{{option_value('accident_level', car.accident_level)}}">{{car.accident_level}}</a></p>
+
+                    {% if car.status == 'auction' and sale_status == 'selling' %}
+                        {% if user %}
+                            {% if user.role == 'user' %}
+                    <p class="auction-preview hide"></p>
+                    <p class="auction-now form-inline"><input type="text" name="price" id="price" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> 拍下</button></p>
+                            {% endif %}
+                        {% else %}
+                    <p><a href="{{site_url()}}/login/"><i class="icon-hand-right"></i> 赶快登录, 拍下</a></p>
+                        {% endif %}
+                    {% endif %}
+                    <input type="hidden" name="id" value="{{car.id}}" />
+                </div>
+                <!-- image -->
+                <div class="span7 pull-left">
+                    {% set images = json_decode(car.images) %}
+                    {% if images %}
+                    <div id="myCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% for item in images %}
+                            <div class="item{% if loop.first %} active{% endif %}">
+                                <img src="{{base_url()}}assets/upload/{{str_replace('_i', '', item)}}" />
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if count(images) > 1%}
+                        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                        {% endif %}
+                    </div>
+                   {% endif %}
+                </div>
+            </div>
+
+            <!-- car detail info -->
+            <div class="clearfix car-detail">
+                <div class="head"><span class="title"><i class="icon-ok icon-white"></i> 车辆基本信息</span></div>
+                <table class="table table-bordered">
+                    <tbody><tr>
+                        <td>车牌号</td>
+                        <td>{{substr(car.car_num, 0, -5) ~ '***' ~substr(car.car_num, -1)}}</td>
+                        <td>车辆所在地</td>
+                        <td>{{area_value(car.area)}}</td>
+                    </tr>
+                    <tr>
+                        <td>发动机号</td>
+                        <td>{{substr(car.engine_num, 0, -2) ~ '*' ~ substr(car.engine_num, -1)}}</td>
+                        <td>车架号</td>
+                        <td>{{substr(car.chassis_num, 0, 3) ~ '***' ~ substr(car.chassis_num, 6)}}</td>
+                    </tr>
+                    <tr>
+                        <td>出厂年月</td>
+                        <td>{{car.factory_date|date('Y年m月')}}</td>
+                        <td>变速箱</td>
+                        <td>{{option_value('transmission', car.transmission)}}</td>
+                    </tr>
+                    <tr>
+                        <td>燃料种类</td>
+                        <td>{{option_value('fuel', car.fuel)}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% set extra = json_decode(car.extra, true)%}
+            {% if extra %}
+            <div class="clearfix car-detail">
+                <div class="head"><span class="title"><i class="icon-ok icon-white"></i> 其他信息</span></div>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        {% for item in extra %}
+                        {% if loop.index0 % 2 == 0 %}
+                            </tr><tr>
+                        {% endif %}
+                        <td>{{item.key}}</td>
+                        <td>{{item.val}}</td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 最近成交</span></div>
+                <ul class="clearfix">
+                {% for item in success %}
+                    <li>
+                    <a href="{{site_url()}}/buy/car/{{item.id}}">
+                    <img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" alt="{{model_value(item.model)}}" title="{{model_value(item.model)}}" />
+                    </a>
+                    <span class="label label-info">成交价:</span> {{item.final_price}}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

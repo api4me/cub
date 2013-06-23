@@ -1,0 +1,78 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="sale" class="container">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 我要卖车</span></div>
+                <ul class="clearfix">
+                {% set route = get_route() %}
+                    <li{% if route.class == 'sale' %} class="active" {%endif%}><a href="{{site_url()}}/sale/">预约卖车</a></li>
+                    <li{% if route.class == 'auction' and route.method == 'select' %} class="active" {%endif%}><a href="{{site_url()}}/auction/select">竞拍查询</a></li>
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <img src="{{base_url()}}/assets/img/sale-bg.jpg" />
+                <div class="page-header">
+                    <p>全天候<span class="label label-info">24小时</span>在线预约。预约成功后我们将为您提供专属的免费检测，一站式服务，全程让您满意。只需您填写真实信息，以便我们能联系到您。
+                    </p>
+                </div>
+                <div class="data">
+                    <form id="prebook-form" action="{{site_url()}}/api/prebook"  method="post" class="form-horizontal">
+                        <div id="msg"></div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputName">姓名</label>
+                            <div class="controls">
+                                <input type="text" id="inputName" placeholder="姓名" name="name">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPhone">手机</label>
+                            <div class="controls">
+                                <input type="text" id="inputPhone" placeholder="手机" name="phone">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputModel">品牌车型</label>
+                            <div class="controls">
+                                {{model_dropdown("model", default.model, "id=\"inputModel\"")|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputArea">地区</label>
+                            <div class="controls">
+                                {{area_dropdown("area", default.area, "id=\"inputArea\"")|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputBuyDate">购买时间</label>
+                            <div class="controls">
+                                {{buydate_dropdown()|raw}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputMileage">公里数</label>
+                            <div class="controls">
+                                <input type="text" id="inputMileage" placeholder="公里数" name="mileage">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-primary"><i class="icon-heart icon-white"></i> 确认提交</button>
+                                <button type="reset" class="btn">重新填写</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

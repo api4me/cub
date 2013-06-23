@@ -97,7 +97,10 @@ EOF;
 /*}}}*/
 /*{{{ model_dropdown */
 if (!function_exists("model_dropdown")) {
-    function model_dropdown($name, $code, $attr) {
+    function model_dropdown($name, $code, $attr, $blank = false) {
+        if (!isset($code)) {
+            $code = '000000';
+        }
         list($brand, $model) = str_split($code, 3);
         $out[] = '<div id="model">';
         $out[] = '<select name="brand" class="input-medium"></select>';
@@ -105,16 +108,21 @@ if (!function_exists("model_dropdown")) {
         $out[] = "\n";
         $out[] = '<script>';
         $site_url = site_url();
+        $b = '';
+        if ($blank) {
+            $b = '$("#model select[name=\'brand\']").append($(\'<option value="">--</option>\'));';
+        }
         $out[] = <<<EOF
             jQuery(document).ready(function($){
                 $.get("{$site_url}/api/model/", function(data){
+                    {$b}
                     $.each(data.data, function(k, v){
                         var selected = (k == "{$brand}")? " selected" : "";
                         $("#model select[name='brand']").append($('<option value="'+k+'"'+selected+'>' + v["000"]  + '</option>'));
                     });
                     $("#model select[name='brand']").change(function(){
                         $("#model select[name='model']").empty();
-                        $.each(data.data[$(this).val()], function(k, v){
+                        data.data[$(this).val()] && $.each(data.data[$(this).val()], function(k, v){
                             if (k != "000") {
                                 var selected = (k == "{$model}")? " selected" : "";
                                 $("#model select[name='model']").append($('<option value="'+k+'"'+selected+'>' + v  + '</option>'));
@@ -125,6 +133,29 @@ if (!function_exists("model_dropdown")) {
             });
 EOF;
         $out[] = '</script></div>';
+        
+        return implode($out);
+    }
+}
+/*}}}*/
+/*{{{ buydate_dropdown */
+if (!function_exists("buydate_dropdown")) {
+    function buydate_dropdown() {
+        $out[] = '<div id="buydate">';
+
+        $now = date('Y');
+        $option = array();
+        for($i = 12; $i > -1; $i--) {
+            $k = $now - $i;
+            $option[] = sprintf('<option value="%s">%s</option>' ,$k, $k);
+        }
+        $out[] = '<select name="buydate-year" class="input-small">' . implode("", $option) . '</select>';
+        $option = array();
+        for($i = 1; $i < 13; $i++) {
+            $option[] = sprintf('<option value="%s">%s</option>' ,$i, $i);
+        }
+        $out[] = '<select name="buydate-month" class="input-small">' . implode("", $option) . '</select>';
+        $out[] = '</div>';
         
         return implode($out);
     }
@@ -164,6 +195,14 @@ if (!function_exists("sale_status")) {
         }
 
         return "selling";
+    }
+}
+/*}}}*/
+/*{{{ get_route */
+if (!function_exists("get_route")) {
+    function get_route() {
+        $ci =& get_instance();
+        return $ci->router;
     }
 }
 /*}}}*/

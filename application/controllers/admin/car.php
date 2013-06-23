@@ -616,8 +616,8 @@ class Car extends Cub_Controller {
         $config["upload_path"] = FCPATH . "assets/upload";
         $config["allowed_types"] = "gif|jpg|png";
         $config["max_size"] = 2*1024*1024;
-        $config["max_width"] = "1024";
-        $config["max_height"] = "768";
+        $config["max_width"] = "1200";
+        $config["max_height"] = "800";
         $config["remove_spaces"] = true;
         $config["encrypt_name"] = true;
         $this->load->library("upload", $config);
@@ -886,7 +886,6 @@ class Car extends Cub_Controller {
         $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
-            $search["status"] = $this->input->post("status");
             $this->lsession->set("car_deal_search", $search);
         } else {
             // Get search data from session

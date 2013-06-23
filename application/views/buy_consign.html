@@ -1,0 +1,41 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="buy" class="container">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 我要买车</span></div>
+                <ul class="clearfix">
+                {% set route = get_route() %}
+                    <li{% if route.method == 'auction' %} class="active" {%endif%}><a href="{{site_url()}}/buy/auction">竞拍车辆</a></li>
+                    <li{% if route.method == 'consign' %} class="active" {%endif%}><a href="{{site_url()}}/buy/consign">寄售车辆</a></li>
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <div class="sale data clearfix">
+                <ul class="clearfix">
+                    {% for item in consign %}
+                    <li>
+                        <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
+                        <p><strong>车型: </strong>{{model_value(item.model)}}</p>
+                        <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <p>价格: {{item.sale_price|number_format(2, '.', ',')}}</p>
+                        <p><a class="btn">查看详情</a></p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </div>
+            {{pagination|raw}}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

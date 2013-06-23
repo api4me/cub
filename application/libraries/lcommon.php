@@ -103,7 +103,7 @@ class LCommon {
                 }
             }
 
-            return implode("->", $name);
+            return implode('>', $name);
         }
 
         return false;
@@ -147,7 +147,7 @@ class LCommon {
                 }
             }
 
-            return implode("->", $name);
+            return implode(">", $name);
         }
 
         return false;

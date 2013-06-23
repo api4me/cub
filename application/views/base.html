@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="utf-8">
     <head>
     {% block head %}
-        <title>{% block title %}{% endblock %} - 我爱我车</title>
+        <title>{% block title %}{% endblock %} - 仁人易车</title>
     {% endblock %}
     </head>
     <body>
         <div id="content">{% block content %}{% endblock %}</div>
-        <div id="footer">
         {% block footer %}
-        &copy; Copyright 2013 by <a href="{{ base_url() }}">我爱我车</a>.
+        &copy; Copyright 2013 by <a href="{{ base_url() }}">仁人易车</a>.
         {% endblock %}
-        </div>
     </body>
 </html>

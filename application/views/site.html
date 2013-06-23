@@ -2,24 +2,29 @@
 {% block head %}
     <meta charset="utf-8">
     <title>{{title}} - 仁人易车</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Le styles -->
     <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{base_url()}}assets/css/site.css" rel="stylesheet">
+    <link rel="icon" href="{{base_url()}}assets/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{base_url()}}assets/img/favicon.png">
     <!--[if lt IE 9]>
         <script src="{{base_url()}}assets/js/html5shiv.js"></script>
     <![endif]-->
     <script src="{{base_url()}}assets/js/jquery.min.js"></script>
     <script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{base_url()}}assets/js/jquery.countdown.min.js"></script>
+    <script src="{{base_url()}}assets/js/md5.js"></script>
     <script src="{{base_url()}}assets/js/site.min.js"></script>
 {% endblock %}
+
 {% block content %}
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><span class="icon-home icon-white"></span></a>
                 <div class="nav-collapse collapse">
                     <ul class="nav pull-right">
                         {% set user = session_value("user") %}
@@ -37,9 +42,61 @@
             </div>
         </div>
     </div>
+
+    {% block header %}
+    <div id="logo" class="container container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <a href="{{site_url()}}"><img src="{{base_url()}}assets/img/logo.png" alt="仁人易车" title="仁人易车" /></a>
+            </div>
+            <div class="span9">
+                <div class="pull-right">
+                    <div>
+                        <i class="icon-leaf"></i> <span>服务热线: <strong>400-0000-000</strong></span>
+                    </div>
+                    <div>
+                        <i class="icon-time"></i> <span>服务时间: <strong>8:00--22:00</strong></span>
+                    </div>
+                </div>
+                <div class="pull-left">
+                    <form class="s">
+                        <div class="input-append pull-right block">
+                            <input type="text" name="q" autocomplete="off" />
+                            <label class="tip">历史交易查询</label>
+                            <button type="submit">搜索</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <input type="hidden" id="baseurl" value="{{site_url()}}" />
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block menu %}
+    <div id="menu" class="container navbar">
+        <div class="navbar-inner">
+            <ul class="nav">
+                {% set route = get_route() %}
+                <li {% if route.class == 'home' %} class="active" {% endif %}><a href="{{base_url()}}">首页</a></li>
+                <li class="divider-vertical"></li>
+                <li {% if route.class == 'sale' %} class="active" {% endif %}><a href="{{site_url()}}/sale/">我要卖车</a></li>
+                <li class="divider-vertical"></li>
+                <li {% if route.class == 'buy' %} class="active" {% endif %}><a href="{{site_url()}}/buy/">我要买车</a></li>
+                <li class="divider-vertical"></li>
+                <li {% if route.class == 'article' and route.method == 'activity' %} class="active" {% endif %}><a href="{{site_url()}}/activity/">特色服务</a></li>
+                <li class="divider-vertical"></li>
+                <li {% if route.class == 'article' and route.method == 'news' %} class="active" {% endif %}><a href="{{site_url()}}/news/">最新动态</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %}
+
     {% block data %}
     {% endblock %}
+
 {% endblock %}
+
 {% block footer %}
 <footer class="footer">
     <div class="container">
@@ -52,5 +109,4 @@
         </ul>
     </div>
 </footer>
-
 {% endblock %}

@@ -92,7 +92,7 @@ class MPrebook extends CI_Model {
             // 3. Insert car
             $data = array();
             $data["user_name"] = $param["name"];
-            $data["user_phone"] = $param["phone"];
+            $data["user_phone"] = $prebook->phone;
             $data["model"] = $param["model"];
             $data["area"] = $param["area"];
             $data["buy_date"] = $param["buy_date"];
@@ -121,6 +121,34 @@ class MPrebook extends CI_Model {
         $this->db->update("##prebook", $data, array("id"=>$id));
 
         return true;
+    }
+/*}}}*/
+/*{{{ count_by_key */
+    public function count_by_key($param) {
+        if (!is_array($param)) {
+            return false;
+        }
+        foreach ($param as $key => $val) {
+            $this->db->where($key, $val);
+        }
+        $query = $this->db->get("##prebook");
+        return $query->num_rows();
+    }
+/*}}}*/
+/*{{{ save */
+    public function save($param, $id) {
+        if (!$id) {
+            $this->db->set("created", "now()", false);
+            $this->db->set("updated", "now()", false);
+            if ($this->db->insert("##prebook", $param)) {
+                return $this->db->insert_id();
+            }
+        } else {
+            $this->db->set("updated", "now()", false);
+            return $this->db->update("##prebook", $param, array("id"=>$id));
+        }
+
+        return false;
     }
 /*}}}*/
 

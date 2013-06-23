@@ -2,6 +2,7 @@
 
 class Home extends CI_Controller {
 
+/*{{{ index */
 	/**
 	 * Index Page for this controller.
 	 *
@@ -22,8 +23,29 @@ class Home extends CI_Controller {
         $this->load->library("twig");
         $out = array();
         $out["title"] = "首页";
+
+        // 东风风神
+        $out["default"]["model"] = "127000";
+        // 江苏 南京
+        $out["default"]["area"] = "320101";
+        // Auction
+        $this->load->model("mcar");
+        $auction = $this->mcar->load_for_auction(12);
+        $out["auction"] = $auction;
+        // Consign
+        $consign = $this->mcar->load_for_consign(12);
+        $out["consign"] = $consign;
+        // Article
+        $this->load->model("marticle");
+        $article = array();
+        $article["activity"] = $this->marticle->load_by_tag("activity");
+        $article["news"] = $this->marticle->load_by_tag("news");
+        $out["article"] = $article;
+
         $this->twig->display("home_index.html", $out);
 	}
+/*}}}*/
+
 }
 
 /* End of file welcome.php */

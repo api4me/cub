@@ -1,0 +1,79 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="search" class="container">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 我要买车</span></div>
+                <ul class="clearfix">
+                {% set route = get_route() %}
+                    <li{% if route.method == 'auction' %} class="active" {%endif%}><a href="{{site_url()}}/buy/auction">竞拍车辆</a></li>
+                    <li{% if route.method == 'consign' %} class="active" {%endif%}><a href="{{site_url()}}/buy/consign">寄售车辆</a></li>
+                    <li{% if route.method == 'search' %} class="active" {%endif%}><a href="{{site_url()}}/buy/consign">历史交易查询</a></li>
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <form class="form-search search well">
+                    <input type="text" name="search" class="input-xlarge" value="{{search.model_name}}">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                </form>
+                <div class="sale data clearfix">
+                    <div id="scroll">
+                    <table class="table table-striped" id="list-header">
+                    <thead>
+                        <tr>
+                            <th width="218">车辆图片</th>
+                            <th width="300">车辆信息</th>
+                            <th width="60">等级</th>
+                            <th width="140">成交</th>
+                        </tr>
+                    </thead>
+                    </table>
+                    </div>
+
+                    <table class="table table-striped">
+                    <tbody>
+                    {% for item in car %}
+                    <tr>
+                        <td width="218">
+                           <a href="{{site_url()}}/buy/car/{{item.id}}"><img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></a>
+                        </td>
+                        <td width="300">
+                            <h5><a href="{{site_url()}}/buy/car/{{item.id}}">{{model_value(item.model)}}</a></h5>
+                            <p><span class="label">出厂年月</span>{{item.factory_date|date('Y年m月')}}</p>
+                            <p><span class="label">车辆所在地</span>{{area_value(item.area)}}</p>
+                            <p><span class="label">颜色 </span>{{option_value('color', item.color)}} <font style="background-color:{{item.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
+                            <p><span class="label">公里数</span>{{item.mileage}}</p>
+                            <p><span class="label">排量</span>{{item.displacement}}</p>
+                            <p><span class="label">变速箱</span>{{option_value('transmission', item.transmission)}}</p>
+                            <p><span class="label">燃料种类</span>{{option_value('fuel', item.fuel)}}</p>
+                        </td>
+                        <td width="60">
+                        <p class="tooltip-show"><a href="#" data-toggle="tooltip" title="{{option_value('condition_score', item.condition_score)}}">{{item.condition_score}}</a><a href="#" data-toggle="tooltip" title="{{option_value('accident_level', item.accident_level)}}">{{item.accident_level}}</a></p>
+                        </td>
+                        <td width="140">
+                            {{item.bid_num}}
+                            {{item.final_price}}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">哎呀, 没有相关数据，填上其他字试试~</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            {{pagination|raw}}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -49,6 +49,16 @@ class MArticle extends CI_Model {
         return $query->row();
     }
 /*}}}*/
+/*{{{ load_by_tag */
+    public function load_by_tag($tag) {
+        $this->db->where("tag", $tag);
+        $this->db->order_by("sort", "asc");
+        $this->db->order_by("created", "desc");
+        $query = $this->db->get("##article");
+
+        return $query->result();
+    }
+/*}}}*/
 /*{{{ save */
     public function save($param, $id) {
         if (!$id) {
@@ -63,6 +73,17 @@ class MArticle extends CI_Model {
         }
 
         return false;
+    }
+/*}}}*/
+/*{{{ show_by_tag */
+    public function show_by_tag($tag) {
+        $this->db->where("tag", $tag);
+        $this->db->where("enable", "Y");
+        $this->db->order_by("sort", "asc");
+        $this->db->order_by("created", "desc");
+        $query = $this->db->get("##article");
+
+        return $query->result();
     }
 /*}}}*/
 
