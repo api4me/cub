@@ -33,7 +33,10 @@ $config['role'] = array(
     "admin" => array(
         "admin" => array("user"),
     ),
-    "user" => array(
+    "buyer" => array(
+        "admin" => array("*"),
+    ),
+    "sell" => array(
         "admin" => array("*"),
     ),
     "guest" => array(

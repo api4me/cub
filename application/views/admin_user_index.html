@@ -2,10 +2,10 @@
 
 {% block operate %}
 <div class="container">
-    <h1>用户一览</h1>
+    <h3>用户一览</h3>
     {{form_open("/admin/user/index", "class=\"form-inline\"")|raw}}
-        <span class="label">登录名</span>
-        {{form_input("username", search.username, "placeholder=\"登录名\"")|raw}}
+        <span class="label">登录ID</span>
+        {{form_input("username", search.username, "placeholder=\"登录ID\"")|raw}}
         <span class="label">用户类型</span>
         {{form_dropdown("role", param.role, search.role)|raw}}
         <span class="label">是否可用</span>
@@ -22,8 +22,8 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>登录名</th>
-            <th>姓名</th>
+            <th>登录ID</th>
+            <th>显示名</th>
             <th>手机号</th>
             <th>用户类型</th>
             <th>是否可用</th>

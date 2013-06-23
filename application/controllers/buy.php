@@ -166,7 +166,7 @@ class Buy extends CI_Controller {
             return false;
         } else {
             // TODO
-            if ($user->role != 'user') {
+            if ($user->role != 'buyer') {
                 $out["status"] = 1;
                 $out["msg"] = "您无权限拍卖，如有问题请联系我们。";
                 $this->output->set_output(json_encode($out));

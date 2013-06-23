@@ -596,6 +596,8 @@ class Car extends Cub_Controller {
 /*{{{ upload */
     public function upload($id) {
         $out = array();
+        // Fix IE issue, fileupload jquery plug is not send "HTTP_X_REQUESTED_WITH"
+        /*
         if (!$this->input->is_ajax_request()) {
             $out["status"] = 1;
             $out["msg"] = "系统忙，请稍后...";
@@ -603,6 +605,7 @@ class Car extends Cub_Controller {
 
             return false;
         }
+        */
         if (!$id || !is_numeric($id)) {
             $out["status"] = 1;
             $out["msg"] = "系统忙，请稍后...";

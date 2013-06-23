@@ -2,7 +2,7 @@
 
 {% block operate %}
 <div class="container">
-    <h1>汽车销售一览</h1>
+    <h3>汽车销售一览</h3>
     {{form_open("/admin/car/index", "class=\"form-inline\"")|raw}}
         <span class="label">车牌号</span>
         {{form_input("car_num", search.car_num, "placeholder=\"车牌号\"")|raw}}

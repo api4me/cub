@@ -2,7 +2,7 @@
 
 {% block operate %}
 <div class="container">
-    <h1>文章一览</h1>
+    <h3>文章一览</h3>
     {{form_open("/admin/article/index", "class=\"form-inline\"")|raw}}
         <span class="label">文章名称</span>
         {{form_input("title", search.title, "placeholder=\"文章名称\"")|raw}}

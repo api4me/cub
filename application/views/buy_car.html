@@ -30,9 +30,9 @@
 
                     {% if car.status == 'auction' and sale_status == 'selling' %}
                         {% if user %}
-                            {% if user.role == 'user' %}
+                            {% if user.role == 'buyer' %}
                     <p class="auction-preview hide"></p>
-                    <p class="auction-now form-inline"><input type="text" name="price" id="price" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> 拍下</button></p>
+                    <p class="auction-now form-inline"><input type="text" name="price" id="price" maxlength="8" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> 拍下</button></p>
                             {% endif %}
                         {% else %}
                     <p><a href="{{site_url()}}/login/"><i class="icon-hand-right"></i> 赶快登录, 拍下</a></p>

@@ -5,19 +5,19 @@
 
 {% block data %}
 <div id="user" class="container">
-    <h1>用户管理: {{user.name}}</h1>
+    <h3>用户管理: {{user.name}}</h3>
     <hr>
 
     <p id="msg"></p>
     {{form_open("/admin/user/save/" ~ user.id, "class=\"form-horizontal\"")|raw}}
     <div class="control-group">
-        <label class="control-label" for="inputUsername">登录名</label>
+        <label class="control-label" for="inputUsername">登录ID</label>
         <div class="controls">
             {{form_input("username", user.username, "id=\"inputUsername\"")|raw}}
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputName">用户名</label>
+        <label class="control-label" for="inputName">显示名</label>
         <div class="controls">
             {{form_input("name", user.name, "id=\"inputName\"")|raw}}
         </div>

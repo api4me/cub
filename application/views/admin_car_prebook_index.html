@@ -2,11 +2,11 @@
 
 {% block operate %}
 <div class="container">
-    <h1>车辆预约
+    <h3>车辆预约
     {% if search.status == 'invalid' %}
     <span class="label label-important">无效处理的数据</span>
     {% endif %}
-    </h1>
+    </h3>
     {{form_open("/admin/car/prebook/", "class=\"form-inline\"")|raw}}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, "placeholder=\"手机号\"")|raw}}

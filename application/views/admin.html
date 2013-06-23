@@ -37,7 +37,7 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle{%if common.control == "car" %} active{%endif%}" data-toggle="dropdown">车辆<b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle{%if common.control == "car" %} active{%endif%}" data-toggle="dropdown">业务管理<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{site_url()}}/admin/car/prebook/">预约确认</a></li>
                                 <li><a href="{{site_url()}}/admin/car/test/">车辆检测</a></li>
@@ -47,9 +47,9 @@
                                 <li><a href="{{site_url()}}/admin/car/list/">车辆一览</a></li>
                             </ul>
                         </li>
-                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">文章</a></li>
+                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">内容管理</a></li>
                         {% if common.user.role == "super" %}
-                        <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户</a></li>
+                        <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
                         <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
                         {% endif %}
                     </ul>

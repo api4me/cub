@@ -5,11 +5,11 @@
 
 {% block data %}
 <div id="test" class="container">
-    <h1>车辆检测: {{car.user_name}}</h1>
+    <h3>车辆检测: {{car.user_name}}</h3>
     <hr>
 
     <p id="msg"></p>
-    {{form_open("/admin/car/test/" ~ car.id ~ "/save/", "class=\"form-horizontal\" enctype=\"multipart/form-data\"")|raw}}
+    {{form_open("/admin/car/test/" ~ car.id ~ "/save/", 'class="form-horizontal" enctype="multipart/form-data"')|raw}}
 
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#prebook">预约信息</a></li>
@@ -191,7 +191,9 @@
             <div class="well">
                 <h3>注意事项</h3>
                 <ul>
-                    <li>图片大小不能超过<strong>5 MB</strong></li>
+                    <li>图片大小不能超过 <strong>2 MB</strong></li>
+                    <li>图片最大宽度 <strong>1200px</strong></li>
+                    <li>图片最大高度 <strong>800px</strong></li>
                     <li>图片类型 (<strong>JPG, GIF, PNG</strong>)</li>
                 </ul>
             </div>

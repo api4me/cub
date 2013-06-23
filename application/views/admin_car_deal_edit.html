@@ -5,9 +5,9 @@
 
 {% block data %}
 <div id="deal" class="container">
-    <h1>交易登记: {{car.user_name}}
+    <h3>交易登记: {{car.user_name}}
     <span class="label{%if sale_status == "selling" %} label-success{% elseif sale_status == "presale" %} label-info {% endif %}">{{option_value("sale_status", sale_status)}}</span>
-    </h1>
+    </h3>
     <hr>
 
     <p id="msg"></p>
