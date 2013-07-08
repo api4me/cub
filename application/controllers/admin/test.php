@@ -2,14 +2,14 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* @filename car.php
+* @filename test.php
 * @touch date Thursday, May 16, 2013 AM03:55:20 CST
 * @author: Fred<fred.zhou@foxmail.com>
 * @license: http://www.zend.com/license/3_0.txt PHP License 3.0"
 * @version 1.0.0
 */
 
-class Car extends Cub_Controller {
+class Test extends Cub_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -27,44 +27,45 @@ class Car extends Cub_Controller {
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
             $search["status"] = $this->input->post("status");
-            $this->lsession->set("car_search", $search);
+            $this->lsession->set("test_search", $search);
         } else {
             // Get search data from session
-            if ($tmp = $this->lsession->get("car_search")) {
+            if ($tmp = $this->lsession->get("test_search")) {
                 $search = $tmp;
             }
         }
+        // Only show prebook data
+        $search["status"] = "prebook";
         $out["search"] = $search;
-
-        $param = array();
-        $param["status"] = $this->lcommon->form_option("car_status"); 
-        $out['param'] = $param;
 
         // The data of search
         $this->load->model("mcar");
-        if($data = $this->mcar->load_all($search, true)) {
+        if($data = $this->mcar->load_all($search)) {
             $out["cars"] = $data["data"];
 
             // Pagaination
             $this->load->library("pagination");
             $this->pagination->uri_segment = 4;
             $this->pagination->total_rows = $data["num"];
-            $this->pagination->base_url = site_url() . "/admin/car/index";
+            $this->pagination->base_url = site_url() . "/admin/test/index";
             $out["pagination"] = $this->pagination->create_links();
         }
 
-        $this->render("admin_car_index.html", $out);
+        $this->render("admin_test_index.html", $out);
     }
 /*}}}*/
 /*{{{ edit */
     public function edit($id = 0) {
         if (!$id || !is_numeric($id)) {
-            redirect("/admin/car/");
+            redirect("/admin/test/");
         }
         // The data of search
         $this->load->model("mcar");
         if (!$car = $this->mcar->load($id)) {
-            redirect("/admin/car/");
+            redirect("/admin/test/");
+        }
+        if ($car->status != "prebook") {
+            redirect("/admin/test/");
         }
 
         $out = array();
@@ -89,7 +90,7 @@ class Car extends Cub_Controller {
 
         $out["param"] = $param;
 
-        $this->render("admin_car_edit.html", $out);
+        $this->render("admin_test_edit.html", $out);
     }
 /*}}}*/
 /*{{{ save */
@@ -112,6 +113,13 @@ class Car extends Cub_Controller {
         }
 
         $param = array();
+        // Test when form.status is "complete"
+        $status = null;
+        if($this->input->post("status")) {
+            $status = "test";
+            $param["status"] = "test";
+        }
+
         // -----------------------------------------------------------
         // 客户资料
         // -----------------------------------------------------------
@@ -125,10 +133,24 @@ class Car extends Cub_Controller {
         // -----------------------------------------------------------
         // sale_type
         $param["sale_type"] = $this->input->post("sale_type");
+        if ($status && $this->lcommon->is_empty($param["sale_type"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择销售类型";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // model
         $param["model"] = $this->input->post("brand").$this->input->post("model");
         // car_num
         $param["car_num"] = $this->input->post("car_num");
+        if ($status && $this->lcommon->is_empty($param["car_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车牌号";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["car_num"]) 
             && $this->lcommon->get_size($param["car_num"]) > 16) {
             $out["status"] = 1;
@@ -139,8 +161,15 @@ class Car extends Cub_Controller {
         }
         // engine_num
         $param["engine_num"] = $this->input->post("engine_num");
+        if ($status && $this->lcommon->is_empty($param["engine_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写发动机号";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["engine_num"]) 
-            && $this->lcommon->get_size($param["car_num"]) > 32) {
+            && $this->lcommon->get_size($param["car_num"]) > 16) {
             $out["status"] = 1;
             $out["msg"] = "请正确填写发动机号。";
             $this->output->set_output(json_encode($out));
@@ -149,8 +178,15 @@ class Car extends Cub_Controller {
         }
         // chassis_num
         $param["chassis_num"] = $this->input->post("chassis_num");
+        if ($status && $this->lcommon->is_empty($param["chassis_num"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车架号";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["chassis_num"]) 
-            && $this->lcommon->get_size($param["chassis_num"]) > 16) {
+            && $this->lcommon->get_size($param["chassis_num"]) > 32) {
             $out["status"] = 1;
             $out["msg"] = "请正确填写车架号。";
             $this->output->set_output(json_encode($out));
@@ -159,10 +195,31 @@ class Car extends Cub_Controller {
         }
         // factory_date
         $param["factory_date"] = $this->input->post("factory_date");
+        if ($status && $this->lcommon->is_empty($param["factory_date"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写出厂日期。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // buy_date
         $param["buy_date"] = $this->input->post("buy_date");
+        if ($status && $this->lcommon->is_empty($param["buy_date"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写初次登记日期。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // mileage
         $param["mileage"] = $this->input->post("mileage");
+        if ($status && $this->lcommon->is_empty($param["mileage"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写里程。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["mileage"]) 
             && !is_numeric($param["mileage"])) {
             $out["status"] = 1;
@@ -173,6 +230,13 @@ class Car extends Cub_Controller {
         }
         // color
         $param["color"] = $this->input->post("color");
+        if ($status && $this->lcommon->is_empty($param["color"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择车身颜色。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 年检截至年月
         $param["annual_test"] = $this->input->post("annual_test");
         // 购置税证书
@@ -197,20 +261,69 @@ class Car extends Cub_Controller {
         // -----------------------------------------------------------
         // 燃料标号
         $param["fuel"] = $this->input->post("fuel");
+        if ($status && $this->lcommon->is_empty($param["fuel"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择燃料种类";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 排量
         $param["displacement"] = $this->input->post("displacement");
+        if ($status && $this->lcommon->is_empty($param["displacement"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择排量";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 缸数
         $param["cylinder"] = $this->input->post("cylinder");
+        if ($status && $this->lcommon->is_empty($param["cylinder"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择缸数";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 发动机功率
         $param["engine_power"] = $this->input->post("engine_power");
         // 排放标准
         $param["emission_std"] = $this->input->post("emission_std");
+        if ($status && $this->lcommon->is_empty($param["emission_std"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择排放标准";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 变速箱
         $param["transmission"] = $this->input->post("transmission");
+        if ($status && $this->lcommon->is_empty($param["transmission"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择变速箱种类";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 气囊
         $param["air_sac"] = $this->input->post("air_sac");
+        if ($status && $this->lcommon->is_empty($param["air_sac"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择气囊";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 驱动方式
         $param["drive_mode"] = $this->input->post("drive_mode");
+        if ($status && $this->lcommon->is_empty($param["drive_mode"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择驱动方式";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         // 其他重要配置
         $param["other_conf"] = $this->input->post("other_conf");
 
@@ -222,9 +335,23 @@ class Car extends Cub_Controller {
         $score = 0;
         // 是否为事故车
         $extra['issue_confirm'] = $this->input->post("extra_issue_confirm");
+        if ($status && $this->lcommon->is_empty($extra["issue_confirm"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择是否为事故车";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         $extra['issue_info'] = $this->input->post("extra_issue_info");
         // 车身检查
         $extra['appraisal_body_score'] = $this->input->post("extra_appraisal_body_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_body_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车身检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_body_score"])) {
             if (!is_numeric($extra["appraisal_body_score"])) {
                 $out["status"] = 1;
@@ -244,6 +371,13 @@ class Car extends Cub_Controller {
         $extra['appraisal_body_comment'] = $this->input->post("extra_appraisal_body_comment");
         // 发动机检查
         $extra['appraisal_engine_score'] = $this->input->post("extra_appraisal_engine_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_engine_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写发动机检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_engine_score"])) {
             if (!is_numeric($extra["appraisal_engine_score"])) {
                 $out["status"] = 1;
@@ -263,6 +397,13 @@ class Car extends Cub_Controller {
         $extra['appraisal_engine_comment'] = $this->input->post("extra_appraisal_engine_comment");
         // 车内检查
         $extra['appraisal_inner_score'] = $this->input->post("extra_appraisal_inner_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_inner_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写车内检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_inner_score"])) {
             if (!is_numeric($extra["appraisal_inner_score"])) {
                 $out["status"] = 1;
@@ -282,6 +423,13 @@ class Car extends Cub_Controller {
         $extra['appraisal_inner_comment'] = $this->input->post("extra_appraisal_inner_comment");
         // 启动检查
         $extra['appraisal_start_score'] = $this->input->post("extra_appraisal_start_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_start_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写启动检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_start_score"])) {
             if (!is_numeric($extra["appraisal_start_score"])) {
                 $out["status"] = 1;
@@ -301,6 +449,13 @@ class Car extends Cub_Controller {
         $extra['appraisal_start_comment'] = $this->input->post("extra_appraisal_start_comment");
         // 路试检查
         $extra['appraisal_road_score'] = $this->input->post("extra_appraisal_road_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_road_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写路试检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_road_score"])) {
             if (!is_numeric($extra["appraisal_road_score"])) {
                 $out["status"] = 1;
@@ -320,6 +475,13 @@ class Car extends Cub_Controller {
         $extra['appraisal_road_comment'] = $this->input->post("extra_appraisal_road_comment");
         // 底盘检查
         $extra['appraisal_chassis_score'] = $this->input->post("extra_appraisal_chassis_score");
+        if ($status && $this->lcommon->is_empty($extra["appraisal_chassis_score"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写底盘检查得分";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($extra["appraisal_chassis_score"])) {
             if (!is_numeric($extra["appraisal_chassis_score"])) {
                 $out["status"] = 1;
@@ -344,6 +506,13 @@ class Car extends Cub_Controller {
         $param["appraisal_level"] = get_appraisal($extra['issue_confirm'], $score);
         // 市场价
         $param["market_price"] = $this->input->post("market_price");
+        if ($status && $this->lcommon->is_empty($param["market_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写市场价";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["market_price"]) 
             && !is_numeric($param["market_price"])) {
             $out["status"] = 1;
@@ -354,6 +523,13 @@ class Car extends Cub_Controller {
         }
         // 评估价
         $param["sale_price"] = $this->input->post("sale_price");
+        if ($status && $this->lcommon->is_empty($param["sale_price"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写出让价";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
         if (!$this->lcommon->is_empty($param["sale_price"]) 
             && !is_numeric($param["sale_price"])) {
             $out["status"] = 1;
@@ -364,6 +540,17 @@ class Car extends Cub_Controller {
         }
 
         $this->load->model("mcar");
+        // images
+        if ($status) {
+            $car = $this->mcar->load($id);
+            if (!$car->images) {
+                $out["status"] = 1;
+                $out["msg"] = "请上传车辆相关图片";
+                $this->output->set_output(json_encode($out));
+
+                return false;
+            }
+        }
 
         if (!$ret = $this->mcar->save($param, $id)) {
             $out["status"] = 1;

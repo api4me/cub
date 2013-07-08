@@ -2,16 +2,15 @@
 
 {% block operate %}
 <div class="container">
-    <h3>车辆预约
+    <h3>车辆检测
     {% if search.status == 'invalid' %}
     <span class="label label-important">无效处理的数据</span>
     {% endif %}
     </h3>
-    {{form_open("/admin/car/prebook/", "class=\"form-inline\"")|raw}}
+    {{form_open("/admin/test/", "class=\"form-inline\"")|raw}}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, "placeholder=\"手机号\"")|raw}}
         <button type="submit" class="btn btn-primary">Go!</button>
-        <button type="submit" class="btn btn-link pull-right btn-mini" name="status" value="invalid">不小心错误无效数据，试试这里</button>
     </div>
     </form>
 </div>
@@ -36,8 +35,8 @@
     {% for item in cars %}
         <tr>
             <td>{{loop.index + search.start}}</td>
-            <td><a href="{{site_url()}}/admin/car/prebook/{{item.id}}/edit">{{item.name}}</a></td>
-            <td>{{item.phone}}</td>
+            <td><a href="{{site_url()}}/admin/test/edit/{{item.id}}/">{{item.user_name}}</a></td>
+            <td>{{item.user_phone}}</td>
             <td>{{model_value(item.model)}}</td>
             <td>{{area_value(item.area)}}</td>
             <td>{{item.buy_date|date('Y-m-d')}}</td>

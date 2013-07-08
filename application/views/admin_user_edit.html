@@ -11,19 +11,62 @@
     <p id="msg"></p>
     {{form_open("/admin/user/save/" ~ user.id, "class=\"form-horizontal\"")|raw}}
     <div class="control-group">
-        <label class="control-label" for="inputUsername">登录ID</label>
+        <label class="control-label" for="inputUsername">登录ID{% if not user.id%} <span class="star">*</span>{% endif %}</label>
         <div class="controls">
+            {% if not user.id %}
             {{form_input("username", user.username, "id=\"inputUsername\"")|raw}}
+            {% else %}
+            <span class="uneditable-input">{{user.username}}</span>
+            {% endif %}
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputName">显示名</label>
+        <label class="control-label" for="inputName">显示名 <span class="star">*</span></label>
         <div class="controls">
             {{form_input("name", user.name, "id=\"inputName\"")|raw}}
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputPhone">手机号</label>
+        <label class="control-label" for="inputPwd">密码{% if not user.id%} <span class="star">*</span>{% endif %}</label>
+        <div class="controls">
+            {% if not user.id %}
+            {{form_password("pwd", "", "id=\"inputPwd\"")|raw}}
+            {% else %}
+            <span class="input-medium uneditable-input">**********</span>
+            <a href="#myModal" class="btn" role="button" data-toggle="modal">重置</a>
+            <!-- Modal -->
+            <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">重置密码</h3>
+            </div>
+            <div class="modal-body">
+                <div id="modal-msg" class="label label-success"></div>
+                <div class="well">
+                    <p>
+                        为了保障用户帐户的安全，新密码请使用6位及其以上半角英文字母, 数字或符号组成。
+                    </p>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="inputPwd">新密码</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            {{form_password("pwd", "", "id=\"inputPwd\"")|raw}}                                                                                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" name="complete" value="complete">提交</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputPhone">手机号 <span class="star">*</span></label>
         <div class="controls">
             {{form_input("phone", user.phone, "id=\"inputPhone\"")|raw}}
         </div>
@@ -35,13 +78,13 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputRole">用户类型</label>
+        <label class="control-label" for="inputRole">用户类型 <span class="star">*</span></label>
         <div class="controls">
             {{form_dropdown("role", param.role, user.role, "id=\"inputRole\"")|raw}}
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputEnable">是否可用</label>
+        <label class="control-label" for="inputEnable">是否可用 <span class="star">*</span></label>
         <div class="controls">
             {{form_dropdown("enable", param.enable, user.enable, "id=\"inputEnable\"")|raw}}
         </div>
@@ -49,24 +92,9 @@
     <div class="control-group">
         <label class="control-label" for="inputRemark">备注</label>
         <div class="controls">
-            {{form_textarea("remark", user.reamrk, "id=\"inputRemark\"")|raw}}
+            {{form_textarea("remark", user.remark, "id=\"inputRemark\"")|raw}}
         </div>
     </div>
-
-    {% if user.id %}
-    <div class="control-group">
-        <label class="control-label" for="inputRemark">首次登录时间</label>
-        <div class="controls">
-            <span class="input-medium uneditable-input">{{user.frist_logged|default("没有登录过")}}</span>
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="inputRemark">最后登录时间</label>
-        <div class="controls">
-            <span class="input-medium uneditable-input">{{user.last_logged|default("没有登录过")}}</span>
-        </div>
-    </div>
-    {% endif %}
 
     <div class="control-group">
         <div class="controls">
@@ -74,6 +102,8 @@
             <a href="{{site_url()}}/admin/user/" class="btn">返回</a>
         </div>
     </div>
+    <input type="hidden" name="base" value="{{site_url()}}" />
+    <input type="hidden" name="id" value="{{user.id}}" />
 
     </form>
 </div>

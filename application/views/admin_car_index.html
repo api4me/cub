@@ -2,14 +2,16 @@
 
 {% block operate %}
 <div class="container">
-    <h3>汽车销售一览</h3>
-    {{form_open("/admin/car/index", "class=\"form-inline\"")|raw}}
-        <span class="label">车牌号</span>
-        {{form_input("car_num", search.car_num, "placeholder=\"车牌号\"")|raw}}
-        <span class="label">发动机号</span>
-        {{form_dropdown("role", param.role, search.role)|raw}}
-        <span class="label">是否可用</span>
-        {{form_dropdown("enable", param.enable, search.enable, "class=\"input-small\"")|raw}}
+    <h3>车辆一览
+    {% if search.status == 'invalid' %}
+    <span class="label label-important">无效处理的数据</span>
+    {% endif %}
+    </h3>
+    {{form_open("/admin/car/", "class=\"form-inline\"")|raw}}
+        <span class="label">手机号</span>
+        {{form_input("phone", search.phone, 'class="input-medium"')|raw}}
+        <span class="label">状态</span>
+        {{form_dropdown("status", param.status, search.status, 'class="input-small"')|raw}}
         <button type="submit" class="btn btn-primary">Go!</button>
     </div>
     </form>
@@ -22,41 +24,32 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>登录名</th>
             <th>姓名</th>
             <th>手机号</th>
-            <th>用户类型</th>
-            <th>是否可用</th>
-            <th>登录时间</th>
+            <th>型号</th>
+            <th>地区</th>
+            <th>状态</th>
+            <th>登记日期</th>
+            <th>更新日期</th>
         </tr>
     </thead>
     <tbody>
     {% for item in cars %}
         <tr>
             <td>{{loop.index + search.start}}</td>
-            <td><a href="{{site_url()}}/admin/car/edit/{{item.id}}">{{item.carname}}</a></td>
-            <td>{{item.name}}</td>
-            <td>{{item.phone}}</td>
-            <td>{{option_value("role", item.role)}}</td>
-            <td>
-            {% if item.enable == 'Y' %}
-            <a class="label label-success" href="{{site_url()}}/admin/car/disable/{{item.id}}">
-            {{option_value("enable", item.enable)}}
-            </a>
-            {% else %}
-            <a class="label" href="{{site_url()}}/admin/car/enable/{{item.id}}">
-            {{option_value("enable", item.enable)}}
-            </a>
-            {% endif %}
-            </td>
-            <td>{{item.last_logged}}</td>
+            <td><a href="{{site_url()}}/admin/car/edit/{{item.id}}/">{{item.user_name}}</a></td>
+            <td>{{item.user_phone}}</td>
+            <td>{{model_value(item.model)}}</td>
+            <td>{{area_value(item.area)}}</td>
+            <td>{{option_value('car_status', item.status)}}</td>
+            <td>{{item.buy_date|date('Y-m-d')}}</td>
+            <td>{{item.updated|date('Y-m-d h:i')}}</td>
         </tr>
     {% else %}
-        <tr><td colspan="7"><em>查了半天，没有数据，不如添加一条吧.</em></td></tr>
+        <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>
     {% endfor %}
     </tbody>
     </table>
-    <a class="btn span2" href="{{site_url()}}/admin/car/edit/0">新增</a>
     {{pagination|raw}}
 </div>
 

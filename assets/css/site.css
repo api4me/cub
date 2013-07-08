@@ -18,6 +18,9 @@ body {
     background-image: linear-gradient(to bottom,#474747,#505050);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff474747',endColorstr='#ff505050',GradientType=0);
 }
+.navbar-inverse i {
+    margin-top: 4px;
+}
 
 #logo {padding: 15px 0}
 #logo div.span9 {
@@ -64,6 +67,9 @@ body {
     top: 10px;
     cursor: inherit;
 }
+#logo div.pull-right div {
+    font-size: 16px;
+}
 
 #menu div.navbar-inner {
     background-color: #4467af;
@@ -85,6 +91,7 @@ body {
     width: 130px;
     color: #bdd4e4;
     text-align: center;
+    font-size: 15px;
     font-weight: bold;
     text-shadow: 0 0 0 #e4e2e3;
 }
@@ -102,7 +109,7 @@ body {
     box-shadow: inset 0 0 0 rgba(0, 0, 0, 0.125);
 }
 
-.feedback a, .backtop a {
+.feedback a, .backtop a, .online a {
     background: url(../img/icon.png) no-repeat;
 }
 .feedback {
@@ -125,7 +132,7 @@ body {
     position: fixed;
     display: none;
     _position: absolute;
-    bottom: 115px;
+    bottom: 95px;
     _bottom: "auto";
 }
 .backtop a {
@@ -137,6 +144,21 @@ body {
 .backtop a:hover {
     background-position: -42px 0;
 }
+.online {
+    position: fixed;
+    _position: absolute;
+    bottom: 140px;
+    _bottom: "auto";
+}
+.online a {
+    width: 40px;
+    height: 80px;
+    display: block;
+    background-position: 0 -100px;
+}
+.online a:hover {
+    background-position: -42px -100px;
+}
 
 .countdown {
     color: #333 !important;
@@ -144,13 +166,39 @@ body {
     font-weight: bold;
 }
 
-/* Footer
+.carousel-magnifier {
+    position: absolute;
+    top: 95%;
+    left: 76%;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    margin-top: -20px;
+    color: #fff;
+    text-align: center;
+    background: #222;
+    border: 3px solid #fff;
+    -webkit-border-radius: 23px;
+    -moz-border-radius: 23px;
+    border-radius: 23px;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+.carousel-magnifier:hover,
+.carousel-magnifier:focus {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+}
+/* Footdiver
 -------------------------------------------------- */
 .footer { text-align: center; padding: 30px 0; border-top: 1px solid #e5e5e5; background-color: #474747; }
 .footer p { margin-bottom: 0; color: #777; }
 .footer-links { margin: 10px 0; }
 .footer-links li { display: inline; padding: 0 2px; }
 .footer-links li:first-child { padding-left: 0; }
+.footer p a:hover, .footer-links li a:hover { color: #777; }
 
 /* Login
 -------------------------------------------------- */
@@ -237,6 +285,7 @@ body {
 }
 #home div.sale li {
     float: left;
+    height: 320px;
     width: 132px;
     margin-top: 10px;
     list-style: none;
@@ -308,9 +357,8 @@ body {
 #home #weixinModal {
     margin-right: auto;
     margin-left: auto;
-    top: 30%;
-    left: 45%;
-    width: 156px;
+    left: 35%;
+    width: 400px;
 }
 /* Article
 -------------------------------------------------- */
@@ -460,7 +508,8 @@ body {
 #buy div.sale li {
     float: left;
     list-style: none;
-    width: 152px;
+    width: 150px;
+    height: 320px;
     margin-top: 10px;
     padding-right: 18px;
 }
@@ -525,6 +574,24 @@ body {
     margin:2px 0 0;
     z-index: 1000;
 }
+#buy-car td {
+    width: 30%;
+}
+#buy-car td.one {
+    width: 20%;
+    text-align: right;
+    background-color: #ebebeb;
+}
+#buy-car td.score{
+    width: 20%;
+    text-align: center;
+    background-color: #ebebeb;
+}
+#buy-car td.info{
+    width: 70%;
+    background-color: #ebebeb;
+    text-align: center;
+}
 
 /* search
 -------------------------------------------------- */
@@ -575,4 +642,126 @@ body {
     _position: absolute;
     _top: expression(documentElement.scrollTop);
     display: block;
+}
+/* User
+-------------------------------------------------- */
+#user div.list div.head {
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    color: #ffffff;
+    background-color:#68af21;
+}
+#user div.list div.head span.title {
+    font-weight: bold;
+}
+#user div.list ul {
+    margin-left: 0;
+    background-color: #ffffff;
+    padding-top: 20px;
+    list-style: none;
+}
+#user div.list ul li {
+    font-size: 12px;
+    text-indent: 25px;
+    padding-bottom: 8px;
+}
+#user div.list ul li.active {
+    background: url(../img/icon-arrow.png) no-repeat 12px 6px;
+}
+#user div.list ul li.active a,
+#user div.list ul li a:hover {
+    color: #68af21;
+}
+#user div.span9 {
+    background-color: #ffffff;
+}
+
+#user div.span9 div.page-header p {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#user div.span9 div.data {
+    margin-top: 20px;
+}
+#user.profile table td.title {
+    width: 150px;
+    text-align: right;
+    padding-right: 10px;
+}
+#user.profile table th {
+    text-align: center;
+}
+#user.profile table td {
+    font-size: 14px;
+    border-top: 1px solid #fff;
+}
+#user.profile div.modify-pwd-pannel table td {
+    border-top: 1px solid #f5f5f5;
+}
+#user td.center {
+    text-align: center;
+}
+
+#user.buy div.span9 table th {
+    text-align: center;
+}
+#user.buy div.span9 table td {
+    font-size: 14px;
+    text-align: center;
+}
+
+#user.sell table td.title {
+    width: 80px;
+    text-align: right;
+    padding-right: 10px;
+}
+#user.sell table th {
+    text-align: center;
+}
+#user.sell table td {
+    font-size: 14px;
+    border-top: 1px solid #fff;
+}
+#user.sell div.data {
+    margin: 0 40px 10px 40px;
+}
+#user.sell div.progress {
+    margin-bottom:20px;
+}
+#user.sell div.progress div.bar {
+    width: 25%;
+    color: #9c9c9c;
+    background-color: #f7f7f7;
+    background-image: -moz-linear-gradient(top, #9c9c9c, #f9f9f9);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#9c9c9c), to(#f9f9f9));
+    background-image: -webkit-linear-gradient(top, #9c9c9c, #f9f9f9);
+    background-image: -o-linear-gradient(top, #9c9c9c, #f9f9f9);
+    background-image: linear-gradient(to bottom, #9c9c9c, #f9f9f9);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
+}
+#user.sell div.progress div.bar-success {
+    color: #fff;
+    background-color: #5eb95e;
+    background-image: -moz-linear-gradient(top, #62c462, #57a957);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#57a957));
+    background-image: -webkit-linear-gradient(top, #62c462, #57a957);
+    background-image: -o-linear-gradient(top, #62c462, #57a957);
+    background-image: linear-gradient(to bottom, #62c462, #57a957);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62c462', endColorstr='#ff57a957', GradientType=0);
+}
+#user.sell div.progress div.bar-danger {
+    color: #fff;
+    background-color: #dd514c;
+    background-image: -moz-linear-gradient(top, #ee5f5b, #c43c35);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#c43c35));
+    background-image: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
+    background-image: -o-linear-gradient(top, #ee5f5b, #c43c35);
+    background-image: linear-gradient(to bottom, #ee5f5b, #c43c35);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffc43c35', GradientType=0);
+}
+#user ul.thumbnails li {
+    margin: 2px;
 }

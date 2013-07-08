@@ -165,7 +165,6 @@ class Buy extends CI_Controller {
 
             return false;
         } else {
-            // TODO
             if ($user->role != 'buyer') {
                 $out["status"] = 1;
                 $out["msg"] = "您无权限拍卖，如有问题请联系我们。";
@@ -186,6 +185,19 @@ class Buy extends CI_Controller {
 
             return false;
         }
+        // Check car is on sale
+        $this->load->model("mcar");
+        if (!($car = $this->mcar->load($param['car_id']))
+            || $car->status != 'auction' 
+            || sale_status($car->sale_start_date, $car->sale_end_date) != 'selling') {
+
+            $out["status"] = 1;
+            $out["msg"] = "拍卖已经结束，其他车辆更多精彩。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
         $param["price"] = str_replace(array(',', ' '), '', trim($this->input->post("p")));
         if ($this->lcommon->is_empty($param["price"])) {
             $out["status"] = 1;
@@ -211,6 +223,13 @@ class Buy extends CI_Controller {
             return false;
         }
 
+        $extra = array();
+        $extra['ip'] = $this->input->ip_address();
+        $extra['username'] = $user->username;
+        $extra['car'] = $car->model_name;
+        $extra['area'] = $user->area;
+        $param['extra'] = json_encode($extra);
+
         $this->load->model('mauction');
         if (!$this->mauction->insert($param)) {
             $out["status"] = 1;
@@ -221,7 +240,7 @@ class Buy extends CI_Controller {
         }
 
         $out["status"] = 0;
-        $out["msg"] = "拍卖成功，如果您是竞价者的前三名将有机会赢得此爱车。";
+        $out["msg"] = "出价成功，如果您是出价的领先者将有机会获得此爱车。";
         $this->output->set_output(json_encode($out));
 
         return true;

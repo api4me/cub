@@ -22,12 +22,12 @@
                 <ul class="clearfix">
                     {% for item in consign %}
                     <li>
-                        <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
+                        <p><a href="{{site_url()}}/buy/car/{{item.id}}"><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></a></p>
                         <p><strong>车型: </strong>{{model_value(item.model)}}</p>
                         <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
-                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <p>技术等级: {{item.appraisal_level}}</p>
                         <p>价格: {{item.sale_price|number_format(2, '.', ',')}}</p>
-                        <p><a class="btn">查看详情</a></p>
+                        <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">查看详情</a></p>
                     </li>
                     {% endfor %}
                 </ul>

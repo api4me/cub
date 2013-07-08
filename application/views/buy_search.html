@@ -30,7 +30,7 @@
                         <tr>
                             <th width="218">车辆图片</th>
                             <th width="300">车辆信息</th>
-                            <th width="60">等级</th>
+                            <th width="100">技术等级</th>
                             <th width="140">成交</th>
                         </tr>
                     </thead>
@@ -46,16 +46,16 @@
                         </td>
                         <td width="300">
                             <h5><a href="{{site_url()}}/buy/car/{{item.id}}">{{model_value(item.model)}}</a></h5>
-                            <p><span class="label">出厂年月</span>{{item.factory_date|date('Y年m月')}}</p>
-                            <p><span class="label">车辆所在地</span>{{area_value(item.area)}}</p>
-                            <p><span class="label">颜色 </span>{{option_value('color', item.color)}} <font style="background-color:{{item.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
-                            <p><span class="label">公里数</span>{{item.mileage}}</p>
-                            <p><span class="label">排量</span>{{item.displacement}}</p>
-                            <p><span class="label">变速箱</span>{{option_value('transmission', item.transmission)}}</p>
-                            <p><span class="label">燃料种类</span>{{option_value('fuel', item.fuel)}}</p>
+                            <p><span class="label">出厂年月</span> {{item.factory_date|date('Y年m月')}}</p>
+                            <p><span class="label">车辆所在地</span> {{area_value(item.area)}}</p>
+                            <p><span class="label">颜色 </span> {{option_value('color', item.color)}} <font style="background-color:{{item.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
+                            <p><span class="label">行驶里程</span> {{item.mileage}}</p>
+                            <p><span class="label">排量</span> {{item.displacement}}</p>
+                            <p><span class="label">变速箱</span> {{option_value('transmission', item.transmission)}}</p>
+                            <p><span class="label">燃料种类</span> {{option_value('fuel', item.fuel)}}</p>
                         </td>
                         <td width="60">
-                        <p class="tooltip-show"><a href="#" data-toggle="tooltip" title="{{option_value('condition_score', item.condition_score)}}">{{item.condition_score}}</a><a href="#" data-toggle="tooltip" title="{{option_value('accident_level', item.accident_level)}}">{{item.accident_level}}</a></p>
+                        <p class="tooltip-show">{{item.appraisal_level}}</p>
                         </td>
                         <td width="140">
                             {{item.bid_num}}

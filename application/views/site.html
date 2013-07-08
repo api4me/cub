@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" href="{{base_url()}}assets/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{base_url()}}assets/img/favicon.png">
     <!-- Le styles -->
     <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{base_url()}}assets/css/site.css" rel="stylesheet">
-    <link rel="icon" href="{{base_url()}}assets/img/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="{{base_url()}}assets/img/favicon.png">
     <!--[if lt IE 9]>
         <script src="{{base_url()}}assets/js/html5shiv.js"></script>
     <![endif]-->
@@ -29,13 +29,18 @@
                     <ul class="nav pull-right">
                         {% set user = session_value("user") %}
                         {% if not user %}
-                        <li><a href="{{site_url()}}/login/">登录</a></li>
+                        <li><a href="{{site_url()}}/login/"><i class="icon-user icon-white"></i> 登录</a></li>
                         {% else %}
-                        <li><a href="#">您好, {{user.name}}</a></a>
-                        {%if user.role in ["admin", "super"] %}
+                        <li><a href="{{site_url()}}/user">您好, {{user.name}}</a></li>
+                        {% if user.role == 'buyer' %}
+                        <li><a href="{{site_url()}}/user/buy">我的交易</a></li>
+                        {% elseif user.role == 'sell' %}
+                        <li><a href="{{site_url()}}/user/sell">我的交易</a></li>
+                        {% endif %}
+                        {%if user.role in ["admin", "super", "leader", "appraiser", "waiter"] %}
                         <li><a href="{{site_url()}}/admin/">管理</a></li>
                         {% endif %}
-                        <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><span class="icon-off icon-white"></span></a></li>
+                        <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><i class="icon-off icon-white"></i> &nbsp;</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -52,7 +57,7 @@
             <div class="span9">
                 <div class="pull-right">
                     <div>
-                        <i class="icon-leaf"></i> <span>服务热线: <strong>400-0000-000</strong></span>
+                        <i class="icon-leaf"></i> <span>服务热线: <strong>400-997-0017</strong></span>
                     </div>
                     <div>
                         <i class="icon-time"></i> <span>服务时间: <strong>8:00--22:00</strong></span>
@@ -62,7 +67,7 @@
                     <form class="s">
                         <div class="input-append pull-right block">
                             <input type="text" name="q" autocomplete="off" />
-                            <label class="tip">历史交易查询</label>
+                            <label class="tip">历史交易查询，请填写您想查询的信息</label>
                             <button type="submit">搜索</button>
                         </div>
                     </form>
@@ -101,7 +106,10 @@
 <footer class="footer">
     <div class="container">
         <p>仁人易车全新的二手车交易理念，一站式服务，全程让您满意</p>
-        <p>&copy;仁人易车 苏ICP备xxxxxx号</p>
+        <p>
+        &copy;仁人易车 <a href="http://www.beianbeian.com/beianxinxi/55b94486-7f79-4a3b-8f2a-031dce3408f4.html" target="_blank">苏ICP备13033883号-1</a>
+        <script src="http://s17.cnzz.com/stat.php?id=5510913&web_id=5510913&show=pic" language="JavaScript"></script>
+        </p>
         <ul class="footer-links">
             <li><a href="{{base_url()}}">关于仁人易车</a></li>
             <li class="muted">|</li>

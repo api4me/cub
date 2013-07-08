@@ -18,10 +18,12 @@
             </div>
             <div class="item">
                 <img src="{{base_url()}}assets/upload/img/carousel-03.jpg" alt="">
+                <!--
                 <div class="carousel-caption">
-                    <h4>4步骤让您轻松买车</h4>
+                    <h4>4步骤让您轻松卖车</h4>
                     <p>预约我们 免费检测 公平竞拍 愉快成交</p>
                 </div>
+                -->
             </div>
         </div>
         <!-- Carousel nav -->
@@ -40,7 +42,7 @@
                         <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
                         <p><strong>车型: </strong>{{model_value(item.model)}}</p>
                         <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
-                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <p>技术等级: {{item.appraisal_level}}</p>
 
                         {% if item.sale_status == 'presale' %}
                             <p>竞拍开始时间</p>
@@ -73,7 +75,7 @@
                         <p><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></p>
                         <p><strong>车型: </strong>{{model_value(item.model)}}</p>
                         <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
-                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <p>技术等级: {{item.appraisal_level}}</p>
                         <p>价格: {{item.sale_price|number_format(2, '.', ',')}}</p>
                         <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">查看详情</a></p>
                     </li>
@@ -85,10 +87,13 @@
             <!-- social -->
             <div id="followme" class="clearfix">
                 <a href="#weixinModal" data-toggle="modal" ><img src="{{base_url()}}assets/img/icon-weixin.jpg" alt="微信" title="微信" /></a>
-                <a href="http://t.qq.com" target="_blank"><img src="{{base_url()}}assets/img/icon-tqq.jpg" alt="腾讯微博" title="腾讯微博" />
-                <a href="http://www.weibo.com" target="_blank"><img src="{{base_url()}}assets/img/icon-weibo.jpg" alt="新浪微博" title="新浪微博" /></a>
+                <a href="http://t.qq.com/renrenyiche" target="_blank"><img src="{{base_url()}}assets/img/icon-tqq.jpg" alt="腾讯微博" title="腾讯微博" />
+                <a href="http://weibo.com/u/3558454641" target="_blank"><img src="{{base_url()}}assets/img/icon-weibo.jpg" alt="新浪微博" title="新浪微博" /></a>
             </div>
             <div id="weixinModal" class="modal hide fade">
+            <div class="modal-header clearfix">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
             <div class="modal-body">
                 <p><img src="{{base_url()}}/assets/img/icon-weixin-qr.png" alt="扫描一下，关注我" title="扫描一下，关注我" /></p>
             </div>
@@ -136,14 +141,14 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="inputMileage">公里数</label>
+                            <label class="control-label" for="inputMileage">行驶里程</label>
                             <div class="controls">
-                                <input type="text" id="inputMileage" placeholder="公里数" name="mileage">
+                                <input type="text" id="inputMileage" placeholder="行驶里程" name="mileage">
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button type="submit" class="btn btn-primary"><i class="icon-heart icon-white"></i> 确认提交</button>
+                                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 确认提交</button>
                             </div>
                         </div>
                     </form>

@@ -22,7 +22,7 @@ class Login extends CI_Controller {
     public function validate(){
         $param = array();
         $param["username"] = $this->input->post("username");
-        $param["pwd"] = $this->input->post("pwd");
+        $param["pwd"] = md5($this->input->post("pwd"));
         $param["captcha"] = $this->input->post("captcha");
         $param["remember"] = $this->input->post("remember");
 

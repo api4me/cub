@@ -81,10 +81,10 @@ class MPrebook extends CI_Model {
                 $data["pwd"] = "rryc123";
                 $data["phone"] = $prebook->phone;
                 $data["email"] = $param["email"];
-                $data["role"] = "user";
+                $data["area"] = $param["area"];
+                $data["role"] = "sell";
                 $data["enable"] = "Y";
-                $data["status"] = "invalid";
-                if (!$tmp = $this->muser->save($param, null)) {
+                if (!$tmp = $this->muser->save($data, null)) {
                     return false;
                 }
                 $param["user_id"] = $tmp;

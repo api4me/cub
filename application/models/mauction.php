@@ -12,6 +12,47 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class MAuction extends CI_Model {
 
+/*{{{ load_for_buyer */
+    private function _where_for_buyer($param) {
+        $this->db->where("user_id", $param['uid']);
+    }
+    public function load_for_buyer($param) {
+        // For search
+        $this->_where_for_buyer($param);
+        $this->db->select("COUNT(1) AS num");
+        $query = $this->db->get("##auction");
+
+        if ($num = $query->row(0)->num) {
+            $this->db->select();
+            $this->_where_for_buyer($param);
+            $this->db->order_by("created", 'DESC');
+            $query = $this->db->get("##auction", $param["per_page"], $param["start"]);
+            $data = $query->result();
+
+            return array(
+                "num" => $num,
+                "data" => $data,
+            );
+        }
+
+        return false;
+    }
+/*}}}*/
+/*{{{ load_for_sell */
+    public function load_for_sell($param) {
+        // For search
+        $this->db->select("id");
+        $query = $this->db->get("##car");
+        $this->db->order_by("id", 'DESC');
+        $this->db->where("user_id", $param['uid']);
+        if ($param['car_id']) {
+            $this->db->where("id <=", $param['car_id']);
+        }
+        $query = $this->db->get("##car", 2);
+
+        return $query->result();
+    }
+/*}}}*/
 /*{{{ insert */
     public function insert($param) {
         $this->db->set("created", "now()", false);

@@ -17,6 +17,7 @@
     <script src="{{base_url()}}assets/js/jquery.min.js"></script>
     <script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="{{base_url()}}assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="{{base_url()}}assets/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="{{base_url()}}assets/js/jquery.ui.widget.js"></script>
     <script src="{{base_url()}}assets/js/jquery.iframe-transport.js"></script>
     <script src="{{base_url()}}assets/js/jquery.fileupload.js"></script>
@@ -33,29 +34,51 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><span class="icon-home icon-white"></span></a>
+                <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><i class="icon-home icon-white"></i> &nbsp;</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
+                    
+                    {% if common.user.role == 'super' %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle{%if common.control == "car" %} active{%endif%}" data-toggle="dropdown">业务管理<b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle{%if common.control in ['prebook', 'test', 'auction', 'deal'] %} active{%endif%}" data-toggle="dropdown">业务管理<b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{site_url()}}/admin/car/prebook/">预约确认</a></li>
-                                <li><a href="{{site_url()}}/admin/car/test/">车辆检测</a></li>
-                                <li><a href="{{site_url()}}/admin/car/auction/">拍卖管理</a></li>
-                                <li><a href="{{site_url()}}/admin/car/deal/">交易登记</a></li>
-                                <li class="divider"></li>
-                                <li><a href="{{site_url()}}/admin/car/list/">车辆一览</a></li>
+                                <li><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
+                                <li><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
+                                <li><a href="{{site_url()}}/admin/auction/">拍卖管理</a></li>
+                                <li><a href="{{site_url()}}/admin/deal/">交易登记</a></li>
                             </ul>
                         </li>
+                        <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
                         <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">内容管理</a></li>
-                        {% if common.user.role == "super" %}
                         <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
-                        <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
-                        {% endif %}
+<!--                        <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
+-->
+                    {% endif %}
+
+                    {% if common.user.role == 'admin' %}
+                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">内容管理</a></li>
+                        <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'leader' %}
+                        <li{%if common.control == "auction" %} class="active"{%endif%}><a href="{{site_url()}}/admin/auction/">拍卖管理</a></li>
+                        <li{%if common.control == "deal" %} class="active"{%endif%}><a href="{{site_url()}}/admin/deal/">交易登记</a></li>
+                        <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'appraiser' %}
+                        <li{%if common.control == "test" %} class="active"{%endif%}><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'waiter' %}
+                        <li{%if common.control == "prebook" %} class="active"{%endif%}><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
+                        <li{%if common.control == "test" %} class="active"{%endif%}><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
+                    {% endif %}
+
                     </ul>
                     <ul class="nav pull-right">
                         <li><a href="#">您好，{{common.user.name}}</a></li>
-                        <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><span class="icon-off icon-white"></span></a></li>
+                        <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><i class="icon-off icon-white"></i> &nbsp;</a></li>
                     </ul>
                 </div>
             </div>

@@ -9,9 +9,9 @@
     <hr>
 
     <p id="msg"></p>
-    {{form_open("/admin/car/prebook/" ~ prebook.id ~ "/save/", "class=\"form-horizontal\"")|raw}}
+    {{form_open("/admin/prebook/save/" ~ prebook.id, "class=\"form-horizontal\"")|raw}}
     <div class="control-group">
-        <label class="control-label" for="inputName">姓名</label>
+        <label class="control-label" for="inputName">姓名 <span class="star">*</span></label>
         <div class="controls">
             {{form_input("name", prebook.name, "id=\"inputName\"")|raw}}
         </div>
@@ -23,10 +23,10 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputUsername">登录名</label>
+        <label class="control-label" for="inputUsername">登录ID <span class="star">*</span></label>
         {% if param.username %}
         <div class="controls">
-            <label class="checkbox inline"><input type="checkbox" name="chk-username" value="exists"><span class="label label-inverse">登录名是: {{param.username}} ?</span>
+            <label class="checkbox inline"><input type="checkbox" name="chk-username" value="exists"><span class="label label-inverse">登录ID是: {{param.username}}? </span>
             <span class="label label-warning">检测到此手机号曾经交易过</span>
             </label>
         </div>
@@ -58,7 +58,7 @@
         <label class="control-label" for="inputBuyDate">购买日期</label>
         <div class="controls">
             <div class="input-append date datepick">
-            {{form_input("buy_date", prebook.buy_date, "id=\"inputBuyDate\" readonly")|raw}}
+            {{form_input("buy_date", prebook.buy_date, 'id="inputBuyDate" class="input-medium" readonly')|raw}}
             <span class="add-on"><i class="icon-th"></i></span>
             </div>
         </div>
@@ -89,7 +89,7 @@
         <div class="controls">
             <button type="submit" class="btn btn-info">信息有效并预约</button>
             <button type="submit" class="btn btn-danger" name="invalid" value="invalid">信息无效</button>
-            <a href="{{site_url()}}/admin/car/prebook/" class="btn">返回</a>
+            <a href="{{site_url()}}/admin/prebook/" class="btn">返回</a>
         </div>
     </div>
 

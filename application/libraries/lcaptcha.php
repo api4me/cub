@@ -39,7 +39,7 @@ class Lcaptcha {
 	   }
 
        if ($font == '') {
-           $this->font = APPPATH . 'libraries/font/CraftyGirls.ttf';
+           $this->font = APPPATH . 'libraries/font/OleoScript-Bold.ttf';
        }
 
 		// -----------------------------------

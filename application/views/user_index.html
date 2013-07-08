@@ -1,0 +1,90 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="user" class="container profile">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 个人中心</span></div>
+                <ul class="clearfix">
+                {% set route = get_route() %}
+                    <li{% if route.method == 'index' %} class="active" {%endif%}><a href="{{site_url()}}/user/">我的资料</a></li>
+                    {% if user.role == 'buyer' %}
+                    <li{% if route.method == 'buy' %} class="active" {%endif%}><a href="{{site_url()}}/user/buy">我的交易</a></li>
+                    {% elseif user.role == 'sell' %}
+                    <li{% if route.method == 'sell' %} class="active" {%endif%}><a href="{{site_url()}}/user/sell">我的爱车</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <img src="{{base_url()}}/assets/img/sale-bg.jpg" />
+                <div class="page-header">
+                    <p><span class="label label-info">注意</span>
+                    请妥善保管个人信息，如果需要更改用户信息，请致电 400-997-0017 或使用在线客服联系我们。
+                    </p>
+                </div>
+                <table class="table">
+                    <tr>
+                        <td class="title">用户名</td>
+                        <td>{{user.name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">电话</td>
+                        <td>{{user.phone}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">邮箱</td>
+                        <td class="modify email">{{user.email}}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">所在地区</td>
+                        <td>{{area_value(user.area)}}</td>
+                    </tr>
+
+                    <tr class="modify-pwd">
+                        <td class="title">&nbsp;</td>
+                        <td><button class="btn btn-link"><i class="icon-hand-right"></i> 修改密码?</button></td>
+                    </tr>
+                </table>
+                <div class="modify-pwd-pannel well hide">
+                    <div class="alert alert-info">
+                        <span class="label label-info">注意</span> 为了保证您的帐户安全，新密码请以6位及其以上半角英文字母, 数字或符号组成。</td>
+                    </div>
+                    <div id="msg"></div>
+                    <form action="{{site_url}}user/pwd">
+                        <table class="table">
+                            <tr>
+                                <td class="title">原密码</td>
+                                <td><input type="password" name="pwd-ori"></td>
+                            </tr>
+                            <tr>
+                                <td class="title">新密码</td>
+                                <td><input type="password" name="pwd-new"></td>
+                            </tr>
+                            <tr>
+                                <td class="title">确认新密码</td>
+                                <td><input type="password" name="pwd-new-again"></td>
+                            </tr>
+                            <tr>
+                                <td class="title">&nbsp;</td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary">确认并提交</button>
+                                    <button type="reset" class="btn btn-link">取消</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

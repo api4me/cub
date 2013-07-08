@@ -21,7 +21,7 @@ class MCar extends CI_Model {
             $this->db->where("status", $param["status"]);
         }
     }
-    public function load_all($param) {
+    public function load_all($param, $desc = false) {
         // For search
         $this->_where($param);
         $this->db->select("COUNT(1) AS num");
@@ -30,6 +30,9 @@ class MCar extends CI_Model {
         if ($num = $query->row(0)->num) {
             $this->db->select();
             $this->_where($param);
+            if ($desc) {
+                $this->db->order_by('ID', 'DESC');
+            }
             $query = $this->db->get("##car", $param["per_page"], $param["start"]);
             $data = $query->result();
 
@@ -54,15 +57,15 @@ class MCar extends CI_Model {
         // Saling + Wait for Auction + sold
         $q = "
             -- Seling
-            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'selling' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'selling' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date<=now() AND sale_end_date>=now())
             UNION
             -- Presale, Wait for auction
-            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'presale' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'presale' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date>now())
             UNION
             -- Sold
-            (SELECT id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images, 'sold' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'sold' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_end_date<now())
             LIMIT ?;
         ";
@@ -104,7 +107,7 @@ class MCar extends CI_Model {
             $num += $row->num;
         }
         if ($num) {
-            $select = "id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images";
+            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
             $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
             $data = $query->result();
 
@@ -120,7 +123,7 @@ class MCar extends CI_Model {
 /*{{{ load_consign_by_condition */
     public function load_consign_by_condition($param) {
         $q = "
-            SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign'
+            SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign' AND sale_start_date<=now() AND sale_end_date>=now()
         ";
 
         $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q));
@@ -129,7 +132,7 @@ class MCar extends CI_Model {
             $num += $row->num;
         }
         if ($num) {
-            $select = "id, model, factory_date, condition_score, accident_level, sale_start_date, sale_end_date, bid_num, images";
+            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
             $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
             $data = $query->result();
 

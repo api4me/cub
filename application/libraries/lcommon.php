@@ -24,7 +24,7 @@ class LCommon {
         static $data;
         if (!isset($data)) {
             $data = array();
-            $q = "SELECT * FROM ##options";
+            $q = "SELECT * FROM ##options ORDER BY id";
             $query = $this->CI->db->query($q);
             foreach($query->result() as $row) {
                 $data[$row->type][$row->code] = $all ? $row : $row->name;
@@ -167,20 +167,26 @@ class LCommon {
 /*{{{ get_size */
     public function get_size($str) {
         if (isset($str) && !empty($str)) {
-            return strlen($str);
+            return mb_strlen($str);
         }
 
         return 0;
     }
 /*}}}*/
 /*{{{ is_email */
-    public function email($str) {
-        return (! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+    public function is_email($str) {
+        return (preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? true : false;
     }
 /*}}}*/
 /*{{{ is_phone */
     public function is_phone($str) {
-        return (!preg_match("/^13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$/", $str)) ? FALSE : TRUE;
+        if (preg_match("/^1[3458]{1}[0-9]{1}[0-9]{8}$/", $str)) { // Phone
+           // || preg_match("/^0[1-9]{2,3}-[0-9]{7,8}$/", $str)) { // Tel
+
+            return true;
+        }
+
+        return false;
     }
 /*}}}*/
 /*}}}*/

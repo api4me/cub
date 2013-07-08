@@ -46,7 +46,7 @@ $route['login'] = "login";
 $route['news'] = "article/news/";
 $route['activity'] = "article/activity/";
 
-$route['buy'] = "buy/auction/";
+$route['buy'] = "buy/consign/";
 
 
 /* End of file routes.php */

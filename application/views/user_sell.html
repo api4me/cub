@@ -1,0 +1,109 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="user" class="container sell">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 个人中心</span></div>
+                <ul class="clearfix">
+                {% set route = get_route() %}
+                    <li{% if route.method == 'index' %} class="active" {%endif%}><a href="{{site_url()}}/user/">我的资料</a></li>
+                    {% if user.role == 'buyer' %}
+                    <li{% if route.method == 'buy' %} class="active" {%endif%}><a href="{{site_url()}}/user/buy">我的交易</a></li>
+                    {% elseif user.role == 'sell' %}
+                    <li{% if route.method == 'sell' %} class="active" {%endif%}><a href="{{site_url()}}/user/sell">我的爱车</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix">
+                <img src="{{base_url()}}/assets/img/sale-bg.jpg" />
+                <div class="page-header">
+                    <p><span class="label label-info">注意</span>
+                   感谢您选择我们，爱车交易情况如下 ，如有问题请致电 400-997-0017 或使用在线客服联系我们。
+                    </p>
+                </div>
+                <div class="data">
+                    {% if car %}
+                    <div class="progress">
+                        <div class="bar{% if car.status in ['prebook', 'test', 'auction', 'success', 'close'] %} bar-success{% endif %}">预约处理</div>
+                        <div class="bar{% if car.status in ['test', 'auction', 'success', 'close'] %} bar-success{% endif %}">免费检测</div>
+                        <div class="bar{% if car.status in ['auction', 'success', 'close'] %} bar-success{% endif %}">车辆上架</div>
+                        {% if car.status == 'close' %}
+                        <div class="bar bar-danger">交易失败</div>
+                        {% else %}
+                        <div class="bar{% if car.status == 'success' %} bar-success{% endif %}">交易完成</div>
+                        {% endif %}
+                    </div>
+                    <table class="table">
+                    {% set sale_status = sale_status(car.sale_start_date, car.sale_end_date) %}
+                        <tr>
+                            <td class="title">品牌车型</td>
+                            <td>
+                                {% if car.status in ['auction', 'consign', 'success', 'close']%}
+                                <a href="{{site_url()}}/buy/car/{{car.id}}" target="_blank">
+                                {{model_value(car.model)}}
+                                </a>
+                                {% else %}
+                                {{model_value(car.model)}}
+                                {% endif %}
+
+                                {% if car.status == 'auction' %}
+                                    <span class="label label-success">{{option_value('sale_status', sale_status)}}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">购买时间</td>
+                            <td>{{car.buy_date|date('Y年m月')}}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">行驶里程</td>
+                            <td>{{car.mileage|number_format}}公里</td>
+                        </tr>
+                        {% if car.status == 'success' %}
+                        <tr>
+                            <td class="title">竞拍数</td>
+                            <td>{{car.bid_num}}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">成交价</td>
+                            <td>人民币{{car.final_price|number_format}}元</td>
+                        </tr>
+                        {% endif %}
+
+                        {% set images = json_decode(car.images, true) %}
+                        {% if images %}
+                        <tr>
+                            <td class="title">快照一览</td>
+                            <td>
+                                <ul class="thumbnails">
+                                {% for val in images %}
+                                <li class="span3">
+                                    <img src="{{base_url()}}assets/upload/{{val}}" alt="" />
+                                </li>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        
+                    </table>
+                    {% else %}
+                    <div>最近没有交易信息</div>
+                    {% endif %}
+
+                    {% if next %}
+                    <div class="text-right"><i class="icon-hand-right"></i> <a href="{{site_url()}}/user/sell/{{next.id}}">还有一个</a></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

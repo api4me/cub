@@ -20,6 +20,7 @@ class MUser extends CI_Model {
     public function login($param) {
         $this->db->from("##user");
         $this->db->where("username", $param["username"]);
+        $this->db->where("enable", 'Y');
         $this->db->where("pwd", $param["pwd"]);
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
@@ -33,6 +34,10 @@ class MUser extends CI_Model {
     private function _where($param) {
         if (isset($param["username"]) && $param["username"]) {
             $this->db->like("username", $param["username"]);
+        }
+        $user = $this->lsession->get('user');
+        if ($user->role != 'super') {
+            $this->db->where_not_in('role', array('super', 'admin'));
         }
         if (isset($param["role"]) && $param["role"]) {
             $this->db->where("role", $param["role"]);
@@ -65,6 +70,18 @@ class MUser extends CI_Model {
 /*{{{ load */
     public function load($id) {
         $this->db->where("id", $id);
+        $query = $this->db->get("##user");
+        return $query->row();
+    }
+/*}}}*/
+/*{{{ load_for_deal */
+    public function load_for_deal($param) {
+        $this->db->select('id, username');
+        $key = '(username=\'' . $this->db->escape_str($param['key']) 
+            . '\' OR phone=\'' . $this->db->escape_str($param['key'])
+            . '\')';
+        $this->db->where($key);
+        $this->db->where("role", 'buyer');
         $query = $this->db->get("##user");
         return $query->row();
     }

@@ -38,15 +38,15 @@
             <td>{{item.name}}</td>
             <td>{{item.phone}}</td>
             <td>{{option_value("role", item.role)}}</td>
-            <td>
+            <td class="center">
             {% if item.enable == 'Y' %}
-            <a class="label label-success" href="{{site_url()}}/admin/user/disable/{{item.id}}">
+            <span class="label label-success">
             {{option_value("enable", item.enable)}}
-            </a>
+            </span>
             {% else %}
-            <a class="label" href="{{site_url()}}/admin/user/enable/{{item.id}}">
+            <span class="label">
             {{option_value("enable", item.enable)}}
-            </a>
+            </span>
             {% endif %}
             </td>
             <td>{{item.last_logged}}</td>

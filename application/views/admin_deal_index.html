@@ -3,7 +3,7 @@
 {% block operate %}
 <div class="container">
     <h3>交易登记</h3>
-    {{form_open("/admin/car/deal/", "class=\"form-inline\"")|raw}}
+    {{form_open("/admin/deal/", "class=\"form-inline\"")|raw}}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, "placeholder=\"手机号\"")|raw}}
         <button type="submit" class="btn btn-primary">Go!</button>
@@ -22,8 +22,8 @@
             <th>手机号</th>
             <th>型号</th>
             <th>出售类别</th>
-            <th>等级</th>
-            <th>出让价(RMB)</th>
+            <th>技术等级</th>
+            <th>出让价(人民币)</th>
             <th>销售状态</th>
             <th>登记日期</th>
         </tr>
@@ -32,11 +32,11 @@
     {% for item in cars %}
         <tr>
             <td>{{loop.index + search.start}}</td>
-            <td><a href="{{site_url()}}/admin/car/deal/{{item.id}}/edit">{{item.user_name}}</a></td>
+            <td><a href="{{site_url()}}/admin/deal/edit/{{item.id}}">{{item.user_name}}</a></td>
             <td>{{item.user_phone}}</td>
             <td>{{model_value(item.model)}}</td>
             <td>{{option_value("sale_type", item.sale_type)}}</td>
-            <td>{{item.condition_score ~ item.accident_level}}</td>
+            <td>{{item.appraisal_level}}</td>
             <td>{{item.sale_price|number_format}}</td>
             <td>{{option_value("sale_status", sale_status(item.sale_start_date, item.sale_end_date))}}</td>
             <td>{{item.created|date('Y-m-d')}}</td>

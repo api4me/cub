@@ -13,7 +13,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 $config['per_page'] = 10; 
 
 $config['full_tag_open'] = '<div class="pagination pagination-right"><ul>';
-$config['full_tag_close'] = '</ul><div>';
+$config['full_tag_close'] = '</ul></div>';
 
 // First
 $config['first_link'] = '首页';

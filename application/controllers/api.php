@@ -165,14 +165,14 @@ class Api extends CI_Controller {
         if ($this->mprebook->save($param, 0)) {
             // Success
             $out["status"] = 0;
-            $out["msg"] = "保存成功。";
+            $out["msg"] = "提交成功。";
             $this->output->set_output(json_encode($out));
 
             return true;
         }
 
         $out["status"] = 1;
-        $out["msg"] = "保存失败。";
+        $out["msg"] = "提交失败。";
         $this->output->set_output(json_encode($out));
 
         return false;

@@ -206,3 +206,34 @@ if (!function_exists("get_route")) {
     }
 }
 /*}}}*/
+/*{{{ get_appraisal */
+if (!function_exists("get_appraisal")) {
+    function get_appraisal($issue, $score) {
+        // 一级 鉴定总分≥90
+        // 二级 60≤鉴定总分＜90
+        // 三级 20≤鉴定总分＜60
+        // 四级 鉴定总分＜20
+        // 五级 事故车
+        if (!$issue) {
+            return '';
+        }
+        if ($issue == 'yes') {
+            return '五级';
+        }
+
+        $score = intval($score);
+        if($score >= 90) {
+            return '一级';
+        }
+        if($score >= 60 && $score < 90) {
+            return '二级';
+        }
+        if($score >= 20 && $score < 60) {
+            return '三级';
+        }
+        if($score <= 20) {
+            return '四级';
+        }
+    }
+}
+/*}}}*/

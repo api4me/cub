@@ -4,6 +4,9 @@ body {
     background-color: #f5f5f5;
     font-family: "Microsoft YaHei","微软雅黑","宋体", Arial,Helvetica,sans-serif;
 }
+.navbar-inverse i {
+    margin-top: 4px;
+}
 .feedback a, .backtop a {
     background: url(../img/icon.png) no-repeat;
 }
@@ -40,6 +43,107 @@ body {
     background-position: -42px 0;
 }
 
-
 span.del { cursor: pointer; position: relative; top: 20px; right: 5px; }    
 span.simplecolorpicker.icon {margin-top: 4px; border-color: black;}
+
+hr {
+    margin: 5px 0;
+}
+.nav-tabs {
+    margin-bottom: 0;
+}
+.tab-content {
+    padding: 20px 20px 0 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-top-color: transparent;
+    background-color: #fff;
+}
+
+div.block {
+    float: left;
+    position: relative;
+    padding-right: 4px;
+}
+div.block label.tip {
+    position: absolute;
+    color: #808080;
+    font-size: 14px;
+    left: 10px;
+    top: 5px;
+    cursor: inherit;
+}
+
+div.money-preview {
+    _width:178px;
+    min-width:178px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    border:1px solid #C5C5C5;
+    background:/*#fff*/#FFFFE4;
+    position:absolute;
+    margin:2px 0 0;
+    z-index: 1000;
+}
+.well {
+    margin-bottom: 0;
+}
+.table tr th {
+    text-align: center;
+}
+.table td.center {
+    text-align: center;
+}
+.star {
+    color: #e01d00;
+}
+/* User
+--------------------------------------*/
+#user textarea {
+    width: 500px; 
+    min-width:500px; 
+    max-width:500px; 
+
+    height:100px; 
+    min-height:100px;  
+    max-height:100px;
+}
+#user #myModal div.modal-body div.well {
+    margin-bottom: 30px;
+}
+/* prebook
+--------------------------------------*/
+#prebook textarea {
+    width: 500px; 
+    min-width:500px; 
+    max-width:500px; 
+
+    height:100px; 
+    min-height:100px;  
+    max-height:100px;
+}
+/* test
+--------------------------------------*/
+#test textarea {
+    width: 500px; 
+    min-width:500px; 
+    max-width:500px; 
+
+    height:100px; 
+    min-height:100px;  
+    max-height:100px;
+}
+
+/* auction
+--------------------------------------*/
+#auction #myModal div.modal-body div.well {
+    margin-bottom: 30px;
+}
+
+/* deal
+--------------------------------------*/
+#deal #myModal div.modal-body div.well {
+    margin-bottom: 30px;
+}
+

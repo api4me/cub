@@ -38,7 +38,13 @@ class User extends Cub_Controller {
         $out["search"] = $search;
         // Param
         $param = array();
-        $param["role"] = $this->lcommon->form_option("role", true, array("guest"));
+        $user = $this->lsession->get('user');
+
+        if ($user->role != 'super') {
+            $param["role"] = $this->lcommon->form_option("role", true, array('super', 'admin', 'guest'));
+        } else {
+            $param["role"] = $this->lcommon->form_option("role", true, array('guest'));
+        }
         $param["enable"] = $this->lcommon->form_option("enable");
         $out["param"] = $param;
 
@@ -64,15 +70,25 @@ class User extends Cub_Controller {
 
         // Param
         $param = array();
-        $param["role"] = $this->lcommon->form_option("role");
+        $user = $this->lsession->get('user');
+        if ($user->role != 'super') {
+            $param["role"] = $this->lcommon->form_option("role", true, array('super', 'admin', 'guest'));
+        } else {
+            $param["role"] = $this->lcommon->form_option("role", true, array('guest'));
+        }
         $param["enable"] = $this->lcommon->form_option("enable");
         $out["param"] = $param;
 
         if ($id && is_numeric($id)) {
             // The data of search
             $this->load->model("muser");
-            if ($user = $this->muser->load($id)) {
-                $out["user"] = $user;
+            if ($data = $this->muser->load($id)) {
+                $out["user"] = $data;
+                if ($user->role != 'super') {
+                    if (in_array($data->role, array('super', 'admin'))) {
+                        redirect('/admin/user/');
+                    }
+                }
             }
         }
 
@@ -93,47 +109,61 @@ class User extends Cub_Controller {
         // TODO password char validate.
         // Username
         $param = array();
-        $param["username"] = trim($this->input->post("username"));
-        if ($this->lcommon->is_empty($param["username"])) {
-            $out["status"] = 1;
-            $out["msg"] = "请填写登录名";
-            echo json_encode($out);
-
-            return false;
-        } else {
-            if ($this->lcommon->get_size($param["username"]) > 10) {
+        if ($id == 0) {
+            $param["username"] = trim($this->input->post("username"));
+            if ($this->lcommon->is_empty($param["username"])) {
                 $out["status"] = 1;
-                $out["msg"] = "用户在10个字内(包括10)，请调整一下。";
+                $out["msg"] = "请填写登录ID";
                 echo json_encode($out);
 
                 return false;
-            }
-            // Check username is exists
-            $this->load->model("muser");
-            if ($this->muser->exists_username($param["username"], $id)) {
-                $out["status"] = 1;
-                $out["msg"] = "登录名已经存在，请换一个试试。";
-                echo json_encode($out);
+            } else {
+                if ($this->lcommon->get_size($param["username"]) > 16) {
+                    $out["status"] = 1;
+                    $out["msg"] = "登录ID应在16个字内(包括10)，请调整一下。";
+                    echo json_encode($out);
 
-                return false;
+                    return false;
+                }
+                // Check username is exists
+                $this->load->model("muser");
+                if ($this->muser->exists_username($param["username"], $id)) {
+                    $out["status"] = 1;
+                    $out["msg"] = "登录ID已经存在，请换一个试试。";
+                    echo json_encode($out);
+
+                    return false;
+                }
             }
         }
         // Name
         $param["name"] = trim($this->input->post("name"));
         if ($this->lcommon->is_empty($param["name"])) {
             $out["status"] = 1;
-            $out["msg"] = "请填写用户名";
+            $out["msg"] = "请填写显示名";
             echo json_encode($out);
 
             return false;
         } else {
             if ($this->lcommon->get_size($param["name"]) > 16) {
                 $out["status"] = 1;
-                $out["msg"] = "用户在16个字内(包括16)，请调整一下。";
+                $out["msg"] = "显示名应在16个字内(包括16)，请调整一下。";
                 echo json_encode($out);
 
                 return false;
             }
+        }
+        // Pwd
+        if ($id == 0) {
+            $param['pwd'] = $this->input->post("pwd");
+            if ($this->lcommon->is_empty($param["pwd"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写密码";
+                echo json_encode($out);
+
+                return false;
+            }
+            $param['pwd'] = md5($param['pwd']);
         }
         // Phone
         $param["phone"] = trim($this->input->post("phone"));
@@ -164,7 +194,7 @@ class User extends Cub_Controller {
         // Email
         $param["email"] = trim($this->input->post("email"));
         if (!$this->lcommon->is_empty($param["email"])) {
-            if ($this->lcommon->is_phone($param["email"])) {
+            if (!$this->lcommon->is_email($param["email"])) {
                 $out["status"] = 1;
                 $out["msg"] = "Email输入有误，请检查一下。";
                 echo json_encode($out);
@@ -189,6 +219,17 @@ class User extends Cub_Controller {
             echo json_encode($out);
 
             return false;
+        } else {
+            $user = $this->lsession->get('user');
+            if ($user->role != 'super') {
+                if (in_array($param['role'], array('super', 'admin', 'guest'))) {
+                    $out["status"] = 1;
+                    $out["msg"] = "用户类型有误。";
+                    echo json_encode($out);
+
+                    return false;
+                }
+            }
         }
         // 是否可用
         $param["enable"] = trim($this->input->post("enable"));
@@ -255,6 +296,65 @@ class User extends Cub_Controller {
 
 
     }
+/*}}}*/
+/*{{{ pwd */
+	public function pwd() {
+        $out = array();
+        $this->output->set_content_type('application/json');
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $id = $this->input->post("id");
+        if (!$id) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+        $param = array();
+        $param['pwd'] = trim($this->input->post("p"));
+        if ($this->lcommon->is_empty($param['pwd'])) {
+            $out["status"] = 1;
+            $out["msg"] = "请输入新密码。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $param['pwd'] = md5($param['pwd']);
+        $this->load->model("muser");
+        $user = $this->lsession->get('user');
+        if ($user->role != 'super') {
+            $data = $this->muser->load($id);
+            if (in_array($data->role, array('super', 'admin'))){
+                $out["status"] = 1;
+                $out["msg"] = "您没有权限修改此用户的密码。";
+                $this->output->set_output(json_encode($out));
+
+                return false;
+            }
+        }
+        if (!$ret = $this->muser->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "密码修改失败。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "密码修改成功。";
+        $this->output->set_output(json_encode($out));
+
+        return true;
+	}
 /*}}}*/
 
 }
