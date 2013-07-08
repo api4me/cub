@@ -58,8 +58,12 @@
                         <p class="tooltip-show">{{item.appraisal_level}}</p>
                         </td>
                         <td width="140">
-                            {{item.bid_num}}
-                            {{item.final_price}}
+                            <p>
+                                <span class="label">竞拍</span> {{item.bid_num}}次
+                            </p>
+                            <p>
+                                <span class="label">成交价</span> {{item.final_price}}元
+                            </p>
                         </td>
                     </tr>
                     {% else %}

@@ -127,6 +127,7 @@ class Car extends Cub_Controller {
         $param["sale_type"] = $this->input->post("sale_type");
         // model
         $param["model"] = $this->input->post("brand").$this->input->post("model");
+        $param["model_name"] = model_value($param["model"]);
         // car_num
         $param["car_num"] = $this->input->post("car_num");
         if (!$this->lcommon->is_empty($param["car_num"]) 
