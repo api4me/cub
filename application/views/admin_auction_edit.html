@@ -43,7 +43,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputRemark">备注</label>
                 <div class="controls well well-small">
-                    {{car.remark}}
+                    {{car.remark|nl2br}}
                 </div>
             </div>
             <div class="control-group">
@@ -219,7 +219,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputOtherConf">其他重要配置</label>
                 <div class="controls well well-small">
-                    {{car.other_conf}}
+                    {{car.other_conf|nl2br}}
                 </div>
             </div>
         </div>
@@ -236,56 +236,56 @@
             <div class="control-group">
                 <label class="control-label">损伤位置及损伤状况</label>
                 <div class="controls well well-small">
-                    {{extra.issue_info}}
+                    {{extra.issue_info|nl2br}}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtBody">车身检查(<em>总分: 20 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_body_score}}分</span>
-                    {{extra.appraisal_body_comment}}
+                    {{extra.appraisal_body_comment|nl2br}}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtEngine">发动机检查(<em>总分: 20 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_engine_score}}分</span>
-                    {{extra.appraisal_engine_comment}}
+                    {{extra.appraisal_engine_comment|nl2br}}
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtInner">车内检查(<em>总分: 10 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_inner_score}}分</span>
-                    {{extra.appraisal_inner_comment}}                
+                    {{extra.appraisal_inner_comment|nl2br}}                
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtStart">启动检查(<em>总分: 20 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_start_score}}分</span>
-                    {{extra.appraisal_start_comment}}                  
+                    {{extra.appraisal_start_comment|nl2br}}                  
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtRoad">路试检查(<em>总分: 15 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_road_score}}分</span>
-                    {{extra.appraisal_road_comment}}                     
+                    {{extra.appraisal_road_comment|nl2br}}                     
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputExtChassis">底盘检查(<em>总分: 15 </em>)</label>
                 <div class="controls well well-small">
                     <span class="label label-inverse">{{extra.appraisal_chassis_score}}分</span>
-                    {{extra.appraisal_chassis_comment}}                     
+                    {{extra.appraisal_chassis_comment|nl2br}}                     
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="inputConditionScore">车况级别评分</label>
                 <div class="controls">
-                    <span class="input-mini uneditable-input">{{car.condition_score}}</span>
+                    <span class="input-mini uneditable-input">{{car.condition_score}}</span> {{car.appraisal_level}}
                 </div>
             </div>
 
@@ -359,7 +359,7 @@
             <label class="control-label" for="inputSaleStartDate">销售结束时间</label>
             <div class="controls">
                 <div class="input-append date datepick">
-                    {{form_input("sale_end_date", car.sale_end_date, "id=\"inputStartDate\"")|raw}}                                                                                           
+                    {{form_input("sale_end_date", car.sale_end_date, 'id="inputStartDate"')|raw}}                                                                                           
                     <span class="add-on"><i class="icon-th"></i></span>                
                 </div>
             </div>

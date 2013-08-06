@@ -13,24 +13,24 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class MAuction extends CI_Model {
 
 /*{{{ load_for_buyer */
-    private function _where_for_buyer($param) {
-        $this->db->where("user_id", $param['uid']);
-    }
     public function load_for_buyer($param) {
         // For search
-        $this->_where_for_buyer($param);
-        $this->db->select("COUNT(1) AS num");
-        $query = $this->db->get("##auction");
+        $q = 'SELECT DISTINCT car_id FROM ##auction WHERE user_id=?';
+        $query = $this->db->query($q, array($param['uid']));
 
-        if ($num = $query->row(0)->num) {
-            $this->db->select();
-            $this->_where_for_buyer($param);
-            $this->db->order_by("created", 'DESC');
-            $query = $this->db->get("##auction", $param["per_page"], $param["start"]);
+        $num = array();
+        foreach($query->result() as $row) {
+            if (!in_array($row->car_id, $num)) {
+                $num[] = $row->car_id;
+            }
+        }
+        if ($num) {
+            $q = 'SELECT * FROM (SELECT * FROM `cub_auction` where user_id=? order by car_id desc, price desc) AS T GROUP BY car_id LIMIT ?, ?';
+            $query = $this->db->query($q, array($param['uid'], $param["start"], $param["per_page"]));
             $data = $query->result();
 
             return array(
-                "num" => $num,
+                "num" => count($num),
                 "data" => $data,
             );
         }
@@ -68,6 +68,54 @@ class MAuction extends CI_Model {
     public function stat($param) {
 
         return false;
+    }
+/*}}}*/
+/*{{{ calc */
+    public function calc($car) {
+        $carid = $car->id;
+        // 1. Get auction data
+        $this->db->where('car_id', $carid);
+        $this->db->order_by('created', 'ASC');
+        $query = $this->db->get('##auction');
+        $auction = $query->result();
+
+        // 2. Generate chart data
+        $extra = array();
+        $extra['bid'] = 0;
+        $extra['top'] = array();
+        $extra['user'] = array();
+
+        $chart = array();
+        $chart['title'] = array('text' => '竞拍跟踪', 'x' => -20);
+        $chart['yAxis'] = array('title' => array('text' => '拍价(人民币)'));
+        $chart['tooltip'] = array('valueSuffix' => '元', 'headerFormat' => '', 'pointFormat' => '<i style="color:{series.color}">{point.name}</i>: {point.y}');
+        $series = array();
+        $series['name'] = model_value($car->model);
+        if ($auction) {
+            foreach ($auction as $val) {
+                $k = $val->user_id;
+                $v = intval($val->price);
+                $e = json_decode($val->extra, true);
+                $u = @$e['username'];
+                $series['data'][] = array('name' => $u, 'y' => $v);
+                if (!isset($extra['top'][$k]) || ($extra['top'][$k] < $v)) {
+                    $extra['top'][$k] = $v;
+                    $extra['user'][$k] = $e;
+                }
+            }
+            $extra['bid'] = count($auction);
+        }
+        $chart['series'][] = $series;
+
+        $out = array();
+        $out['car_id'] = $carid;
+        $out['type'] = 'auction';
+        $out['data'] = json_encode($chart);
+
+        asort($extra['top']);
+        $out['extra'] = json_encode($extra);
+
+        return $out;
     }
 /*}}}*/
 

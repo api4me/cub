@@ -31,7 +31,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputPhone">手机号</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{{car.user_phone}}</span>
+                    <span class="input-medium uneditable-input">{% if common.user.role == 'appraiser'%} {{substr(car.user_phone, 0, -6) ~ '******'}} {% else %}{{car.user_phone}}{% endif %}</span>
                 </div>
             </div>
             <div class="control-group">

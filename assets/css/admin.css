@@ -43,7 +43,7 @@ body {
     background-position: -42px 0;
 }
 
-span.del { cursor: pointer; position: relative; top: 20px; right: 5px; }    
+span.del { cursor: pointer; position: relative; top: 20px; right: 5px; background-color:#fff; }    
 span.simplecolorpicker.icon {margin-top: 4px; border-color: black;}
 
 hr {

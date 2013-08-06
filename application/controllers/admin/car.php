@@ -22,8 +22,6 @@ class Car extends Cub_Controller {
         $this->config->load("pagination");
         // Search
         $search = array();
-        $search["start"] = $start;
-        $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
             $search["status"] = $this->input->post("status");
@@ -34,6 +32,8 @@ class Car extends Cub_Controller {
                 $search = $tmp;
             }
         }
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
         $out["search"] = $search;
 
         $param = array();
@@ -141,7 +141,7 @@ class Car extends Cub_Controller {
         // engine_num
         $param["engine_num"] = $this->input->post("engine_num");
         if (!$this->lcommon->is_empty($param["engine_num"]) 
-            && $this->lcommon->get_size($param["car_num"]) > 32) {
+            && $this->lcommon->get_size($param["engine_num"]) > 16) {
             $out["status"] = 1;
             $out["msg"] = "请正确填写发动机号。";
             $this->output->set_output(json_encode($out));
@@ -151,7 +151,7 @@ class Car extends Cub_Controller {
         // chassis_num
         $param["chassis_num"] = $this->input->post("chassis_num");
         if (!$this->lcommon->is_empty($param["chassis_num"]) 
-            && $this->lcommon->get_size($param["chassis_num"]) > 16) {
+            && $this->lcommon->get_size($param["chassis_num"]) > 32) {
             $out["status"] = 1;
             $out["msg"] = "请正确填写车架号。";
             $this->output->set_output(json_encode($out));
@@ -175,13 +175,13 @@ class Car extends Cub_Controller {
         // color
         $param["color"] = $this->input->post("color");
         // 年检截至年月
-        $param["annual_test"] = $this->input->post("annual_test");
+        $param["annual_test"] = $this->input->post("annual_test") ? $this->input->post("annual_test"): null;
         // 购置税证书
         $param["tax_cert"] = $this->input->post("tax_cert");
         // 车船税截至年月
-        $param["vv_tax"] = $this->input->post("vv_tax");
+        $param["vv_tax"] = $this->input->post("vv_tax") ? $this->input->post("vv_tax") : null;
         // 交强险截至年月
-        $param["traffic_insurance"] = $this->input->post("traffic_insurance");
+        $param["traffic_insurance"] = $this->input->post("traffic_insurance") ? $this->input->post("traffic_insurance"): null;
         // 使用性质
         $param["use_of_nature"] = $this->input->post("use_of_nature");
         // 其他法定凭证、证明

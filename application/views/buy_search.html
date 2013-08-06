@@ -42,7 +42,7 @@
                     {% for item in car %}
                     <tr>
                         <td width="218">
-                           <a href="{{site_url()}}/buy/car/{{item.id}}"><img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></a>
+                           <a href="{{site_url()}}/buy/car/{{item.id}}"><img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" /></a>
                         </td>
                         <td width="300">
                             <h5><a href="{{site_url()}}/buy/car/{{item.id}}">{{model_value(item.model)}}</a></h5>

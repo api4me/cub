@@ -96,7 +96,7 @@
                 <label class="control-label" for="inputFactoryDate">出厂日期</label>
                 <div class="controls">
                     <div class="input-append date datepick">
-                    {{form_input("factory_date", car.factory_date, 'id="inputFactoryDate" class="input-medium" data-date-format="yyyy-mm-dd" readonly')|raw}}
+                    {{form_input("factory_date", date('Y-m-d', strtotime(car.factory_date)), 'id="inputFactoryDate" class="input-medium" data-date-format="yyyy-mm-dd" readonly')|raw}}
                     <span class="add-on"><i class="icon-th"></i></span>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 <label class="control-label" for="inputBuyDate">初次登记日期</label>
                 <div class="controls">
                     <div class="input-append date datepick">
-                    {{form_input("buy_date", car.buy_date, 'id="inputBuyDate" class="input-medium" data-date-format="yyyy-mm-dd" readonly')|raw}}
+                    {{form_input("buy_date", date('Y-m-d', strtotime(car.buy_date)), 'id="inputBuyDate" class="input-medium" data-date-format="yyyy-mm-dd" readonly')|raw}}
                     <span class="add-on"><i class="icon-th"></i></span>
                     </div>
                 </div>
@@ -249,7 +249,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputOtherConf">其他重要配置</label>
                 <div class="controls">
-                    {{form_input("other_conf", car.other_conf, 'id="inputOtherConf" maxlength="128"')|raw}}
+                    {{form_textarea("other_conf", car.other_conf, 'id="inputOtherConf" maxlength="128"')|raw}}
                 </div>
             </div>
         </div>
@@ -278,7 +278,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.body.comment", extra.appraisal_body_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.body.comment", extra.appraisal_body_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -291,7 +291,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.engine.comment", extra.appraisal_engine_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.engine.comment", extra.appraisal_engine_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -304,7 +304,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.inner.comment", extra.appraisal_inner_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.inner.comment", extra.appraisal_inner_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -317,7 +317,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.start.comment", extra.appraisal_start_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.start.comment", extra.appraisal_start_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -330,7 +330,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.road.comment", extra.appraisal_road_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.road.comment", extra.appraisal_road_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -343,7 +343,7 @@
                     <label class="tip">得分</label>
                     </div>
                     <div class="block">
-                    {{form_input("extra.appraisal.chassis.comment", extra.appraisal_chassis_comment, 'class="input-xlarge"')|raw}}
+                    {{form_textarea("extra.appraisal.chassis.comment", extra.appraisal_chassis_comment, 'class="input-xlarge"')|raw}}
                     <label class="tip">缺陷描述</label>
                     </div>
                 </div>
@@ -352,7 +352,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputConditionScore">车况级别评分</label>
                 <div class="controls">
-                    {{form_input("condition_score", car.condition_score, 'id="inputConditionScore" class="input-small" readonly')|raw}}
+                    {{form_input("condition_score", car.condition_score, 'id="inputConditionScore" class="input-small" readonly')|raw}}<span class="level">{{car.appraisal_level}}</span>
                 </div>
             </div>
 

@@ -22,8 +22,6 @@ class Deal extends Cub_Controller {
         $this->config->load("pagination");
         // Search
         $search = array();
-        $search["start"] = $start;
-        $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
             $this->lsession->set("deal_search", $search);
@@ -33,6 +31,8 @@ class Deal extends Cub_Controller {
                 $search = $tmp;
             }
         }
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
         // Only show auction data
         $search["status"] = "auction";
         $out["search"] = $search;
@@ -71,15 +71,22 @@ class Deal extends Cub_Controller {
         $out["car"] = $car;
 
         $out["sale_status"] = sale_status($car->sale_start_date, $car->sale_end_date);
-        if ($car->sale_type == "auction" && $out["sale_status"] == "sold") {
-            // Get chart
-            $this->load->model("mcarchart");
-            if (!$chart = $this->mcarchart->load($id, "auction")) {
-                // Generate to chart table
-                $chart = $this->mcarchart->generate($id);
+        if ($car->sale_type == "auction") {
+            if ($out["sale_status"] == "sold") {
+                // Get chart
+                $this->load->model("mcarchart");
+                if (!$chart = $this->mcarchart->load($id, "auction")) {
+                    // Generate to chart table
+                    $chart = $this->mcarchart->generate($id);
+                }
+                $out["chart"] = $chart->data;
+                $out["chart_extra"] = json_decode($chart->extra, true);
+            } else if ($out['sale_status'] == 'selling'){
+                $this->load->model('mauction');
+                $chart = $this->mauction->calc($car);
+                $out["chart"] = $chart['data'];
+                $out["chart_extra"] = json_decode($chart['extra'], true);
             }
-            $out["chart"] = $chart->data;
-            $out["chart_extra"] = json_decode($chart->extra, true);
         }
 
         $this->render("admin_deal_edit.html", $out);

@@ -22,26 +22,30 @@
                 <ul class="clearfix">
                     {% for item in auction %}
                     <li>
-                        <p><a href="{{site_url()}}/buy/car/{{item.id}}"><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" /></a></p>
-                        <p><strong>车型: </strong>{{model_value(item.model)}}</p>
-                        <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
-                        <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
+                        <div class="img"><a href="{{site_url()}}/buy/car/{{item.id}}"><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" /></a></div>
+                        <div class="misc">
+                            <p>{{model_value(item.model)}}</p>
+                            <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                            <p>等级: {{item.condition_score}}{{item.accident_level}}</p>
 
                         {% if item.sale_status == 'presale' %}
                             <p>竞拍开始时间</p>
                             <p>{{item.sale_start_date|date('Y-m-d H:i')}}</p>
-                            <p><a class="btn btn-info">即将开始</a></p>
+                        </div>
+                        <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-info">即将开始</a></div>
                         {% elseif item.sale_status == 'selling' %}
                             <p>开始时间</p>
                             <p>{{item.sale_start_date|date('Y-m-d H:i')}}</p>
-                            <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-primary">我要竞拍</a></p>
+                        </div>
+                        <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-primary">我要竞拍</a></div>
                         {% else %}
                             <p>竞拍结束时间</p>
                             <p>{{item.sale_end_date|date('Y-m-d H:i')}}</p>
                             {% if item.bid_num %}
                             <p>竞拍人数: {{item.bid_num}}人</p>
                             {% endif %}
-                            <p><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">已经结束</a></p>
+                        </div>
+                        <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">已经结束</a></div>
                         {% endif %}
                     </li>
                     {% endfor %}

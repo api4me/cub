@@ -111,10 +111,29 @@
         <script src="http://s17.cnzz.com/stat.php?id=5510913&web_id=5510913&show=pic" language="JavaScript"></script>
         </p>
         <ul class="footer-links">
-            <li><a href="{{base_url()}}">关于仁人易车</a></li>
+            <li><a href="#aboutModal" data-toggle="modal">关于仁人易车</a></li>
             <li class="muted">|</li>
-            <li><a href="{{base_url()}}">服务声明</a></li>
+            <li><a href="#serviceModal" data-toggle="modal">服务声明</a></li>
         </ul>
+
     </div>
 </footer>
+
+<div id="aboutModal" class="modal hide fade">
+    <div class="modal-header clearfix">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{site_url()}}/article/state/1"></iframe>
+    </div>
+</div>
+<div id="serviceModal" class="modal hide fade">
+    <div class="modal-header clearfix">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+        <iframe src="{{site_url()}}/article/state/2"></iframe>
+    </div>
+</div>
+
 {% endblock %}

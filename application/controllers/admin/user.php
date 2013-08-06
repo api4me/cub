@@ -22,8 +22,6 @@ class User extends Cub_Controller {
         $this->config->load("pagination");
         // Search
         $search = array();
-        $search["start"] = $start;
-        $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["username"] = $this->input->post("username");
             $search["role"] = $this->input->post("role");
@@ -35,6 +33,9 @@ class User extends Cub_Controller {
                 $search = $tmp;
             }
         }
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
+
         $out["search"] = $search;
         // Param
         $param = array();
@@ -120,7 +121,7 @@ class User extends Cub_Controller {
             } else {
                 if ($this->lcommon->get_size($param["username"]) > 16) {
                     $out["status"] = 1;
-                    $out["msg"] = "登录ID应在16个字内(包括10)，请调整一下。";
+                    $out["msg"] = "登录ID应在16个字内(包括16)，请调整一下。";
                     echo json_encode($out);
 
                     return false;
@@ -167,29 +168,13 @@ class User extends Cub_Controller {
         }
         // Phone
         $param["phone"] = trim($this->input->post("phone"));
-        if ($this->lcommon->is_empty($param["phone"])) {
+        if (!$this->lcommon->is_empty($param["phone"])
+            && !$this->lcommon->is_phone($param["phone"])) {
             $out["status"] = 1;
-            $out["msg"] = "请填写手机号";
+            $out["msg"] = "手机号输入有误，请检查一下。";
             echo json_encode($out);
 
             return false;
-        } else {
-            if (!$this->lcommon->is_phone($param["phone"])) {
-                $out["status"] = 1;
-                $out["msg"] = "手机号输入有误，请检查一下。";
-                echo json_encode($out);
-
-                return false;
-            }
-            // Check phone is exists
-            $this->load->model("muser");
-            if ($this->muser->exists_phone($param["phone"], $id)) {
-                $out["status"] = 1;
-                $out["msg"] = "手机号已经存在，请换一个试试。";
-                echo json_encode($out);
-
-                return false;
-            }
         }
         // Email
         $param["email"] = trim($this->input->post("email"));

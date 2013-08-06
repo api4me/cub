@@ -20,6 +20,7 @@
         <label class="control-label" for="inputTag">类型</label>
         <div class="controls">
             {{form_dropdown("tag", param.tag, article.tag, "id=\"inputTag\"")|raw}}
+            <span class="label label-inverse">静态资源</span>的文章是网站的固定静态内容，请谨慎修改。
         </div>
     </div>
     <div class="control-group">
@@ -57,6 +58,8 @@
         </div>
     </div>
     <input type="hidden" name="base" value="{{base_url()}}" />
+    <input type="hidden" name="base-article" value="{{site_url()}}" />
+    <input type="hidden" name="id" value="{{article.id}}" />
 
     </form>
 </div>

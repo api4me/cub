@@ -70,17 +70,19 @@ class MCarChart extends CI_Model {
         $chart = array();
         $chart['title'] = array('text' => '竞拍回放', 'x' => -20);
         $chart['yAxis'] = array('title' => array('text' => '拍价(人民币)'));
-        $chart['tooltip'] = array('valueSuffix' => '元');
+        $chart['tooltip'] = array('valueSuffix' => '元', 'headerFormat' => '', 'pointFormat' => '<i style="color:{series.color}">{point.name}</i>: {point.y}');
         $series = array();
         $series['name'] = model_value($car->model);
         if ($auction) {
             foreach ($auction as $val) {
                 $k = $val->user_id;
                 $v = intval($val->price);
-                $series['data'][] = $v;
+                $e = json_decode($val->extra, true);
+                $u = @$e['username'];
+                $series['data'][] = array('name' => $u, 'y' => $v);
                 if (!isset($extra['top'][$k]) || ($extra['top'][$k] < $v)) {
                     $extra['top'][$k] = $v;
-                    $extra['user'][$k] = json_decode($val->extra, true);
+                    $extra['user'][$k] = $e;
                 }
             }
             $extra['bid'] = count($auction);

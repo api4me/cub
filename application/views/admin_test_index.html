@@ -8,9 +8,12 @@
     {% endif %}
     </h3>
     {{form_open("/admin/test/", "class=\"form-inline\"")|raw}}
+    {% if common.user.role == 'appraiser' %}
+    {% else %}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, "placeholder=\"手机号\"")|raw}}
         <button type="submit" class="btn btn-primary">Go!</button>
+    {% endif %}
     </div>
     </form>
 </div>
@@ -36,7 +39,11 @@
         <tr>
             <td>{{loop.index + search.start}}</td>
             <td><a href="{{site_url()}}/admin/test/edit/{{item.id}}/">{{item.user_name}}</a></td>
+            {% if common.user.role == 'appraiser' %}
+            <td>{{substr(item.user_phone, 0, -6) ~ '******'}}</td>
+            {% else %}
             <td>{{item.user_phone}}</td>
+            {% endif %}
             <td>{{model_value(item.model)}}</td>
             <td>{{area_value(item.area)}}</td>
             <td>{{item.buy_date|date('Y-m-d')}}</td>

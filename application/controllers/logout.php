@@ -4,7 +4,7 @@ class Logout extends CI_Controller {
 
 /*{{{ index */
     public function index($url = null) {
-        $this->lsession->del("user");
+        $this->lsession->destory();
         // Back to home
         redirect();
     }

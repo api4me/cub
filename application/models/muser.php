@@ -24,7 +24,16 @@ class MUser extends CI_Model {
         $this->db->where("pwd", $param["pwd"]);
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
-            return $query->row();
+            if ($out = $query->row()) {
+                // Set login time
+                $param = array();
+                if (!$out->first_logged) {
+                    $this->db->set("first_logged", "now()", false);
+                }
+                $this->db->set("last_logged", "now()", false);
+                $this->save($param, $out->id);
+            }
+            return $out;
         }
 
         return false;

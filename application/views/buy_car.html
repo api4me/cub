@@ -42,7 +42,7 @@
                 </div>
                 <!-- image -->
                 <div class="span7 pull-left">
-                    {% set images = json_decode(car.images) %}
+                    {% set images = json_decode(car.images, true) %}
                     {% if images %}
                     <div id="myCarousel" class="carousel slide">
                         <div class="carousel-inner">
@@ -81,7 +81,7 @@
                     </tr>
                     <tr>
                         <td class="one">发动机号</td>
-                        <td>{{substr(car.engine_num, 0, -2) ~ '*' ~ substr(car.engine_num, -1)}}</td>
+                        <td>{{'*' ~ substr(car.engine_num, 1, -1) ~ '*'}}</td>
                         <td class="one">车架号</td>
                         <td>{{substr(car.chassis_num, 0, 3) ~ '***' ~ substr(car.chassis_num, 6)}}</td>
                     </tr>
@@ -148,7 +148,7 @@
                     </tr>
                     <tr>
                         <td class="one">其他重要配置</td>
-                        <td colspan="3">{{car.other_conf}}</td>
+                        <td colspan="3">{{car.other_conf|nl2br}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -169,33 +169,33 @@
                     </tr>
                     <tr>
                         <td class="one">车身检查</td>
-                        <td>{{extra.appraisal_body_score}}</td>
-                        <td>{{extra.appraisal_body_comment}}</td>
+                        <td class="center">{{extra.appraisal_body_score}}</td>
+                        <td>{{extra.appraisal_body_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">发动机机检查 评分</td>
-                        <td>{{extra.appraisal_engine_score}}</td>
-                        <td>{{extra.appraisal_engine_comment}}</td>
+                        <td class="center">{{extra.appraisal_engine_score}}</td>
+                        <td>{{extra.appraisal_engine_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">车内检查 评分</td>
-                        <td>{{extra.appraisal_inner_score}}</td>
-                        <td>{{extra.appraisal_inner_comment}}</td>
+                        <td class="center">{{extra.appraisal_inner_score}}</td>
+                        <td>{{extra.appraisal_inner_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">启动检查 评分</td>
-                        <td>{{extra.appraisal_start_score}}</td>
-                        <td>{{extra.appraisal_start_comment}}</td>
+                        <td class="center">{{extra.appraisal_start_score}}</td>
+                        <td>{{extra.appraisal_start_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">路试检查 评分</td>
-                        <td>{{extra.appraisal_road_score}}</td>
-                        <td>{{extra.appraisal_road_comment}}</td>
+                        <td class="center">{{extra.appraisal_road_score}}</td>
+                        <td>{{extra.appraisal_road_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">底盘检查 评分</td>
-                        <td>{{extra.appraisal_chassis_score}}</td>
-                        <td>{{extra.appraisal_chassis_comment}}</td>
+                        <td class="center">{{extra.appraisal_chassis_score}}</td>
+                        <td>{{extra.appraisal_chassis_comment|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">鉴定结果</td>
@@ -214,7 +214,7 @@
                 {% for item in success %}
                     <li>
                     <a href="{{site_url()}}/buy/car/{{item.id}}">
-                    <img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images))}}" alt="{{model_value(item.model)}}" title="{{model_value(item.model)}}" />
+                    <img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" alt="{{model_value(item.model)}}" title="{{model_value(item.model)}}" />
                     </a>
                     <span class="label label-info">成交价:</span> {{item.final_price}}
                     </li>

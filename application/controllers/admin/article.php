@@ -22,8 +22,6 @@ class Article extends Cub_Controller {
         $this->config->load("pagination");
         // Search
         $search = array();
-        $search["start"] = $start;
-        $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["title"] = $this->input->post("title");
             $search["tag"] = $this->input->post("tag");
@@ -34,6 +32,8 @@ class Article extends Cub_Controller {
                 $search = $tmp;
             }
         }
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
         $out["search"] = $search;
         // Param
         $param = array();

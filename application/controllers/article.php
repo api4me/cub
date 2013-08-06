@@ -61,5 +61,20 @@ class Article extends CI_Controller {
         $this->index("activity", $title);
 	}
 /*}}}*/
+/*{{{ state */
+	public function state($id = null) {
+        $this->load->library("twig");
+        $out = array();
+        $out["title"] = "资讯信息";
 
+        $this->load->model("marticle");
+        $row = $this->marticle->show($id);
+
+        if ($row) {
+            $out['article'] = $row;
+        }
+
+        $this->twig->display("article_state.html", $out);
+	}
+/*}}}*/
 }

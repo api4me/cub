@@ -44,5 +44,15 @@ class LSession {
         }
     }
 /*}}}*/
+/*{{{ destory */
+    public function destory(){
+        if(!isset($_SESSION)) return null;
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time()-1, '/');
+        }
+        session_unset();
+        session_destroy();
+    }
+/*}}}*/
 
 }

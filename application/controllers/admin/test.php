@@ -22,8 +22,6 @@ class Test extends Cub_Controller {
         $this->config->load("pagination");
         // Search
         $search = array();
-        $search["start"] = $start;
-        $search["per_page"] = $this->config->item("per_page"); 
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
             $search["status"] = $this->input->post("status");
@@ -34,6 +32,8 @@ class Test extends Cub_Controller {
                 $search = $tmp;
             }
         }
+        $search["start"] = $start;
+        $search["per_page"] = $this->config->item("per_page"); 
         // Only show prebook data
         $search["status"] = "prebook";
         $out["search"] = $search;

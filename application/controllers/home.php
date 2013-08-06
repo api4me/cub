@@ -38,8 +38,8 @@ class Home extends CI_Controller {
         // Article
         $this->load->model("marticle");
         $article = array();
-        $article["activity"] = $this->marticle->load_by_tag("activity");
-        $article["news"] = $this->marticle->load_by_tag("news");
+        $article["activity"] = $this->marticle->show_by_tag("activity");
+        $article["news"] = $this->marticle->show_by_tag("news");
         $out["article"] = $article;
 
         $this->twig->display("home_index.html", $out);

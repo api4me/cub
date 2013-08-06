@@ -75,6 +75,15 @@ class MArticle extends CI_Model {
         return false;
     }
 /*}}}*/
+/*{{{ show */
+    public function show($id) {
+        $this->db->where("id", $id);
+        $this->db->where("enable", "Y");
+        $query = $this->db->get("##article");
+
+        return $query->row();
+    }
+/*}}}*/
 /*{{{ show_by_tag */
     public function show_by_tag($tag) {
         $this->db->where("tag", $tag);
