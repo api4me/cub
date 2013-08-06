@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>{% block title %}{% endblock %} - 仁人易车</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{base_url()}}assets/img/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{base_url()}}assets/img/favicon.png">
+    <!-- Le styles -->
+    <link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="{{base_url()}}assets/js/html5shiv.js"></script>
+    <![endif]-->
+    <script src="{{base_url()}}assets/js/jquery.min.js"></script>
+    <script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            font-family: "Microsoft YaHei","微软雅黑","宋体", Arial,Helvetica,sans-serif;
+        }
+        #content {
+            background-color: #e4e2e3;
+            padding-bottom: 20px;
+        }
+        #article-state {
+            width: 700px;
+            margin-bottom: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="article-state" class="container container-fluid">
+
+    <div class="clearfix row-fluid">
+        <div id="article-content">
+            <h3 class="text-center">{{article.title}}</h3>
+            <div>{{article.content|raw}}</div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
