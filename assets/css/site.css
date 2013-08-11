@@ -633,6 +633,14 @@ body {
     text-align: center;
 }
 
+#buy-car #pay-modal th {
+    text-align: center;
+    background-color: #ebebeb;
+}
+#buy-car #pay-modal td {
+    width: auto;
+}
+
 /* search
 -------------------------------------------------- */
 #search div.list div.head {

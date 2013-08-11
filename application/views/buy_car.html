@@ -17,7 +17,7 @@
                     {% endif %}
 
                     {% if car.final_price %}
-                    <p>成交价: {{car.final_price}}</p>
+                    <p>成交价: {{show_final_price(car.final_price)}}元</p>
                     {% endif %}
                     <p>行驶里程: {{car.mileage|number_format}}公里</p>
                     <p>上牌时间: {{car.buy_date|date('Y年m月d日')}}</p>
@@ -25,7 +25,12 @@
                     {% if car.color %}
                     <p>颜色: {{option_value('color', car.color)}} <font style="background-color:{{car.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
                     {% endif %}
+
+                    {% if car.sale_type == 'auction' %}
                     <p>新车参考价: 人民币{{car.market_price|number_format}}元</p>
+                    {% else %}
+                    <p>寄售价: 人民币{{car.sale_price|number_format}}元</p>
+                    {% endif %}
                     <p class="tooltip-show">等级: {{car.appraisal_level}}</p>
 
                     {% if car.status == 'auction' and sale_status == 'selling' %}
@@ -33,6 +38,29 @@
                             {% if user.role == 'buyer' %}
                     <p class="auction-preview hide"></p>
                     <p class="auction-now form-inline"><input type="text" name="price" id="price" maxlength="8" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> {% if car.sale_type == 'auction' %} 拍下 {% else %} 出价 {% endif %}</button></p>
+
+                    <div id="pay-modal" class="modal hide fade">
+                        <div class="modal-header clearfix">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4>竞拍出价记录</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="well alert">出价成功，如果您是出价的领先者将有机会获得此爱车。</div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>出价排名</th>
+                                        <th>竞拍ID</th>
+                                        <th>竞拍出价</th>
+                                        <th>所属地区</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                             {% endif %}
                         {% else %}
                     <p><a href="{{site_url()}}/login/"><i class="icon-hand-right"></i> 赶快登录, 拍下</a></p>
@@ -89,7 +117,7 @@
                         <td class="one">出厂年月</td>
                         <td>{{car.factory_date|date('Y年m月')}}</td>
                         <td class="one">初次登记日期</td>
-                        <td>{{car.buy__date|date('Y年m月')}}</td>
+                        <td>{{car.buy_date|date('Y年m月')}}</td>
                     </tr>
                     <tr>
                         <td class="one">年检证明</td>
@@ -114,6 +142,10 @@
                         {{option_value('other_cert_type', car.other_cert_type)}}
                         {% endif %}
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="one">保险/证件信息备注</td>
+                        <td colspan="3">{{car.cert_remark|nl2br}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -196,6 +228,10 @@
                         <td class="one">底盘检查 评分</td>
                         <td class="center">{{extra.appraisal_chassis_score}}</td>
                         <td>{{extra.appraisal_chassis_comment|nl2br}}</td>
+                    </tr>
+                    <tr>
+                        <td class="one">技术鉴定信息备注</td>
+                        <td colspan="3">{{extra.remark|nl2br}}</td>
                     </tr>
                     <tr>
                         <td class="one">鉴定结果</td>

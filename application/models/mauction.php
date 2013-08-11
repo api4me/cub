@@ -129,18 +129,23 @@ class MAuction extends CI_Model {
         // 2. Generate top auction data
         $out = array();
         if ($auction) {
+            $out['price'] = array();
+            $out['area'] = array();
             foreach ($auction as $val) {
                 $v = intval($val->price);
                 $e = json_decode($val->extra, true);
                 $k = @$e['username'];
-                if (!isset($out[$k]) || ($out[$k] < $v)) {
-                    $out[$k] = $v;
+                if (!isset($out['price'][$k]) || ($out['price'][$k] < $v)) {
+                    $out['price'][$k] = $v;
+                    $out['area'][$k] = $e['area'] ? area_value($e['area']): '--';
                 }
             }
-        }
-        asort($out);
 
-        return array_slice(array_reverse($out, true), 0, 10, true);
+            asort($out['price']);
+            $out['price'] = array_slice(array_reverse($out['price'], true), 0, 10, true);
+        }
+
+        return $out;
     }
 /*}}}*/
 

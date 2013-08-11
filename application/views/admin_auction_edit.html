@@ -57,6 +57,12 @@
         <!-- start baseinfo -->
         <div class="tab-pane active" id="baseinfo">
             <div class="control-group">
+                <label class="control-label">验车单ID</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.cert_code}}</span>
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label" for="inputSaleType">销售类型</label>
                 <div class="controls">
                     <span class="input-medium uneditable-input">{{option_value("sale_type", car.sale_type)}}</span>
@@ -150,6 +156,12 @@
                         {{option_value('other_cert_type', car.other_cert_type)}}
                         {% endif %}
                     </span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">保险/证件信息备注</label>
+                <div class="controls well well-small">
+                    {{car.cert_remark|nl2br}}
                 </div>
             </div>
             <div class="control-group">
@@ -286,6 +298,12 @@
                 <label class="control-label" for="inputConditionScore">车况级别评分</label>
                 <div class="controls">
                     <span class="input-mini uneditable-input">{{car.condition_score}}</span> {{car.appraisal_level}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">技术鉴定信息备注</label>
+                <div class="controls well well-small">
+                    {{extra.remark|nl2br}}
                 </div>
             </div>
 

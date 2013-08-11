@@ -61,6 +61,12 @@
         <!-- start prebook -->
         <div class="tab-pane active" id="prebook">
             <div class="control-group">
+                <label class="control-label" for="inputCertCode">验车单ID</label>
+                <div class="controls">
+                    {{form_input("cert_code", car.cert_code, "id=\"inputCertCode\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label" for="inputSaleType">销售类型 <span class="star">*</span></label>
                 <div class="controls">
                     {{form_dropdown("sale_type", param.sale_type, car.sale_type, "id=\"inputSaleType\"")|raw}}
@@ -176,6 +182,12 @@
                     {{form_input("other_cert_value", car.other_cert_value, 'class="input-medium"')|raw}}
                     <label class="tip">选择其他后，填这里</label>
                     </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputCertRemark">保险/证件信息备注</label>
+                <div class="controls">
+                    {{form_textarea("cert_remark", car.cert_remark, 'id="inputCertRemark" maxlength="256"')|raw}}
                 </div>
             </div>
             <div class="control-group">
@@ -351,6 +363,12 @@
                 <label class="control-label" for="inputConditionScore">车况级别评分</label>
                 <div class="controls">
                     {{form_input("condition_score", car.condition_score, 'id="inputConditionScore" class="input-small" readonly')|raw}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputCertRemark">技术鉴定信息备注</label>
+                <div class="controls">
+                    {{form_textarea("extra.remark", extra.remark, 'maxlength="256"')|raw}}
                 </div>
             </div>
 

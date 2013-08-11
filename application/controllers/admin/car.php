@@ -123,6 +123,8 @@ class Car extends Cub_Controller {
         // -----------------------------------------------------------
         // 基本信息
         // -----------------------------------------------------------
+        // cert_code
+        $param["cert_code"] = $this->input->post("cert_code");
         // sale_type
         $param["sale_type"] = $this->input->post("sale_type");
         // model
@@ -188,6 +190,8 @@ class Car extends Cub_Controller {
         $param["other_cert_type"] = $this->input->post("other_cert_type");
         // 其他法定凭证、证明值
         $param["other_cert_value"] = $this->input->post("other_cert_value");
+        // 保险/证件信息备注
+        $param["cert_remark"] = $this->input->post("cert_remark");
         // 车主名称/姓名
         $param["owner_name"] = $this->input->post("owner_name");
         // 法人证书代码/身份证号码
@@ -338,6 +342,8 @@ class Car extends Cub_Controller {
         }
         $score += intval($extra["appraisal_chassis_score"]);
         $extra['appraisal_chassis_comment'] = $this->input->post("extra_appraisal_chassis_comment");
+        // 技术鉴定信息备注
+        $extra['remark'] = $this->input->post("extra_remark");
         $param['extra'] = json_encode($extra);
 
         // 车况级别评分

@@ -245,17 +245,21 @@ class Buy extends CI_Controller {
         if ($tmp = $this->mauction->top($param['car_id'])) {
             $top = array();
             $first = true;
-            foreach ($tmp as $k => $v) {
+            foreach ($tmp['price'] as $k => $v) {
                 if ($first) {
                     $first = false;
                     if ($k != $user->username) {
                         $v = str_repeat('*', strlen($v)); 
                     }
                 }
+                if (strpos($v, '*') === false) {
+                    $v = number_format($v);
+                }
+                $a = $tmp['area'][$k];
                 if ($k != $user->username) {
                     $k = substr($k, 0, 1) . str_repeat('*', strlen($k) - 2) . substr($k, -1);
                 }
-                $top[] = array('name' => $k, 'price' => $v);
+                $top[] = array('name' => $k, 'price' => $v, 'area' => $a);
             }
 
             $out['data'] = $top;
