@@ -31,7 +31,7 @@
             <th>地区</th>
             <th>购买日期</th>
             <th>里程</th>
-            <th>登记日期</th>
+            <th>登记时间</th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
             <td>{{area_value(item.area)}}</td>
             <td>{{item.buy_date|date('Y-m-d')}}</td>
             <td>{{item.mileage|number_format}}</td>
-            <td>{{item.created|date('Y-m-d')}}</td>
+            <td>{{item.created|date('Y-m-d H:i')}}</td>
         </tr>
     {% else %}
         <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>

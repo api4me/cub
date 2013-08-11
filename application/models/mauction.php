@@ -118,6 +118,30 @@ class MAuction extends CI_Model {
         return $out;
     }
 /*}}}*/
+/*{{{ top */
+    public function top($cid) {
+        // 1. Get auction data
+        $this->db->where('car_id', $cid);
+        $this->db->order_by('created', 'ASC');
+        $query = $this->db->get('##auction');
+        $auction = $query->result();
 
+        // 2. Generate top auction data
+        $out = array();
+        if ($auction) {
+            foreach ($auction as $val) {
+                $v = intval($val->price);
+                $e = json_decode($val->extra, true);
+                $k = @$e['username'];
+                if (!isset($out[$k]) || ($out[$k] < $v)) {
+                    $out[$k] = $v;
+                }
+            }
+        }
+        asort($out);
+
+        return array_slice(array_reverse($out, true), 0, 10, true);
+    }
+/*}}}*/
 
 }

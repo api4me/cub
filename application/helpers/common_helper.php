@@ -237,3 +237,11 @@ if (!function_exists("get_appraisal")) {
     }
 }
 /*}}}*/
+/*{{{ show_final_price */
+if (!function_exists("show_final_price")) {
+    function show_final_price($price) {
+        $len = strlen($price);
+        return substr($price, 0, 1) . str_pad('', $len - 1, '*');
+    }
+}
+/*}}}*/

@@ -78,6 +78,12 @@
         </div>
     </div>
     <div class="control-group">
+        <label class="control-label" for="inputArea">地区 <span class="star">*</span></label>
+        <div class="controls">
+            {{area_dropdown("area",user.area, "id=\"inputArea\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
         <label class="control-label" for="inputRole">用户类型 <span class="star">*</span></label>
         <div class="controls">
             {{form_dropdown("role", param.role, user.role, "id=\"inputRole\"")|raw}}

@@ -89,13 +89,13 @@
             <div class="control-group">
                 <label class="control-label" for="inputFactoryDate">出厂日期</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{{car.factory_date}}</span>
+                    <span class="input-medium uneditable-input">{{car.factory_date|date('Y-m-d')}}</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputBuyDate">初次登记日期</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{{car.buy_date}}</span>
+                    <span class="input-medium uneditable-input">{{car.buy_date|date('Y-m-d')}}</span>
                 </div>
             </div>                                                      
             <div class="control-group">
@@ -113,7 +113,7 @@
             <div class="control-group">
                 <label class="control-label" for="inputAnnualTest">年检截至年月</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{% if car.annual_test %}{{car.annual_test}} {% else %} 无 {% endif %}</span>
+                    <span class="input-medium uneditable-input">{% if car.annual_test %}{{car.annual_test|date('Y-m-d')}} {% else %} 无 {% endif %}</span>
                 </div>
             </div>
             <div class="control-group">
@@ -125,13 +125,13 @@
             <div class="control-group">
                 <label class="control-label" for="inputVVTax">车船税截至年月</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{% if car.vv_tax %}{{car.vv_tax}} {% else %} 无 {% endif %}</span>
+                    <span class="input-medium uneditable-input">{% if car.vv_tax %}{{car.vv_tax|date('Y-m-d')}} {% else %} 无 {% endif %}</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputTrafficInsurance">交强险截至年月</label>
                 <div class="controls">
-                    <span class="input-medium uneditable-input">{% if car.traffic_insurance %}{{car.traffic_insurance}} {% else %} 无 {% endif %}</span>
+                    <span class="input-medium uneditable-input">{% if car.traffic_insurance %}{{car.traffic_insurance|date('Y-m-d')}} {% else %} 无 {% endif %}</span>
                 </div>
             </div>
             <div class="control-group">

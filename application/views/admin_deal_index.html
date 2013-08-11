@@ -25,7 +25,7 @@
             <th>技术等级</th>
             <th>出让价(人民币)</th>
             <th>销售状态</th>
-            <th>登记日期</th>
+            <th>登记时间</th>
         </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
             <td>{{item.appraisal_level}}</td>
             <td>{{item.sale_price|number_format}}</td>
             <td>{{option_value("sale_status", sale_status(item.sale_start_date, item.sale_end_date))}}</td>
-            <td>{{item.created|date('Y-m-d')}}</td>
+            <td>{{item.created|date('Y-m-d H:i')}}</td>
         </tr>
     {% else %}
         <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>

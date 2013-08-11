@@ -196,6 +196,7 @@ class User extends Cub_Controller {
                 return false;
             }
         }
+        $param["area"] = $this->input->post("province").$this->input->post("city").$this->input->post("district");
         // 用户类型
         $param["role"] = trim($this->input->post("role"));
         if ($this->lcommon->is_empty($param["role"])) {

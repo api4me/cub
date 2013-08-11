@@ -239,8 +239,27 @@ class Buy extends CI_Controller {
             return false;
         }
 
+        // Get top pay
         $out["status"] = 0;
         $out["msg"] = "出价成功，如果您是出价的领先者将有机会获得此爱车。";
+        if ($tmp = $this->mauction->top($param['car_id'])) {
+            $top = array();
+            $first = true;
+            foreach ($tmp as $k => $v) {
+                if ($first) {
+                    $first = false;
+                    if ($k != $user->username) {
+                        $v = str_repeat('*', strlen($v)); 
+                    }
+                }
+                if ($k != $user->username) {
+                    $k = substr($k, 0, 1) . str_repeat('*', strlen($k) - 2) . substr($k, -1);
+                }
+                $top[] = array('name' => $k, 'price' => $v);
+            }
+
+            $out['data'] = $top;
+        }
         $this->output->set_output(json_encode($out));
 
         return true;

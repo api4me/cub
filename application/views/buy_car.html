@@ -83,7 +83,7 @@
                         <td class="one">发动机号</td>
                         <td>{{'*' ~ substr(car.engine_num, 1, -1) ~ '*'}}</td>
                         <td class="one">车架号</td>
-                        <td>{{substr(car.chassis_num, 0, 3) ~ '***' ~ substr(car.chassis_num, 6)}}</td>
+                        <td>{{substr(car.chassis_num, 0, 3) ~ '***' ~ substr(car.chassis_num, 6, -3) ~ '***'}}</td>
                     </tr>
                     <tr>
                         <td class="one">出厂年月</td>
@@ -101,7 +101,7 @@
                         <td class="one">车船税证明</td>
                         <td>{% if car.vv_tax %}有，至{{car.vv_tax|date('Y年m月')}}{% else %}无{% endif %}</td>
                         <td class="one">交强险</td>
-                        <td>{% if car.traffic_insurance %}有，至{{car.vv_tax|date('Y年m月')}}{% else %}无{% endif %}</td>
+                        <td>{% if car.traffic_insurance %}有，至{{car.traffic_insurance|date('Y年m月')}}{% else %}无{% endif %}</td>
                     </tr>
                     <tr>
                         <td class="one">使用性质</td>
@@ -216,7 +216,7 @@
                     <a href="{{site_url()}}/buy/car/{{item.id}}">
                     <img class="thumbnail" src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" alt="{{model_value(item.model)}}" title="{{model_value(item.model)}}" />
                     </a>
-                    <span class="label label-info">成交价:</span> {{item.final_price}}
+                    <span class="label label-info">成交价:</span> {{show_final_price(item.final_price)}}元
                     </li>
                 {% endfor %}
                 </ul>
