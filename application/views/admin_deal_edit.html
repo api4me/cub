@@ -421,6 +421,9 @@
             <a class="btn btn-primary disabled">竞拍交易进行中</a>
         {% else %}
             <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">交易完成</a>
+            {% if car.status == 'auction' and sale_status == 'sold' %}
+            <a href="#re-auction" role="button" class="btn btn-info" data-toggle="modal">重新竞拍</a>
+            {% endif %}
             <a href="#closeModal" role="button" class="btn btn-danger" data-toggle="modal">交易终止</a>
         {% endif %}
             <a href="{{site_url()}}/admin/deal/" class="btn">返回</a>
@@ -515,6 +518,50 @@
         <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
     </div>
     </div>
+
+    {% if car.status == 'auction' and sale_status == 'sold' %}
+    <!-- Modal Re-auction -->
+    <div id="re-auction" class="modal hide fade upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">车辆重新竞拍</h3>
+    </div>
+    <div class="modal-body">
+        <div class="label label-success modal-msg"></div>
+        <div class="well">
+            <h3>注意</h3>
+            <p>
+                请填写销售开始时间，结束时间并点击确认按钮。
+            </p>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="inputSaleStartDate">销售开始时间</label>
+            <div class="controls">
+                <div class="input-append date datepick">
+                    {{form_input("sale_start_date", car.sale_start_date, "id=\"inputStartDate\"")|raw}}                                                                                           
+                    <span class="add-on"><i class="icon-th"></i></span>                
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputSaleStartDate">销售结束时间</label>
+            <div class="controls">
+                <div class="input-append date datepick">
+                    {{form_input("sale_end_date", car.sale_end_date, 'id="inputStartDate"')|raw}}                                                                                           
+                    <span class="add-on"><i class="icon-th"></i></span>                
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="base" value="{{site_url()}}" />
+        <input type="hidden" name="id" value="{{car.id}}" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" name="ok" value="complete">确认上架</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    </div>
+    </div>
+    {% endif %}
 
 </form>
 

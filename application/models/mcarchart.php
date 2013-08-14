@@ -104,5 +104,13 @@ class MCarChart extends CI_Model {
         return false;
     }
 /*}}}*/
+/*{{{ del */
+    public function del($carid, $type) {
+        $this->db->where("car_id", $carid);
+        $this->db->where("type", $type);
+
+        return $this->db->delete("##car_chart");
+    }
+/*}}}*/
 
 }
