@@ -86,13 +86,21 @@
     <div class="control-group">
         <label class="control-label" for="inputRole">用户类型 <span class="star">*</span></label>
         <div class="controls">
+            {% if user.id == common.user.id %}
+            <span class="uneditable-input">{{option_value('role', user.role)}}</span>
+            {% else %}
             {{form_dropdown("role", param.role, user.role, "id=\"inputRole\"")|raw}}
+            {% endif %}
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="inputEnable">是否可用 <span class="star">*</span></label>
         <div class="controls">
+            {% if user.id == common.user.id %}
+            <span class="uneditable-input">{{option_value('enable', user.enable)}}</span>
+            {% else %}
             {{form_dropdown("enable", param.enable, user.enable, "id=\"inputEnable\"")|raw}}
+            {% endif %}
         </div>
     </div>
     <div class="control-group">
@@ -105,6 +113,28 @@
     <div class="control-group">
         <div class="controls">
             <button type="submit" class="btn btn-primary">保存</button>
+            {% if user.id and user.id != common.user.id %}
+            <a href="#delete-modal" role="button" class="btn btn-danger" data-toggle="modal">删除</a>
+            <!-- Modal Close -->
+            <div id="delete-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">删除确认</h3>
+            </div>
+            <div class="modal-body">
+                <div id="delete-modal-msg" class="label label-success"></div>
+                <div class="well">
+                    <p>
+                        确认需要删除该用户吗？删除后，用户将<span class="label label-inverse">无法找回</span>。如果点错了，按关闭按钮。
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" name="delete" value="delete">确定</button>
+                <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+            </div>
+            {% endif %}
             <a href="{{site_url()}}/admin/user/" class="btn">返回</a>
         </div>
     </div>
@@ -112,5 +142,6 @@
     <input type="hidden" name="id" value="{{user.id}}" />
 
     </form>
+
 </div>
 {% endblock %}

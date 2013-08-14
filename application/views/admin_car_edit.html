@@ -19,6 +19,9 @@
         <li><a href="#detect">车辆 - 重要配置</a></li>
         <li><a href="#sale">车辆 - 技术鉴定</a></li>
         <li><a href="#albums">车辆 - 图片管理</a></li>
+        {% if car.status in ['success', 'close']%}
+        <li><a href="#sale-status">车辆 - 销售状况</a></li>        
+        {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -420,6 +423,80 @@
             <br>
         </div>
         <!-- end albums -->
+        {% if car.status in ['success', 'close']%}
+        <!-- start sale status -->
+        <div class="tab-pane active" id="sale-status">
+            <div class="control-group">
+                <label class="control-label" for="inputSaleStartDate">销售开始时间</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <span class="input-medium uneditable-input">{{car.sale_start_date}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputSaleStartDate">销售结束时间</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <span class="input-medium uneditable-input">{{car.sale_end_date}}</span>
+                    </div>
+                </div>
+            </div>
+            {% if chart %}
+            <div class="control-group">
+                <label class="control-label" for="inputSaleStartDate">竞拍排名(前三名)</label>
+                <div class="controls well well-small">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>竞价排名</td>
+                                <td>竞拍ID</td>
+                                <td>竞价(人民币)</td>
+                                <td>地区</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, val in array_reverse(chart_extra.top, true)|slice(0, 3, true) %}
+                                {% set u = chart_extra.user[key] %}
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{u.username}}</td>
+                                    <td>{{val|number_format|default('-')}}元</td>
+                                    <td>{{area_value(u.area)}}</td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="4"><em>哎呀，没有数据</em></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">竞拍次数统计</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{chart_extra.bid}}次</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">竞拍曲线</label>
+                <div class="controls well well-small">
+                    <div class="input-append" id="chart" data="auction">
+                        <span class="input-medium uneditable-input">图表显示区域</span>
+                    </div>
+                    {% autoescape false %}
+                    <script>
+                    $(function () {
+                        var chart = {{chart|raw|default("{}")}};
+                        $("#chart").highcharts(chart);
+                    });
+                    </script>
+                    {% endautoescape %}
+                </div>
+            </div>
+            {% endif%}
+        </div>
+        <!-- end sale status -->
+        {% endif %}
     </div>
 
     <div class="control-group">

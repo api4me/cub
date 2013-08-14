@@ -54,6 +54,7 @@ class MUser extends CI_Model {
         if (isset($param["enable"]) && $param["enable"]) {
             $this->db->where("enable", $param["enable"]);
         }
+        $this->db->where("enable <>", 'D');
     }
     public function select($param) {
         // For search
@@ -79,6 +80,7 @@ class MUser extends CI_Model {
 /*{{{ load */
     public function load($id) {
         $this->db->where("id", $id);
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return $query->row();
     }
@@ -91,6 +93,7 @@ class MUser extends CI_Model {
             . '\')';
         $this->db->where($key);
         $this->db->where("role", 'buyer');
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return $query->row();
     }
@@ -124,6 +127,7 @@ class MUser extends CI_Model {
 /*{{{ get_data_by_phone */
     public function get_data_by_phone($phone) {
         $this->db->where("phone", $phone);
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return $query->row();
     }
@@ -134,6 +138,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("username", $str);
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }
@@ -144,6 +149,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("phone", $str);
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }
@@ -154,6 +160,7 @@ class MUser extends CI_Model {
             $this->db->where('id <>', $id);
         }
         $this->db->where("email", $str);
+        $this->db->where("enable <>", 'D');
         $query = $this->db->get("##user");
         return ($query->row()) ? true : false;
     }

@@ -44,7 +44,7 @@ $config['role'] = array(
         'user' => array('*'),
     ),
     'waiter' => array(
-        'admin' => array('auction', 'deal', 'car', 'stat', 'user'),
+        'admin' => array('test', 'auction', 'deal', 'car', 'stat', 'user'),
         'user' => array('*'),
     ),
     'buyer' => array(

@@ -52,6 +52,41 @@ class MCar extends CI_Model {
         return $query->row();
     }
 /*}}}*/
+/*{{{ _sort */
+    private function _sort($arr) {
+        if (!$arr) {
+            return $arr;
+        }
+
+        $out = array();
+        $sold = array();
+        foreach ($arr as $v) {
+            switch($v->sale_status) {
+                case 'sold':
+                    $added = false;
+                    if ($sold) {
+                        foreach ($sold as $k => $s) {
+                            if ($s->sale_end_date < $v->sale_end_date) {
+                                array_splice($sold, $k, 0, array($v));
+                                $added = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$added) {
+                        $sold[] = $v;
+                    }
+                    break;
+                default:
+                    $out[] = $v;
+                    break;
+            }
+        }
+        array_splice($out, count($out), 0, $sold);
+
+        return $out;
+    }
+/*}}}*/
 /*{{{ load_for_auction */
     public function load_for_auction($count) {
         // Saling + Wait for Auction + sold
@@ -71,7 +106,7 @@ class MCar extends CI_Model {
         ";
         $query = $this->db->query($q, array($count));
 
-        return $query->result();
+        return $this->_sort($query->result());
     }
 /*}}}*/
 /*{{{ load_for_consign */
@@ -109,7 +144,7 @@ class MCar extends CI_Model {
         if ($num) {
             $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
             $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
-            $data = $query->result();
+            $data = $this->_sort($query->result());
 
             return array(
                 "num" => $num,

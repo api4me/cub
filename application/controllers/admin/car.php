@@ -89,6 +89,19 @@ class Car extends Cub_Controller {
 
         $out["param"] = $param;
 
+        if (in_array($car->status, array('success', 'close'))) {
+            if ($car->sale_type == 'auction') {
+                // Get chart
+                $this->load->model("mcarchart");
+                if (!$chart = $this->mcarchart->load($id, "auction")) {
+                    // Generate to chart table
+                    $chart = $this->mcarchart->generate($id);
+                }
+                $out["chart"] = $chart->data;
+                $out["chart_extra"] = json_decode($chart->extra, true);
+            }
+        }
+
         $this->render("admin_car_edit.html", $out);
     }
 /*}}}*/

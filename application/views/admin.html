@@ -72,7 +72,6 @@
 
                     {% if common.user.role == 'waiter' %}
                         <li{%if common.control == "prebook" %} class="active"{%endif%}><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
-                        <li{%if common.control == "test" %} class="active"{%endif%}><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
                     {% endif %}
 
                     </ul>

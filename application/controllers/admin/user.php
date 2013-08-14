@@ -198,33 +198,36 @@ class User extends Cub_Controller {
         }
         $param["area"] = $this->input->post("province").$this->input->post("city").$this->input->post("district");
         // 用户类型
-        $param["role"] = trim($this->input->post("role"));
-        if ($this->lcommon->is_empty($param["role"])) {
-            $out["status"] = 1;
-            $out["msg"] = "请选择用户类型。";
-            echo json_encode($out);
+        $user = $this->lsession->get('user');
+        if ($id != $user->id) {
+            $param["role"] = trim($this->input->post("role"));
+            if ($this->lcommon->is_empty($param["role"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请选择用户类型。";
+                echo json_encode($out);
 
-            return false;
-        } else {
-            $user = $this->lsession->get('user');
-            if ($user->role != 'super') {
-                if (in_array($param['role'], array('super', 'admin', 'guest'))) {
-                    $out["status"] = 1;
-                    $out["msg"] = "用户类型有误。";
-                    echo json_encode($out);
+                return false;
+            } else {
+                $user = $this->lsession->get('user');
+                if ($user->role != 'super') {
+                    if (in_array($param['role'], array('super', 'admin', 'guest'))) {
+                        $out["status"] = 1;
+                        $out["msg"] = "用户类型有误。";
+                        echo json_encode($out);
 
-                    return false;
+                        return false;
+                    }
                 }
             }
-        }
-        // 是否可用
-        $param["enable"] = trim($this->input->post("enable"));
-        if ($this->lcommon->is_empty($param["enable"])) {
-            $out["status"] = 1;
-            $out["msg"] = "请选择是否可用。";
-            echo json_encode($out);
+            // 是否可用
+            $param["enable"] = trim($this->input->post("enable"));
+            if ($this->lcommon->is_empty($param["enable"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请选择是否可用。";
+                echo json_encode($out);
 
-            return false;
+                return false;
+            }
         }
         $param["remark"] = trim($this->input->post("remark"));
 
@@ -337,6 +340,47 @@ class User extends Cub_Controller {
         // Success
         $out["status"] = 0;
         $out["msg"] = "密码修改成功。";
+        $this->output->set_output(json_encode($out));
+
+        return true;
+	}
+/*}}}*/
+/*{{{ delete */
+	public function delete() {
+        $out = array();
+        $this->output->set_content_type('application/json');
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $id = $this->input->post("id");
+        if (!$id) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $param = array();
+        // Delete
+        $param['enable'] = 'D';
+        $this->load->model("muser");
+        if (!$ret = $this->muser->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "删除失败。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "删除成功。";
         $this->output->set_output(json_encode($out));
 
         return true;
