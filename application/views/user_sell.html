@@ -73,7 +73,11 @@
                         </tr>
                         <tr>
                             <td class="title">成交价</td>
+                            {% if not car.saw_num %}
                             <td>人民币{{car.final_price|number_format}}元</td>
+                            {% else %}
+                            <td>人民币{{show_final_price(car.final_price)}}元 (<em>如需查看详细价格，请联系客服。</em>)</td>
+                            {% endif %}
                         </tr>
                         {% endif %}
 

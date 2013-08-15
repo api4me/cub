@@ -34,6 +34,9 @@
             <th>购买日期</th>
             <th>里程</th>
             <th>登记时间</th>
+            {% if search.status == 'invalid' %}
+            <th>&nbsp;</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -47,6 +50,9 @@
             <td>{{item.buy_date|date('Y-m-d')}}</td>
             <td>{{item.mileage|number_format}}</td>
             <td>{{item.created|date('Y-m-d H:i')}}</td>
+            {% if search.status == 'invalid' %}
+            <td><button class="btn-link">删除</button></td>
+            {% endif %}
         </tr>
     {% else %}
         <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>

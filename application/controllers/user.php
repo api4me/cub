@@ -76,6 +76,13 @@ class User extends CI_Controller {
         $this->load->model("mauction");
         if ($data = $this->mauction->load_for_sell($search)) {
             $out["car"] = $data[0];
+            // Update saw num
+            if ($out['car']->status == 'success' && $out['car']->saw_num == 0) {
+                $this->load->model('mcar');
+                $param['saw_num'] = 1;
+                $this->mcar->save($param, $out['car']->id);
+            }
+
             if (count($data) > 1) {
                 $out["next"] = $data[1];
             }
@@ -122,6 +129,63 @@ class User extends CI_Controller {
         // Success
         $out["status"] = 0;
         $out["msg"] = "密码修改成功。";
+        $this->output->set_output(json_encode($out));
+
+        return true;
+	}
+/*}}}*/
+/*{{{ top */
+	public function top($id) {
+        $out = array();
+        $this->output->set_content_type('application/json');
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+        $user = $this->lsession->get('user');
+        if ($user->role != 'buyer') {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $this->load->model('mauction');
+        if ($tmp = $this->mauction->top($id)) {
+            $top = array();
+            $first = true;
+            foreach ($tmp['price'] as $k => $v) {
+                if ($first) {
+                    $first = false;
+                    if ($k != $user->username) {
+                        $v = str_repeat('*', strlen($v)); 
+                    }
+                }
+                if (strpos($v, '*') === false) {
+                    $v = number_format($v);
+                }
+                $a = $tmp['area'][$k];
+                if ($k != $user->username) {
+                    $k = substr($k, 0, 1) . str_repeat('*', strlen($k) - 2) . substr($k, -1);
+                }
+                $top[] = array('name' => $k, 'price' => $v, 'area' => $a);
+            }
+
+            $out['data'] = $top;
+        }
         $this->output->set_output(json_encode($out));
 
         return true;

@@ -25,7 +25,9 @@ class MAuction extends CI_Model {
             }
         }
         if ($num) {
-            $q = 'SELECT * FROM (SELECT * FROM `cub_auction` where user_id=? order by car_id desc, price desc) AS T GROUP BY car_id LIMIT ?, ?';
+            $q = 'SELECT * FROM (SELECT A.*, C.images FROM `##auction` A 
+            LEFT JOIN `##car` AS C ON A.car_id=C.id
+            where A.user_id=? order by A.car_id desc, A.price desc) AS T GROUP BY car_id LIMIT ?, ?';
             $query = $this->db->query($q, array($param['uid'], $param["start"], $param["per_page"]));
             $data = $query->result();
 

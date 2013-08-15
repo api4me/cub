@@ -78,7 +78,7 @@ class MPrebook extends CI_Model {
                 $data = array();
                 $data["name"] = $param["name"];
                 $data["username"] = $param["username"];
-                $data["pwd"] = md5("rryc123");
+                $data["pwd"] = md5("888888");
                 $data["phone"] = $prebook->phone;
                 $data["email"] = $param["email"];
                 $data["area"] = $param["area"];

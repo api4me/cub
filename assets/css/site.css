@@ -757,6 +757,7 @@ body {
 #user.buy div.span9 table td {
     font-size: 14px;
     text-align: center;
+    vertical-align: middle;
 }
 
 #user.sell table td.title {
