@@ -17,6 +17,7 @@
                 <input type="password" class="input-block-level" name="pwd">
                 <label class="tip">密码</label>
             </div>
+            {% if has_captcha %}
             <p class="help-block" id="p-captcha">
                 <img src="{{site_url()}}/captcha/?t={{time()}}" id="image-captcha"/><span class="btn btn-link" id="span-captcha" >看不清，换一张</span>
             </p>
@@ -24,6 +25,7 @@
                 <input type="text" class="input-block-level" name="captcha" autocomplete="off">
                 <label class="tip">验证码</label>
             </div>
+            {% endif %}
 
             <label class="checkbox">
                 <input type="checkbox" name="remember" value="remember-me"> 记住我

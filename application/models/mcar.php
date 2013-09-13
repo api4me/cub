@@ -20,6 +20,9 @@ class MCar extends CI_Model {
         if (isset($param["status"]) && $param["status"]) {
             $this->db->where("status", $param["status"]);
         }
+        if (isset($param["cert_code"]) && $param["cert_code"]) {
+            $this->db->where("cert_code", $param["cert_code"]);
+        }
     }
     public function load_all($param, $desc = false) {
         // For search

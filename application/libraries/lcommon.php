@@ -190,6 +190,15 @@ class LCommon {
     }
 /*}}}*/
 /*}}}*/
-
+/*{{{ is_pay */
+    public function is_pay($uid, $cid) {
+        static $data;
+        if (!isset($data)) {
+            $url = sprintf('http://localhost:6060/getpay?uid=%s', $uid);
+            $data = file_get_contents($url);
+        }
+        var_dump($data);
+    }
+/*}}}*/
 
 }

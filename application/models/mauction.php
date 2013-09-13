@@ -144,7 +144,7 @@ class MAuction extends CI_Model {
             }
 
             asort($out['price']);
-            $out['price'] = array_slice(array_reverse($out['price'], true), 0, 10, true);
+            $out['price'] = array_slice(array_reverse($out['price'], true), 0, 4, true);
         }
 
         return $out;

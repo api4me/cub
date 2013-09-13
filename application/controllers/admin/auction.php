@@ -24,7 +24,8 @@ class Auction extends Cub_Controller {
         $search = array();
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
-            $search["status"] = $this->input->post("status");
+//            $search["status"] = $this->input->post("status");
+            $search["cert_code"] = $this->input->post("cert_code");
             $this->lsession->set("auction_search", $search);
         } else {
             // Get search data from session

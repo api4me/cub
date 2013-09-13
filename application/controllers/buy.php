@@ -222,6 +222,26 @@ class Buy extends CI_Controller {
 
             return false;
         }
+        
+        // Payment <= market price
+        if ($param['price'] > $car->market_price) {
+            $out["status"] = 1;
+            $out["msg"] = "您的出价超过该车合理价格，请谨慎出价!";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Only pay 3 times
+        $max = 3;
+        $url = sprintf('http://localhost:6060/pay?uid=%s&cid=%s&max=%s', $param['user_id'], $param['car_id'], $max);
+        if (file_get_contents($url) >= $max) {
+            $out["status"] = 1;
+            $out["msg"] = "您已经出价3次，休息一会吧~";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
 
         $extra = array();
         $extra['ip'] = $this->input->ip_address();
@@ -244,20 +264,11 @@ class Buy extends CI_Controller {
         $out["msg"] = "出价成功，如果您是出价的领先者将有机会获得此爱车。";
         if ($tmp = $this->mauction->top($param['car_id'])) {
             $top = array();
-            $first = true;
             foreach ($tmp['price'] as $k => $v) {
-                if ($first) {
-                    $first = false;
-                    if ($k != $user->username) {
-                        $v = str_repeat('*', strlen($v)); 
-                    }
-                }
-                if (strpos($v, '*') === false) {
-                    $v = number_format($v);
-                }
                 $a = $tmp['area'][$k];
                 if ($k != $user->username) {
                     $k = substr($k, 0, 1) . str_repeat('*', strlen($k) - 2) . substr($k, -1);
+                    $v = str_repeat('*', strlen($v));
                 }
                 $top[] = array('name' => $k, 'price' => $v, 'area' => $a);
             }

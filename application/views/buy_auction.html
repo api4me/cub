@@ -37,7 +37,7 @@
                             <p>开始时间</p>
                             <p>{{item.sale_start_date|date('Y-m-d H:i')}}</p>
                         </div>
-                        <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-primary">我要竞拍</a></div>
+                        <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn btn-primary">{% if is_pay(user.id, item.id) %}已参与竞拍{% else %}我要竞拍{% endif %}</a></div>
                         {% else %}
                             <p>竞拍结束时间</p>
                             <p>{{item.sale_end_date|date('Y-m-d H:i')}}</p>

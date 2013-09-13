@@ -14,7 +14,10 @@ class HCommon {
 /*{{ auth */
     function nocache() {
         // Fix Broswer cache issue
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+//        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-control:no-cache,no-store,must-revalidate');
+        header("Pragma:no-cache");
+        header("Expires:0");
     }
 /*}}}*/
 

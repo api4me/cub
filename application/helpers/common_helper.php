@@ -245,3 +245,20 @@ if (!function_exists("show_final_price")) {
     }
 }
 /*}}}*/
+/*{{{ is_pay */
+if (!function_exists("is_pay")) {
+    function is_pay($uid, $cid) {
+        static $data;
+        if (!isset($data)) {
+            $url = sprintf('http://localhost:6060/getpay?uid=%s', $uid);
+            $data = explode(',', file_get_contents($url));
+        }
+        if (in_array($cid, $data)) {
+            return true;
+        }
+
+        return false;
+    }
+
+}
+/*}}}*/

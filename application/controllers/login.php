@@ -15,6 +15,9 @@ class Login extends CI_Controller {
         }
 
         $out["title"] = "登录";
+        if ($this->lsession->get('login_err_num')) {
+            $out['has_captcha'] = true;
+        }
         $this->twig->display("login.html", $out);
     }
 /*}}}*/
@@ -27,18 +30,20 @@ class Login extends CI_Controller {
         $param["remember"] = $this->input->post("remember");
 
         $out = array();
-        if (empty($param["captcha"])) {
-            $out["status"] = 1;
-            $out["msg"] = "请填写验证码";
-            echo json_encode($out);
+        if ($this->lsession->get("login_err_num")) {
+            if (empty($param["captcha"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请填写验证码";
+                echo json_encode($out);
 
-            return false;
-        } else if (strtolower($this->lsession->get("captcha")) != strtolower($param["captcha"])) {
-            $out["status"] = 1;
-            $out["msg"] = "验证码有误";
-            echo json_encode($out);
+                return false;
+            } else if (strtolower($this->lsession->get("captcha")) != strtolower($param["captcha"])) {
+                $out["status"] = 1;
+                $out["msg"] = "验证码有误";
+                echo json_encode($out);
 
-            return false;
+                return false;
+            }
         }
 
         $this->load->model("muser");
@@ -47,6 +52,10 @@ class Login extends CI_Controller {
             $out["msg"] = "用户名或密码不正确";
             echo json_encode($out);
 
+            $err_num = $this->lsession->get('login_err_num');
+            $err_num = $err_num? $err_num + 1 : 1;
+            $this->lsession->set('login_err_num', $err_num);
+
             return false;
         }
         $this->load->helper("common");
@@ -54,6 +63,9 @@ class Login extends CI_Controller {
         $out["status"] = 0;
         $out["msg"] = "登录成功";
         echo json_encode($out);
+
+        // Del captcha for login success
+        $this->lsession->del('login_err_num');
 
         return true;
     }
