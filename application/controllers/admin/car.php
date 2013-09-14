@@ -84,6 +84,7 @@ class Car extends Cub_Controller {
         $param["drive_mode"] = $this->lcommon->form_option("drive_mode"); 
         $param["fuel"] = $this->lcommon->form_option("fuel"); 
         $param["sale_type"] = $this->lcommon->form_option("sale_type"); 
+        $param["appraisal_level"] = $this->lcommon->form_option("appraisal_level"); 
 
         $param["issue"] = $this->lcommon->form_option("exists");
 
@@ -361,7 +362,9 @@ class Car extends Cub_Controller {
 
         // 车况级别评分
         $param["condition_score"] = $score;
-        $param["appraisal_level"] = get_appraisal($extra['issue_confirm'], $score);
+        if (!$param["appraisal_level"] = $this->input->post("appraisal_level")) {
+            $param["appraisal_level"] = get_appraisal($extra['issue_confirm'], $score);
+        }
         // 市场价
         $param["market_price"] = $this->input->post("market_price");
         if (!$this->lcommon->is_empty($param["market_price"]) 

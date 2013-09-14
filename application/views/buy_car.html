@@ -37,7 +37,12 @@
                         {% if user %}
                             {% if user.role == 'buyer' %}
                     <p class="auction-preview hide"></p>
-                    <p class="auction-now form-inline"><input type="text" name="price" id="price" maxlength="8" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> {% if car.sale_type == 'auction' %} 拍下 {% else %} 出价 {% endif %}</button></p>
+                    <p class="auction-now form-inline"><input type="text" name="price" id="price" maxlength="8" class="input-small" autocomplete="off" /> <button type="button" class="btn btn-primary"><i class="icon-hand-right icon-white"></i> {% if car.sale_type == 'auction' %} 拍下 {% else %} 出价 {% endif %}</button>
+                    {% if car.sale_type == 'auction' %}
+                    {% set limit = explode('$', pay_limit(user.id, car.id)) %}
+                    <span class="label label-important limit" data-limit="{{limit[0]}}">{{limit[1]}}</span>
+                    {% endif %}
+                     </p>
 
                     <div id="pay-modal" class="modal hide fade">
                         <div class="modal-header clearfix">

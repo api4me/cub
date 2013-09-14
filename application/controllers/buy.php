@@ -121,22 +121,6 @@ class Buy extends CI_Controller {
         if ($data = $this->mcar->load($id)) {
             $out['car'] = $data;
         }
-        /*
-        $a = array();
-        $a[] = array('key' => '基本配置', 'val' => '真皮电动记忆座椅 带天窗 多功能方向盘');
-        $a[] = array('key' => '是否在4S店保养', 'val' => '否');
-        $a[] = array('key' => '机动车登记证书', 'val' => '有');
-        $a[] = array('key' => '机动车行驶证', 'val' => '有');
-        $a[] = array('key' => '车辆购置税证', 'val' => '有');
-        $a[] = array('key' => '未处理交通违法记录', 'val' => '有');
-        $a[] = array('key' => '初次登记日期', 'val' => '2005-6-27');
-        $a[] = array('key' => '年审检验合格至', 'val' => '2013-9-28');
-        $a[] = array('key' => '车船税截止日期', 'val' => '2013-9-28');
-        $a[] = array('key' => '交强险截止日期', 'val' => '2013-9-28');
-        $a[] = array('key' => '商业险截止日期', 'val' => '2013-9-28');
-        $a[] = array('key' => '出险记录', 'val' => '最高出险金额为1875元');
-        var_dump(json_encode($a));die;
-        */
 
         $success = $this->mcar->load_recent_by_success($id);
         $out['success'] = $success;
@@ -267,7 +251,7 @@ class Buy extends CI_Controller {
             foreach ($tmp['price'] as $k => $v) {
                 $a = $tmp['area'][$k];
                 if ($k != $user->username) {
-                    $k = substr($k, 0, 1) . str_repeat('*', strlen($k) - 2) . substr($k, -1);
+                    $k = str_repeat('*', strlen($k) - 3) . substr($k, -3, 1) . '**';
                     $v = str_repeat('*', strlen($v));
                 }
                 $top[] = array('name' => $k, 'price' => $v, 'area' => $a);

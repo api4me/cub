@@ -367,7 +367,8 @@
             <div class="control-group">
                 <label class="control-label" for="inputConditionScore">车况级别评分</label>
                 <div class="controls">
-                    {{form_input("condition_score", car.condition_score, 'id="inputConditionScore" class="input-small" readonly')|raw}}<span class="level">{{car.appraisal_level}}</span>
+                    {{form_input("condition_score", car.condition_score, 'id="inputConditionScore" class="input-small" readonly')|raw}}
+                    {{form_dropdown("appraisal_level", param.appraisal_level, car.appraisal_level, 'id="inputAppraisalLevel" class="input-mini"')|raw}} <i class="icon-hand-left"></i>人工设定等级(系统以此为准)
                 </div>
             </div>
             <div class="control-group">

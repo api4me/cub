@@ -259,6 +259,21 @@ if (!function_exists("is_pay")) {
 
         return false;
     }
+}
+/*}}}*/
+/*{{{ pay_limit */
+if (!function_exists("pay_limit")) {
+    function pay_limit($uid, $cid) {
+        $url = sprintf('http://localhost:6060/paylimit?uid=%s&cid=%s&max=%s', $uid, $cid, 3);
+        $limit = file_get_contents($url);
 
+        if (!$limit) {
+            $out = '0$竞拍数已完';
+        } else {
+            $out = sprintf('%s$剩余竞拍%s次', $limit, $limit);
+        }
+
+        return $out;
+    }
 }
 /*}}}*/
