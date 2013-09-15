@@ -3,9 +3,7 @@
 {% block operate %}
 <div class="container">
     <h3>车辆一览
-    {% if search.status == 'invalid' %}
-    <span class="label label-important">无效处理的数据</span>
-    {% endif %}
+    <span id="msg"></span>
     </h3>
     {{form_open("/admin/car/", "class=\"form-inline\"")|raw}}
         <span class="label">手机号</span>
@@ -19,7 +17,7 @@
 {% endblock %}
 
 {% block data %}
-<div class="container">
+<div class="container" id="car-list">
     <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -31,6 +29,7 @@
             <th>状态</th>
             <th>登记日期</th>
             <th>更新日期</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -44,12 +43,14 @@
             <td>{{option_value('car_status', item.status)}}</td>
             <td>{{item.buy_date|date('Y-m-d')}}</td>
             <td>{{item.updated|date('Y-m-d h:i')}}</td>
+            <td><button class="btn-link delete" data-id="{{item.id}}">删除</button></td>
         </tr>
     {% else %}
         <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>
     {% endfor %}
     </tbody>
     </table>
+    <input type="hidden" name="base" value="{{site_url()}}" />
     {{pagination|raw}}
 </div>
 

@@ -24,12 +24,18 @@ body {
 
 #logo {padding: 15px 0}
 #logo div.span9 {
-    margin-top: 25px;
     float: left;
 }
 #logo div.span9 i {
     margin-top: 4px;
 }
+#logo div.span9 div.pull-left {
+    margin-top: 25px;
+}
+#logo div.span9 div.pull-right {
+    margin-top: 15px;
+}
+
 #logo form.s {
     width: 474px;
 }

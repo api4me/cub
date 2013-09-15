@@ -495,6 +495,27 @@
                 </div>
             </div>
             {% endif%}
+
+            {% if car.status == 'success' %}
+            <div class="control-group">
+                <label class="control-label" for="inputSaleTo">买家ID</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.sale_to}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFinalPrice">成交价</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.final_price}}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFee">服务费用</label>
+                <div class="controls">
+                    <span class="input-medium uneditable-input">{{car.fee}}</span>
+                </div>
+            </div>
+            {% endif %}
         </div>
         <!-- end sale status -->
         {% endif %}

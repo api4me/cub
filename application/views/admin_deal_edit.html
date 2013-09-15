@@ -417,7 +417,7 @@
 
     <div class="control-group">
         <div class="controls">
-        {% if car.status == 'auction' and sale_status != 'sold' %}
+        {% if car.status == 'auction' and sale_status != 'sold' and car.sale_type == 'auction' %}
             <a class="btn btn-primary disabled">竞拍交易进行中</a>
         {% else %}
             <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">交易完成</a>
@@ -439,6 +439,7 @@
     <div class="modal-body">
         <div id="modal-msg" class="label label-success"></div>
         <div class="well well-small">
+            {% if car.sale_type == 'auction' %}
             <table class="table table-bordered select-user">
                 <thead>
                     <tr>
@@ -460,6 +461,20 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <table class="table table-bordered select-user">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>排名</td>
+                        <td>用户ID</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            {% endif %}
             <div class="search-user">
                 <div class="block">
                     {{form_input("username", '')|raw}}

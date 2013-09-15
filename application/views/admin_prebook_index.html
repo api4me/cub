@@ -5,6 +5,7 @@
     <h3>车辆预约
     {% if search.status == 'invalid' %}
     <span class="label label-important">无效处理的数据</span>
+    <span id="msg"></span>
     {% endif %}
     </h3>
     {{form_open("/admin/prebook/", "class=\"form-inline\"")|raw}}
@@ -14,7 +15,7 @@
         {% if search.status == 'invalid' %}
         <button type="submit" class="btn btn-link pull-right btn-mini" name="status" value="valid">返回</button>
         {% else %}
-        <button type="submit" class="btn btn-link pull-right btn-mini" name="status" value="invalid">不小心错误无效数据，试试这里</button>
+        <button type="submit" class="btn btn-link pull-right btn-mini" name="status" value="invalid"><i class="icon-trash"></i> 不小心错误无效数据，试试这里</button>
         {% endif %}
     </div>
     </form>
@@ -22,7 +23,7 @@
 {% endblock %}
 
 {% block data %}
-<div class="container">
+<div class="container" id="prebook-list">
     <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -51,7 +52,7 @@
             <td>{{item.mileage|number_format}}</td>
             <td>{{item.created|date('Y-m-d H:i')}}</td>
             {% if search.status == 'invalid' %}
-            <td><button class="btn-link">删除</button></td>
+            <td><button class="btn-link delete" data-id="{{item.id}}">删除</button></td>
             {% endif %}
         </tr>
     {% else %}
@@ -59,6 +60,7 @@
     {% endfor %}
     </tbody>
     </table>
+    <input type="hidden" name="base" value="{{site_url()}}" />
     {{pagination|raw}}
 </div>
 
