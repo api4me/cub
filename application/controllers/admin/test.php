@@ -590,5 +590,40 @@ class Test extends Cub_Controller {
         return $this->limage->delimage($id);
     }
 /*}}}*/
+/*{{{ del */
+    public function del($id) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $this->load->model("mcar");
+        $param = array();
+        $param['status'] = 'del';
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "删除失败";
+            echo json_encode($out);
+
+            return false;
+        }
+        $out["status"] = 0;
+        $out["msg"] = "删除成功";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}i*/
 
 }

@@ -2,7 +2,9 @@
 
 {% block operate %}
 <div class="container">
-    <h3>交易登记</h3>
+    <h3>交易登记
+        <span id="msg"></span>
+    </h3>
     {{form_open("/admin/deal/", "class=\"form-inline\"")|raw}}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, "placeholder=\"手机号\"")|raw}}
@@ -13,7 +15,7 @@
 {% endblock %}
 
 {% block data %}
-<div class="container">
+<div class="container" id="deal-list">
     <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -26,6 +28,7 @@
             <th>出让价(人民币)</th>
             <th>销售状态</th>
             <th>登记时间</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
@@ -40,12 +43,14 @@
             <td>{{item.sale_price|number_format}}</td>
             <td>{{option_value("sale_status", sale_status(item.sale_start_date, item.sale_end_date))}}</td>
             <td>{{item.created|date('Y-m-d H:i')}}</td>
+            <td><button class="btn-link delete" data-id="{{item.id}}">删除</button></td>
         </tr>
     {% else %}
         <tr><td colspan="8"><em>查了半天，没有数据，等会刷新一下吧.</em></td></tr>
     {% endfor %}
     </tbody>
     </table>
+    <input type="hidden" name="base" value="{{site_url()}}" />
     {{pagination|raw}}
 </div>
 

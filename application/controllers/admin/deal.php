@@ -294,5 +294,116 @@ class Deal extends Cub_Controller {
         return true;
     }
 /*}}}*/
+/*{{{ a2c */
+    public function a2c($id = 0) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $param = array();
+        // Rewrite test data
+        $this->load->model("mcar");
+        if (!$car = $this->mcar->load($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // sale_start_date
+        $param["sale_start_date"] = $this->input->post("sale_start_date");
+        if ($this->lcommon->is_empty($param["sale_start_date"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写销售开始时间";
+            echo json_encode($out);
+
+            return false;
+        }
+        // sale_end_date
+        $param["sale_end_date"] = $this->input->post("sale_end_date");
+        if ($this->lcommon->is_empty($param["sale_end_date"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写销售结束时间";
+            echo json_encode($out);
+
+            return false;
+        }
+        if ($param["sale_start_date"] > $param["sale_end_date"]) {
+            $out["status"] = 1;
+            $out["msg"] = "结束时间应大于开始时间";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $param['sale_type'] = 'consign';
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "保存失败。";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        // Delete auction chart
+        $this->load->model('mcarchart');
+        $this->mcarchart->del($id, 'auction');
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "保存成功。";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}*/
+/*{{{ del */
+    public function del($id) {
+        $out = array();
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+        if (!$id || !is_numeric($id)) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            echo json_encode($out);
+
+            return false;
+        }
+
+        $this->load->model("mcar");
+        $param = array();
+        $param['status'] = 'del';
+        if (!$ret = $this->mcar->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "删除失败";
+            echo json_encode($out);
+
+            return false;
+        }
+        $out["status"] = 0;
+        $out["msg"] = "删除成功";
+        echo json_encode($out);
+
+        return true;
+    }
+/*}}}i*/
 
 }
