@@ -1,6 +1,10 @@
 application/cache/twig/*
-assets/upload/*.jpg
-assets/upload/*.png
-assets/upload/*.gif
+assets/upload
+assets/*.jpg
+assets/*.png
+assets/*.gif
+assets/img
+assets/dxx
 sync.py
 *.swp
+.idea
