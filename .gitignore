@@ -8,3 +8,4 @@ assets/dxx
 sync.py
 *.swp
 .idea
+.DS_Store
