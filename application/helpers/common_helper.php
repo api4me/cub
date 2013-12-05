@@ -138,6 +138,53 @@ EOF;
     }
 }
 /*}}}*/
+
+/*{{{ model_dropdown */
+if (!function_exists("model_dropdown2")) {
+    function model_dropdown2($name, $code, $attr, $blank = false) {
+        if (!isset($code) || $code == null) {
+            $code = '000001';
+        }
+        list($brand, $model) = str_split($code, 3);
+        $out[] = '<div id="model">';
+        $out[] = '<select name="brand" class="input-medium"></select>';
+        $out[] = '<select name="model" class="input-medium"></select>';
+        $out[] = "\n";
+        $out[] = '<script>';
+        $site_url = site_url();
+        $b = '';
+        if ($blank) {
+            $b = '$("#model select[name=\'brand\']").append($(\'<option value="">--</option>\'));';
+        }
+        $out[] = <<<EOF
+            jQuery(document).ready(function($){
+                $.get("{$site_url}/api/model/", function(data){
+                    {$b}
+                    data.data["000"] = {"000": "不限", "001": "不限"};
+                    $.each(data.data, function(k, v){
+                        var selected = (k == "{$brand}")? " selected" : "";
+                        $("#model select[name='brand']").append($('<option value="'+k+'"'+selected+'>' + v["000"]  + '</option>'));
+                    });
+                    $("#model select[name='brand']").change(function(){
+                        $("#model select[name='model']").empty();
+                        data.data[$(this).val()] && $.each(data.data[$(this).val()], function(k, v){
+                            if (k != "000") {
+                                var selected = (k == "{$model}")? " selected" : "";
+                                $("#model select[name='model']").append($('<option value="'+k+'"'+selected+'>' + v  + '</option>'));
+                            }
+                        });
+                    }).trigger("change");
+                }, "json");
+            });
+EOF;
+        $out[] = '</script></div>';
+
+        return implode($out);
+    }
+}
+/*}}}*/
+
+
 /*{{{ buydate_dropdown */
 if (!function_exists("buydate_dropdown")) {
     function buydate_dropdown() {
@@ -288,8 +335,8 @@ if (!function_exists("price_dropdown")) {
             '18万-24万', '24万-35万', '35万-60万','60万-100万', '100万以上');
 
         $i = 0;
-        while ($i <= count($text)) {
-            if ($i == $price_type) {
+        while ($i < count($text)) {
+            if ($i == intval($price_type)) {
                 $option[] = sprintf('<option value="%s" selected="selected">%s</option>' , $i . '', $text[$i]);
             } else {
                 $option[] = sprintf('<option value="%s">%s</option>' , $i . '', $text[$i]);
@@ -307,16 +354,21 @@ if (!function_exists("price_dropdown")) {
 
 /*{{{ age_dropdown */
 if (!function_exists("age_dropdown")) {
-    function age_dropdown() {
+    function age_dropdown($age_type) {
         $out[] = '<div id="age">';
 
         $option = array();
-        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
-        $option[] = sprintf('<option value="%s">%s</option>' , '1', '1年内');
-        $option[] = sprintf('<option value="%s">%s</option>' , '2', '1年-3年');
-        $option[] = sprintf('<option value="%s">%s</option>' , '3', '3年-5年');
-        $option[] = sprintf('<option value="%s">%s</option>' , '4', '5年-8年');
-        $option[] = sprintf('<option value="%s">%s</option>' , '5', '8年以上');
+        $text = array('不限', '1年内', '1年-3年', '3年-5年', '5年-8年', '8年以上');
+
+        $i = 0;
+        while ($i < count($text)) {
+            if ($i == intval($age_type)) {
+                $option[] = sprintf('<option value="%s" selected="selected">%s</option>' , $i . '', $text[$i]);
+            } else {
+                $option[] = sprintf('<option value="%s">%s</option>' , $i . '', $text[$i]);
+            }
+            $i++;
+        }
 
         $out[] = '<select name="consign_age" class="input-medium">' . implode("", $option) . '</select>';
         $out[] = '</div>';
@@ -328,16 +380,21 @@ if (!function_exists("age_dropdown")) {
 
 /*{{{ mileage_dropdown */
 if (!function_exists("mileage_dropdown")) {
-    function mileage_dropdown() {
+    function mileage_dropdown($mileage_type) {
         $out[] = '<div id="mileage">';
 
         $option = array();
-        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
-        $option[] = sprintf('<option value="%s">%s</option>' , '1', '1万公里以下');
-        $option[] = sprintf('<option value="%s">%s</option>' , '2', '3万公里以下');
-        $option[] = sprintf('<option value="%s">%s</option>' , '3', '5万公里以下');
-        $option[] = sprintf('<option value="%s">%s</option>' , '4', '8万公里以下');
-        $option[] = sprintf('<option value="%s">%s</option>' , '5', '8万公里以上');
+        $text = array('不限', '1万公里以下', '3万公里以下', '5万公里以下', '8万公里以下', '8万公里以上');
+
+        $i = 0;
+        while ($i < count($text)) {
+            if ($i == intval($mileage_type)) {
+                $option[] = sprintf('<option value="%s" selected="selected">%s</option>' , $i . '', $text[$i]);
+            } else {
+                $option[] = sprintf('<option value="%s">%s</option>' , $i . '', $text[$i]);
+            }
+            $i++;
+        }
 
         $out[] = '<select name="consign_mileage" class="input-medium">' . implode("", $option) . '</select>';
         $out[] = '</div>';
@@ -349,14 +406,21 @@ if (!function_exists("mileage_dropdown")) {
 
 /*{{{ gearbox_dropdown */
 if (!function_exists("gearbox_dropdown")) {
-    function gearbox_dropdown() {
+    function gearbox_dropdown($gearbox_type) {
         $out[] = '<div id="gearbox">';
 
         $option = array();
-        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
-        $option[] = sprintf('<option value="%s">%s</option>' , '1', '手动挡');
-        $option[] = sprintf('<option value="%s">%s</option>' , '2', '自动档');
-        $option[] = sprintf('<option value="%s">%s</option>' , '3', '手自一体');
+        $text = array('不限', '手动挡', '自动档', '手自一体');
+
+        $i = 0;
+        while ($i < count($text)) {
+            if ($i == intval($gearbox_type)) {
+                $option[] = sprintf('<option value="%s" selected="selected">%s</option>' , $i . '', $text[$i]);
+            } else {
+                $option[] = sprintf('<option value="%s">%s</option>' , $i . '', $text[$i]);
+            }
+            $i++;
+        }
 
         $out[] = '<select name="consign_gearbox" class="input-medium">' . implode("", $option) . '</select>';
         $out[] = '</div>';

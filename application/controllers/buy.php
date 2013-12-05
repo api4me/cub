@@ -65,8 +65,7 @@ class Buy extends CI_Controller {
         $search["start"] = intval($start);
         $search["per_page"] = 12;
 
-        // model search
-        $search["model"] = $this->input->post('brand') . $this->input->post('model');
+        $search["model"] = null;
         $search["price_low"] = null;
         $search["price_high"] = null;
         $search["date_start"] = null;
@@ -74,6 +73,12 @@ class Buy extends CI_Controller {
         $search["mileage_low"] = null;
         $search["mileage_high"] = null;
         $search["gearbox"] = null;
+
+        // model search
+        $model = $this->input->post('brand') . $this->input->post('model');
+        if ($model != '000001') {
+            $search["model"] = $model;
+        }
 
         // price search
         $price_table = array(1 => array(0, 30000),
@@ -139,6 +144,10 @@ class Buy extends CI_Controller {
         }
 
         $out["price_type"] = $price_type;
+        $out["age_type"] = $age_type;
+        $out["mileage_type"] = $mileage_type;
+        $out["gearbox_type"] = $gearbox_type;
+        $out["model"] = $model;
 
         $out["search"] = $search;
 

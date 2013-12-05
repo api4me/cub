@@ -179,11 +179,11 @@ class MCar extends CI_Model {
         }
 
         if ($param['date_start']) {
-            $where = $where . ' AND factory_date <= \'' . $param['date_start'] . '\'';
+            $where = $where . ' AND factory_date >= \'' . $param['date_start'] . '\'';
         }
 
         if ($param['date_end']) {
-            $where = $where . ' AND factory_date >= \'' . $param['date_end'] . '\'';
+            $where = $where . ' AND factory_date <= \'' . $param['date_end'] . '\'';
         }
 
         if ($param['mileage_low']) {
@@ -197,6 +197,8 @@ class MCar extends CI_Model {
         if ($param['gearbox']) {
             $where = $where . ' AND transmission = \'' . $param['gearbox'] . '\'';
         }
+
+        error_log("where is " . $where);
 
         $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q) . $where);
         $num = 0;

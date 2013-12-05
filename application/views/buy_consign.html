@@ -1,7 +1,19 @@
 {% extends "site.html" %}
 {% block data %}
 <div id="buy" class="container">
+    <script type="text/javascript">//<![CDATA[
 
+    function resetAll() {
+        $("#model select:first").val("000");
+        $("#model select:eq(1)").empty();
+        var option = $("<option>").val("001").text("不限");
+        $("#model select:eq(1)").append(option);
+        $("#price select:first").val("0");
+        $("#age select:first").val("0");
+        $("#mileage select:first").val("0");
+        $("#gearbox select:first").val("0");
+    }
+    //]]></script>
     <div class="clearfix row-fluid">
         <div class="span3">
             <div class="data">
@@ -9,7 +21,7 @@
                     <div class="control-group">
                         <label class="control-label" for="inputModel">品牌车型</label>
                         <div class="controls">
-                            {{model_dropdown("model", default.model, "id=\"inputModel\"")|raw}}
+                            {{model_dropdown2("model", model, "id=\"inputModel\"")|raw}}
                         </div>
                     </div>
                     <div class="control-group">
@@ -21,24 +33,25 @@
                     <div class="control-group">
                         <label class="control-label" for="inputAge">车龄</label>
                         <div class="controls">
-                            {{age_dropdown()|raw}}
+                            {{age_dropdown(age_type)|raw}}
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="inputMileage">里程数</label>
                         <div class="controls">
-                            {{mileage_dropdown()|raw}}
+                            {{mileage_dropdown(mileage_type)|raw}}
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="inputGearbox">变速箱</label>
                         <div class="controls">
-                            {{gearbox_dropdown()|raw}}
+                            {{gearbox_dropdown(gearbox_type)|raw}}
                         </div>
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <button type="submit" class="btn btn-primary pull-right">&nbsp;搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;</button>
+                            <button type="button" class="btn btn-danger pull-left" onclick="resetAll();">&nbsp;重&nbsp;&nbsp;置&nbsp;</button>
+                            <button type="submit" class="btn btn-primary pull-right">&nbsp;搜&nbsp;&nbsp;索&nbsp;</button>
                         </div>
                     </div>
                 </form>
