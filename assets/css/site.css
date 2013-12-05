@@ -820,3 +820,15 @@ body {
 #user ul.thumbnails li {
     margin: 2px;
 }
+
+#consign_search_form label.control-label {
+    width: 60px;
+}
+
+#consign_search_form div.controls {
+    margin-left: 70px;
+}
+
+.label-style-radio {
+    background-image: none;
+}

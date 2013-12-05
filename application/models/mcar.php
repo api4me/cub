@@ -165,14 +165,47 @@ class MCar extends CI_Model {
             SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign' AND sale_start_date<=now() AND sale_end_date>=now()
         ";
 
-        $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q));
+        $where = '';
+        if ($param['model']) {
+            $where = ' AND model = \'' . $param['model'] . '\' ';
+        }
+
+        if ($param['price_low']) {
+            $where = $where . ' AND sale_price >= ' . $param['price_low'];
+        }
+
+        if ($param['price_high']) {
+            $where = $where . ' AND sale_price <= ' . $param['price_high'];
+        }
+
+        if ($param['date_start']) {
+            $where = $where . ' AND factory_date <= \'' . $param['date_start'] . '\'';
+        }
+
+        if ($param['date_end']) {
+            $where = $where . ' AND factory_date >= \'' . $param['date_end'] . '\'';
+        }
+
+        if ($param['mileage_low']) {
+            $where = $where . ' AND mileage >= ' . $param['mileage_low'];
+        }
+
+        if ($param['mileage_high']) {
+            $where = $where . ' AND mileage >= ' . $param['mileage_high'];
+        }
+
+        if ($param['gearbox']) {
+            $where = $where . ' AND transmission = \'' . $param['gearbox'] . '\'';
+        }
+
+        $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q) . $where);
         $num = 0;
         foreach ($query->result() as $row) {
             $num += $row->num;
         }
         if ($num) {
             $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
-            $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
+            $query = $this->db->query(str_replace('?', $select, $q . $where) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
             $data = $query->result();
 
             return array(

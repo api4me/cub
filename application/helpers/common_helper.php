@@ -277,3 +277,91 @@ if (!function_exists("pay_limit")) {
     }
 }
 /*}}}*/
+
+/*{{{ price_dropdown */
+if (!function_exists("price_dropdown")) {
+    function price_dropdown($price_type) {
+        $out[] = '<div id="price">';
+
+        $option = array();
+        $text = array('不限', '3万以下', '3万-5万', '5万-8万', '8万-12万', '12万-18万',
+            '18万-24万', '24万-35万', '35万-60万','60万-100万', '100万以上');
+
+        $i = 0;
+        while ($i <= count($text)) {
+            if ($i == $price_type) {
+                $option[] = sprintf('<option value="%s" selected="selected">%s</option>' , $i . '', $text[$i]);
+            } else {
+                $option[] = sprintf('<option value="%s">%s</option>' , $i . '', $text[$i]);
+            }
+            $i++;
+        }
+
+        $out[] = '<select name="consign_price" class="input-medium">' . implode("", $option) . '</select>';
+        $out[] = '</div>';
+
+        return implode($out);
+    }
+}
+/*}}}*/
+
+/*{{{ age_dropdown */
+if (!function_exists("age_dropdown")) {
+    function age_dropdown() {
+        $out[] = '<div id="age">';
+
+        $option = array();
+        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
+        $option[] = sprintf('<option value="%s">%s</option>' , '1', '1年内');
+        $option[] = sprintf('<option value="%s">%s</option>' , '2', '1年-3年');
+        $option[] = sprintf('<option value="%s">%s</option>' , '3', '3年-5年');
+        $option[] = sprintf('<option value="%s">%s</option>' , '4', '5年-8年');
+        $option[] = sprintf('<option value="%s">%s</option>' , '5', '8年以上');
+
+        $out[] = '<select name="consign_age" class="input-medium">' . implode("", $option) . '</select>';
+        $out[] = '</div>';
+
+        return implode($out);
+    }
+}
+/*}}}*/
+
+/*{{{ mileage_dropdown */
+if (!function_exists("mileage_dropdown")) {
+    function mileage_dropdown() {
+        $out[] = '<div id="mileage">';
+
+        $option = array();
+        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
+        $option[] = sprintf('<option value="%s">%s</option>' , '1', '1万公里以下');
+        $option[] = sprintf('<option value="%s">%s</option>' , '2', '3万公里以下');
+        $option[] = sprintf('<option value="%s">%s</option>' , '3', '5万公里以下');
+        $option[] = sprintf('<option value="%s">%s</option>' , '4', '8万公里以下');
+        $option[] = sprintf('<option value="%s">%s</option>' , '5', '8万公里以上');
+
+        $out[] = '<select name="consign_mileage" class="input-medium">' . implode("", $option) . '</select>';
+        $out[] = '</div>';
+
+        return implode($out);
+    }
+}
+/*}}}*/
+
+/*{{{ gearbox_dropdown */
+if (!function_exists("gearbox_dropdown")) {
+    function gearbox_dropdown() {
+        $out[] = '<div id="gearbox">';
+
+        $option = array();
+        $option[] = sprintf('<option value="%s">%s</option>' , '0', '不限');
+        $option[] = sprintf('<option value="%s">%s</option>' , '1', '手动挡');
+        $option[] = sprintf('<option value="%s">%s</option>' , '2', '自动档');
+        $option[] = sprintf('<option value="%s">%s</option>' , '3', '手自一体');
+
+        $out[] = '<select name="consign_gearbox" class="input-medium">' . implode("", $option) . '</select>';
+        $out[] = '</div>';
+
+        return implode($out);
+    }
+}
+/*}}}*/

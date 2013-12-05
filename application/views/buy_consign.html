@@ -1,18 +1,47 @@
 {% extends "site.html" %}
 {% block data %}
 <div id="buy" class="container">
+
     <div class="clearfix row-fluid">
         <div class="span3">
-            <div class="list clearfix">
-                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 我要买车</span></div>
-                <ul class="clearfix">
-                {% set route = get_route() %}
-                    <li{% if route.method == 'auction' %} class="active" {%endif%}><a href="{{site_url()}}/buy/auction">竞拍车辆</a></li>
-                    <li{% if route.method == 'consign' %} class="active" {%endif%}><a href="{{site_url()}}/buy/consign">寄售车辆</a></li>
-                </ul>
-            </div>
-            <div class="banner">
-                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            <div class="data">
+                <form id="consign_search_form" action="{{site_url()}}/buy/consign/"  method="post" class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="inputModel">品牌车型</label>
+                        <div class="controls">
+                            {{model_dropdown("model", default.model, "id=\"inputModel\"")|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputPrice">价格</label>
+                        <div class="controls">
+                            {{price_dropdown(price_type)|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputAge">车龄</label>
+                        <div class="controls">
+                            {{age_dropdown()|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputMileage">里程数</label>
+                        <div class="controls">
+                            {{mileage_dropdown()|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputGearbox">变速箱</label>
+                        <div class="controls">
+                            {{gearbox_dropdown()|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary pull-right">&nbsp;搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 

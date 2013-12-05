@@ -64,7 +64,84 @@ class Buy extends CI_Controller {
         $search = array();
         $search["start"] = intval($start);
         $search["per_page"] = 12;
+
+        // model search
+        $search["model"] = $this->input->post('brand') . $this->input->post('model');
+        $search["price_low"] = null;
+        $search["price_high"] = null;
+        $search["date_start"] = null;
+        $search["date_end"] = null;
+        $search["mileage_low"] = null;
+        $search["mileage_high"] = null;
+        $search["gearbox"] = null;
+
+        // price search
+        $price_table = array(1 => array(0, 30000),
+            2 => array(30000, 50000),
+            3 => array(50000, 80000),
+            4 => array(80000, 120000),
+            5 => array(120000, 180000),
+            6 => array(180000, 240000),
+            7 => array(240000, 350000),
+            8 => array(350000, 600000),
+            9 => array(600000, 1000000),
+            10 => array(1000000, -1));
+        $price_type = intval($this->input->post('consign_price'));
+        if ($price_type > 0 && $price_type <= 10) {
+            if ($price_table[$price_type][0]) {
+                $search["price_low"] = $price_table[$price_type][0];
+            }
+
+            if ($price_table[$price_type][1] && $price_table[$price_type][1] != -1) {
+                $search["price_high"] = $price_table[$price_type][1];
+            }
+        }
+
+        // age search
+        $age_table = array(1 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 1)), -1 ),
+            2 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 3)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 1)) ),
+            3 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 5)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 3)) ),
+            4 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 8)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 5)) ),
+            5 => array(-1, date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 8))) );
+        $age_type = intval($this->input->post('consign_age'));
+        if ($age_type > 0 && $age_type <= 5) {
+            if ($age_table[$age_type][0] && $age_table[$age_type][0] != -1) {
+                $search["date_start"] = $age_table[$age_type][0];
+            }
+
+            if ($age_table[$age_type][1] && $age_table[$age_type][1] != -1) {
+                $search["date_end"] = $age_table[$age_type][1];
+            }
+        }
+
+        // mileage search
+        $mileage_table = array(1 => array(0, 10000),
+            2 => array(0, 30000),
+            3 => array(0, 50000),
+            4 => array(0, 80000),
+            5 => array(80000, -1));
+        $mileage_type = intval($this->input->post("consign_mileage"));
+        if ($mileage_type > 0 && $mileage_type <= 5) {
+            if ($mileage_table[$mileage_type][0]) {
+                $search["mileage_low"] = $mileage_table[$mileage_type][0];
+            }
+
+            if ($mileage_table[$mileage_type][1] && $mileage_table[$mileage_type][1] != -1) {
+                $search["mileage_high"] = $mileage_table[$mileage_type][1];
+            }
+        }
+
+        // gearbox search
+        $gearbox_table = array(1 => 'MT', 2 => 'AT', 3 => 'AMT');
+        $gearbox_type = intval($this->input->post("consign_gearbox"));
+        if ($gearbox_type > 0 && $gearbox_type <= 3) {
+            $search["gearbox"] = $gearbox_table[$gearbox_type];
+        }
+
+        $out["price_type"] = $price_type;
+
         $out["search"] = $search;
+
         // Consign
         $this->load->model("mcar");
         if ($data = $this->mcar->load_consign_by_condition($search)) {
