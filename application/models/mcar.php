@@ -198,7 +198,6 @@ class MCar extends CI_Model {
             $where = $where . ' AND transmission = \'' . $param['gearbox'] . '\'';
         }
 
-        error_log("where is " . $where);
 
         $query = $this->db->query(str_replace('?', 'COUNT(1) AS num', $q) . $where);
         $num = 0;
@@ -206,8 +205,8 @@ class MCar extends CI_Model {
             $num += $row->num;
         }
         if ($num) {
-            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
-            $query = $this->db->query(str_replace('?', $select, $q . $where) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
+            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price, updated";
+            $query = $this->db->query(str_replace('?', $select, $q . $where) . ' order by updated desc LIMIT ?, ?', array($param["start"], $param["per_page"]));
             $data = $query->result();
 
             return array(
