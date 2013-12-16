@@ -69,7 +69,7 @@ class MCar extends CI_Model {
         $presale = array();
         foreach ($arr as $v) {
             // demo car
-            if (strpos($v->cert_remark, '演示车辆') !== false) {
+            if (isset($v->cert_remark) && (strpos($v->cert_remark, '演示车辆') !== false)) {
                 $demo[] = $v;
                 continue;
             }
@@ -130,7 +130,11 @@ class MCar extends CI_Model {
             }
         }
 
-        $out = $demo + $selling + $presale + $sold;
+        array_splice($out, 0, 0, $demo);
+        array_splice($out, count($out), 0, $selling);
+        array_splice($out, count($out), 0, $presale);
+        array_splice($out, count($out), 0, $sold);
+
         return $out;
     }
 /*}}}*/
@@ -189,7 +193,7 @@ class MCar extends CI_Model {
             $num += $row->num;
         }
         if ($num) {
-            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price";
+            $select = "id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, sale_price, cert_remark";
             $query = $this->db->query(str_replace('?', $select, $q) . ' LIMIT ?, ?', array($param["start"], $param["per_page"]));
             $data = $this->_sort($query->result());
 
