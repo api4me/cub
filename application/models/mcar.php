@@ -64,8 +64,52 @@ class MCar extends CI_Model {
 
         $out = array();
         $sold = array();
+        $demo = array();
+        $selling = array();
+        $presale = array();
         foreach ($arr as $v) {
+            // demo car
+            if (strpos($v->cert_remark, '演示车辆') !== false) {
+                $demo[] = $v;
+                continue;
+            }
+
             switch($v->sale_status) {
+                case 'selling':
+                    $selling_added = false;
+                    // order by sale_end_date ascend
+                    if ($selling) {
+                        foreach ($selling as $k => $s) {
+                            if ($s->sale_end_date > $v->sale_end_date) {
+                                array_splice($selling, $k, 0, array($v));
+                                $selling_added = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!$selling_added) {
+                        $selling[] = $v;
+                    }
+                    break;
+                case 'presale':
+                    $presale_added = false;
+
+                    // order by sale_start_date ascend
+                    if ($presale) {
+                        foreach ($presale as $k => $s) {
+                            if ($s->sale_start_date < $v->sale_start_date) {
+                                array_splice($presale, $k, 0, array($v));
+                                $presale_added = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!$presale_added) {
+                        $presale[] = $v;
+                    }
+                    break;
                 case 'sold':
                     $added = false;
                     if ($sold) {
@@ -82,12 +126,11 @@ class MCar extends CI_Model {
                     }
                     break;
                 default:
-                    $out[] = $v;
                     break;
             }
         }
-        array_splice($out, count($out), 0, $sold);
 
+        $out = $demo + $selling + $presale + $sold;
         return $out;
     }
 /*}}}*/
@@ -96,15 +139,15 @@ class MCar extends CI_Model {
         // Saling + Wait for Auction + sold
         $q = "
             -- Seling
-            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'selling' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, cert_remark, 'selling' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date<=now() AND sale_end_date>=now())
             UNION
             -- Presale, Wait for auction
-            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'presale' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, cert_remark, 'presale' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_start_date>now())
             UNION
             -- Sold
-            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, 'sold' AS sale_status
+            (SELECT id, model, factory_date, condition_score, appraisal_level, sale_start_date, sale_end_date, bid_num, images, cert_remark, 'sold' AS sale_status
             FROM ##car WHERE status='auction' AND sale_type='auction' AND sale_end_date<now())
             LIMIT ?;
         ";
