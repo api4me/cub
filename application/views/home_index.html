@@ -198,4 +198,23 @@
         </div>
     </div>
 </div>
+{% set user = session_value("user") %}
+{% if user %}
+<div id="notification" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>重要通知</h3>
+    </div>
+    <div class="modal-body">
+        <p>2014年1.1起，仁人易车会员取消所有交易佣金即以后所有成交车辆交易不再需要缴纳2%的佣金，全部免费！</p>
+        <p>整个1月份为会员招募期，只要有成交，无论多少辆车子只收取1000元/月的会员信息服务费！</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</a>
+    </div>
+</div>
+<script type="text/javascript">//<![CDATA[
+$('#notification').modal('show');
+//]]></script>
+{% endif %}
 {% endblock %}
