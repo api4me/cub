@@ -11,7 +11,7 @@
                     <h4 class="title">{{model_value(car.model)}}</h4>
                     {% set sale_status = sale_status(car.sale_start_date, car.sale_end_date) %}
                     {% if car.status == 'auction' %}
-                    <p><span class="label{%if sale_status != 'sold'%} label-info{% endif %}">{% if car.sale_type == 'auction' %} {{option_value("sale_status", sale_status)}} {% else %} 销售中 {% endif %}</span></p>
+                    <p><span class="label{%if sale_status != 'sold'%} label-info{% endif %}">{% if car.sale_type == 'auction' %} {{option_value("sale_status", sale_status)}} {% else %} 销售中 {% endif %}</span><span>&nbsp;&nbsp;</span><span class="text-success text-right">车辆编号：{{ option_value("0000000", car.cert_code) }}</span></p>
                     {% else %}
                     <p><span class="label">已售</span></p>
                     {% endif %}
