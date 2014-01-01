@@ -72,12 +72,12 @@
                 </ul>
             </div>
 
-            {% if consign %}
-            <!-- consign -->
-            <div id="consign" class="sale clearfix">
-                <div class="head"><span class="title">寄售车辆</span><span class="btn-link more"><a href="{{site_url()}}/buy/consign/">更多</a></span></div>
+            {% if c_consign %}
+            <!-- c_consign -->
+            <div id="c_consign" class="sale clearfix">
+                <div class="head"><span class="title">寄售车辆（个人）</span><span class="btn-link more"><a href="{{site_url()}}/buy/c_consign">更多</a></span></div>
                 <ul class="clearfix">
-                    {% for item in consign %}
+                    {% for item in c_consign %}
                     <li>
                         <div class="img"><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" /></div>
                         <div class="misc">
@@ -92,6 +92,27 @@
                 </ul>
             </div>
             {% endif %}
+
+        {% if b_consign %}
+        <!-- b_consign -->
+        <div id="b_consign" class="sale clearfix">
+            <div class="head"><span class="title">寄售车辆(商家)</span><span class="btn-link more"><a href="{{site_url()}}/buy/b_consign">更多</a></span></div>
+            <ul class="clearfix">
+                {% for item in b_consign %}
+                <li>
+                    <div class="img"><img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" /></div>
+                    <div class="misc">
+                        <p>{{model_value(item.model)}}</p>
+                        <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                        <p>技术等级: {{item.appraisal_level}}</p>
+                        <p>价格: {{item.sale_price|number_format}}元</p>
+                    </div>
+                    <div><a href="{{site_url()}}/buy/car/{{item.id}}" class="btn">查看详情</a></div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
             <!-- social -->
             <div id="followme" class="clearfix">

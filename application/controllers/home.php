@@ -33,8 +33,10 @@ class Home extends CI_Controller {
         $auction = $this->mcar->load_for_auction(12);
         $out["auction"] = $auction;
         // Consign
-        $consign = $this->mcar->load_for_consign(12);
-        $out["consign"] = $consign;
+        $b_consign = $this->mcar->load_for_consign(12, "B");
+        $c_consign = $this->mcar->load_for_consign(12, "C");
+        $out["b_consign"] = $b_consign;
+        $out["c_consign"] = $c_consign;
         // Article
         $this->load->model("marticle");
         $article = array();

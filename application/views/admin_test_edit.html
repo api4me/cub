@@ -73,6 +73,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label" for="inputSaleType">来源 <span class="star">*</span></label>
+                <div class="controls">
+                    {{form_dropdown("consign_type", param.consign_type, car.consign_type, "id=\"inputConsignType\"")|raw}}
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label" for="inputModel">品牌型号 <span class="star">*</span></label>
                 <div class="controls">
                     {{model_dropdown("model", car.model, 'class="inputModel"')|raw}}

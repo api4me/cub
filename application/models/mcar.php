@@ -161,11 +161,16 @@ class MCar extends CI_Model {
     }
 /*}}}*/
 /*{{{ load_for_consign */
-    public function load_for_consign($count) {
+    public function load_for_consign($count, $consign_type) {
         $this->db->where('status', 'auction');
         $this->db->where('sale_type', 'consign');
         $this->db->where('sale_start_date <=', 'now()', false);
         $this->db->where('sale_end_date >=', 'now()', false);
+
+        if (isset($consign_type)) {
+            $this->db->where('consign_type', $consign_type);
+        }
+
         $query = $this->db->get("##car", $count);
 
         return $query->result();
@@ -243,6 +248,10 @@ class MCar extends CI_Model {
 
         if ($param['gearbox']) {
             $where = $where . ' AND transmission = \'' . $param['gearbox'] . '\'';
+        }
+
+        if ($param['consign_type']) {
+            $where = $where . ' AND consign_type = \'' . $param['consign_type'] . '\'';
         }
 
 

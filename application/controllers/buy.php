@@ -53,6 +53,147 @@ class Buy extends CI_Controller {
         $this->twig->display("buy_auction.html", $out);
     }
 /*}}}*/
+
+/* {{{个人寄售 */
+    public function c_consign($start = 0) {
+        $param = array();
+        $param["title"] = "我要买车 - 寄售车辆（个人）";
+        $param["consign_type"] = "C";
+        $param["link"] = "/buy/c_consign/";
+
+        $this->common_consign($start, $param);
+    }
+/* }}} */
+
+/* {{{商家寄售 */
+    public function b_consign($start = 0) {
+        $param = array();
+        $param["title"] = "我要买车 - 寄售车辆（商家）";
+        $param["consign_type"] = "B";
+        $param["link"] = "/buy/b_consign/";
+
+        $this->common_consign($start, $param);
+    }
+/* }}} */
+
+    private function common_consign($start, $param) {
+        $this->load->library("twig");
+        $out = array();
+        $out["title"] = $param["title"];
+
+        $this->config->load("pagination");
+        // Search
+        $search = array();
+        $search["start"] = intval($start);
+        $search["per_page"] = 12;
+
+        $search["model"] = null;
+        $search["price_low"] = null;
+        $search["price_high"] = null;
+        $search["date_start"] = null;
+        $search["date_end"] = null;
+        $search["mileage_low"] = null;
+        $search["mileage_high"] = null;
+        $search["gearbox"] = null;
+        $search["consign_type"] = $param["consign_type"];
+
+        // model search
+        $model = $this->input->post('brand') . $this->input->post('model');
+        if ($model != '000001') {
+            $search["model"] = $model;
+        }
+
+        // price search
+        $price_table = array(1 => array(0, 30000),
+            2 => array(30000, 50000),
+            3 => array(50000, 80000),
+            4 => array(80000, 120000),
+            5 => array(120000, 180000),
+            6 => array(180000, 240000),
+            7 => array(240000, 350000),
+            8 => array(350000, 600000),
+            9 => array(600000, 1000000),
+            10 => array(1000000, -1));
+        $price_type = intval($this->input->post('consign_price'));
+        if ($price_type > 0 && $price_type <= 10) {
+            if ($price_table[$price_type][0]) {
+                $search["price_low"] = $price_table[$price_type][0];
+            }
+
+            if ($price_table[$price_type][1] && $price_table[$price_type][1] != -1) {
+                $search["price_high"] = $price_table[$price_type][1];
+            }
+        }
+
+        // age search
+        $age_table = array(1 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 1)), -1 ),
+            2 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 3)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 1)) ),
+            3 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 5)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 3)) ),
+            4 => array(date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 8)), date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 5)) ),
+            5 => array(-1, date("Y-m-d", mktime(0, 0, 0, date("m"),   date("d"),   date("Y") - 8))) );
+        $age_type = intval($this->input->post('consign_age'));
+        if ($age_type > 0 && $age_type <= 5) {
+            if ($age_table[$age_type][0] && $age_table[$age_type][0] != -1) {
+                $search["date_start"] = $age_table[$age_type][0];
+            }
+
+            if ($age_table[$age_type][1] && $age_table[$age_type][1] != -1) {
+                $search["date_end"] = $age_table[$age_type][1];
+            }
+        }
+
+        // mileage search
+        $mileage_table = array(1 => array(0, 10000),
+            2 => array(0, 30000),
+            3 => array(0, 50000),
+            4 => array(0, 80000),
+            5 => array(80000, -1));
+        $mileage_type = intval($this->input->post("consign_mileage"));
+        if ($mileage_type > 0 && $mileage_type <= 5) {
+            if ($mileage_table[$mileage_type][0]) {
+                $search["mileage_low"] = $mileage_table[$mileage_type][0];
+            }
+
+            if ($mileage_table[$mileage_type][1] && $mileage_table[$mileage_type][1] != -1) {
+                $search["mileage_high"] = $mileage_table[$mileage_type][1];
+            }
+        }
+
+        // gearbox search
+        $gearbox_table = array(1 => 'MT', 2 => 'AT', 3 => 'AMT');
+        $gearbox_type = intval($this->input->post("consign_gearbox"));
+        if ($gearbox_type > 0 && $gearbox_type <= 3) {
+            $search["gearbox"] = $gearbox_table[$gearbox_type];
+        }
+
+        $out["price_type"] = $price_type;
+        $out["age_type"] = $age_type;
+        $out["mileage_type"] = $mileage_type;
+        $out["gearbox_type"] = $gearbox_type;
+        $out["model"] = $model;
+
+        $out["search"] = $search;
+
+        // Consign
+        $this->load->model("mcar");
+        if ($data = $this->mcar->load_consign_by_condition($search)) {
+            $out["consign"] = $data["data"];
+
+            // Pagaination
+            $this->load->library("pagination");
+            $this->pagination->uri_segment = 3;
+            $this->pagination->per_page = $search['per_page'];
+            $this->pagination->total_rows = $data["num"];
+            $this->pagination->base_url = site_url() . $param["link"];
+            $this->pagination->full_tag_open = '<div class="pagination pagination-centered"><ul>';
+            $out["pagination"] = $this->pagination->create_links();
+        }
+
+        $out["link"] = $param["link"];
+
+        $this->twig->display("buy_consign.html", $out);
+    }
+
 /*{{{ consign */
     public function consign($start = 0) {
         $this->load->library("twig");

@@ -89,6 +89,9 @@ class Test extends Cub_Controller {
 
         $param["issue"] = $this->lcommon->form_option("exists");
 
+        // 来源
+        $param["consign_type"] = array_slice($this->lcommon->form_option("consign_type"), 1);
+
         $out["param"] = $param;
 
         $this->render("admin_test_edit.html", $out);
@@ -143,6 +146,10 @@ class Test extends Cub_Controller {
 
             return false;
         }
+
+        // 来源
+        $param["consign_type"] = $this->input->post("consign_type");
+
         // model
         $param["model"] = $this->input->post("brand").$this->input->post("model");
         $param["model_name"] = model_value($param["model"]);
