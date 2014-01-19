@@ -182,4 +182,46 @@ class Article extends Cub_Controller {
     }
 /*}}}*/
 
+    /*{{{ delete */
+    public function delete() {
+        $out = array();
+        $this->output->set_content_type('application/json');
+        if (!$this->input->is_ajax_request()) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $id = $this->input->post("id");
+        if (!$id) {
+            $out["status"] = 1;
+            $out["msg"] = "系统忙，请稍后...";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        $param = array();
+        // Delete
+        $param['enable'] = 'D';
+        $this->load->model("marticle");
+        if (!$ret = $this->marticle->save($param, $id)) {
+            $out["status"] = 1;
+            $out["msg"] = "删除失败。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Success
+        $out["status"] = 0;
+        $out["msg"] = "删除成功。";
+        $this->output->set_output(json_encode($out));
+
+        return true;
+    }
+    /*}}}*/
+
 }

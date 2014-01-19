@@ -20,6 +20,7 @@ class MArticle extends CI_Model {
         if (isset($param["tag"]) && $param["tag"]) {
             $this->db->where("tag", $param["tag"]);
         }
+        $this->db->where("enable <>", 'D');
     }
     public function load_all($param) {
         // For search
