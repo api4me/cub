@@ -46,6 +46,7 @@
                                 <li><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
                                 <li><a href="{{site_url()}}/admin/auction/">拍卖管理</a></li>
                                 <li><a href="{{site_url()}}/admin/deal/">交易管理</a></li>
+                                <li><a href="{{site_url()}}/admin/purchase/">代购查询</a></li>
                             </ul>
                         </li>
                         <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
@@ -72,6 +73,7 @@
 
                     {% if common.user.role == 'waiter' %}
                         <li{%if common.control == "prebook" %} class="active"{%endif%}><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
+                        <li{%if common.control == "purchase" %} class="active"{%endif%}><a href="{{site_url()}}/admin/purchase/">代购查询</a></li>
                     {% endif %}
 
                     </ul>

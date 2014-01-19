@@ -153,3 +153,14 @@ div.money-preview {
     margin-bottom: 30px;
 }
 
+#purchase_search_form label.control-label {
+    width: 60px;
+}
+
+#purchase_search_form div.controls {
+    margin-left: 70px;
+}
+
+#purchase_search_form div div input {
+    width: 135px;
+}

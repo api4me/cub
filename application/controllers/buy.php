@@ -199,6 +199,7 @@ class Buy extends CI_Controller {
         $this->load->library("twig");
         $out = array();
         $out["title"] = "我要买车 - 寄售车辆";
+        $out["link"] = "/buy/";
 
         $this->config->load("pagination");
         // Search

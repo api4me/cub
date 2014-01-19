@@ -250,7 +250,7 @@ class MCar extends CI_Model {
             $where = $where . ' AND transmission = \'' . $param['gearbox'] . '\'';
         }
 
-        if ($param['consign_type']) {
+        if (isset($param['consign_type'])) {
             $where = $where . ' AND consign_type = \'' . $param['consign_type'] . '\'';
         }
 

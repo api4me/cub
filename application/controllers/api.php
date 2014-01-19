@@ -179,4 +179,99 @@ class Api extends CI_Controller {
     }
 /*}}}*/
 
+    /*{{{ purchase  */
+    public function purchase() {
+        $out = array();
+        $this->output->set_content_type('application/json');
+        $param = array();
+        // Name
+        $param['name'] = $this->input->post("name");
+        if ($this->lcommon->is_empty($param["name"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写用户名";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        } else {
+            if ($this->lcommon->get_size($param["name"]) > 16) {
+                $out["status"] = 1;
+                $out["msg"] = "用户名在16个字内(包括16)，请调整一下。";
+                $this->output->set_output(json_encode($out));
+
+                return false;
+            }
+        }
+        // Phone
+        $param['phone'] = $this->input->post("phone");
+        if ($this->lcommon->is_empty($param["phone"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请填写手机号";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        } else {
+            if (!$this->lcommon->is_phone($param["phone"])) {
+                $out["status"] = 1;
+                $out["msg"] = "手机号输入有误，请检查一下。";
+                $this->output->set_output(json_encode($out));
+
+                return false;
+            }
+        }
+        // Brand + Model
+        $param["model"] = strval($this->input->post("brand")) . strval($this->input->post("model"));
+        if ($this->lcommon->is_empty($param["model"])) {
+            $out["status"] = 1;
+            $out["msg"] = "请选择品牌车型";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        } else {
+            if(!$this->lcommon->model($param["model"])) {
+                $out["status"] = 1;
+                $out["msg"] = "品牌车型有误";
+                $this->output->set_output(json_encode($out));
+
+                return false;
+            }
+        }
+
+        $param['ip'] = $this->input->ip_address();
+
+        $this->load->model('mpurchase');
+        // Prevent irrigation
+        $arr = array(
+            'phone' => $param['phone'],
+            'model' => $param['model'],
+            'status' => 'add',
+        );
+
+        if ($this->mpurchase->count_by_key($arr) > 0) {
+            $out["status"] = 1;
+            $out["msg"] = "您的信息已经提交，请保持手机畅通，我们会尽快联系您。";
+            $this->output->set_output(json_encode($out));
+
+            return false;
+        }
+
+        // Insert in purchase
+        $param['status'] = 'add';
+        if ($this->mpurchase->save($param, 0)) {
+            // Success
+            $out["status"] = 0;
+            $out["msg"] = "提交成功。";
+            $this->output->set_output(json_encode($out));
+
+            return true;
+        }
+
+        error_log("save after");
+
+        $out["status"] = 1;
+        $out["msg"] = "提交失败。";
+        $this->output->set_output(json_encode($out));
+
+        return false;
+    }
+    /*}}}*/
 }

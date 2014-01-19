@@ -32,15 +32,15 @@ $config['role'] = array(
         'user' => array('*'),
     ),
     'admin' => array(
-        'admin' => array('prebook', 'test', 'auction', 'deal', 'car', 'stat'),
+        'admin' => array('prebook', 'purchase', 'test', 'auction', 'deal', 'car', 'stat'),
         'user' => array('*'),
     ),
     'leader' => array(
-        'admin' => array('prebook', 'test', 'stat', 'user'),
+        'admin' => array('prebook', 'purchase', 'test', 'stat', 'user'),
         'user' => array('*'),
     ),
     'appraiser' => array(
-        'admin' => array('prebook','auction', 'deal', 'car', 'stat', 'user'),
+        'admin' => array('prebook', 'purchase', 'auction', 'deal', 'car', 'stat', 'user'),
         'user' => array('*'),
     ),
     'waiter' => array(
