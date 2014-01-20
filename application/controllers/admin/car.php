@@ -25,6 +25,7 @@ class Car extends Cub_Controller {
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
             $search["status"] = $this->input->post("status");
+            $search["model_name"] = $this->input->post("model_name");
             $this->lsession->set("car_search", $search);
         } else {
             // Get search data from session

@@ -26,6 +26,9 @@ class User extends Cub_Controller {
             $search["username"] = $this->input->post("username");
             $search["role"] = $this->input->post("role");
             $search["enable"] = $this->input->post("enable");
+            $search["phone"] = $this->input->post("phone");
+            $search["startdate"] = $this->input->post("startdate");
+            $search["enddate"] = $this->input->post("enddate");
             $this->lsession->set("user_search", $search);
         } else {
             // Get search data from session

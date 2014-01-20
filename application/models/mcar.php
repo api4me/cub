@@ -24,6 +24,34 @@ class MCar extends CI_Model {
             $this->db->where("cert_code", $param["cert_code"]);
         }
         $this->db->where("status <>", 'del');
+
+        if (isset($param["model_name"]) && $param["model_name"]) {
+            $this->db->like("model_name", $param["model_name"]);
+        }
+
+        if (isset($param["startdate"]) && $param["startdate"]) {
+            $this->db->where("created >= ", $param["startdate"]);
+        }
+
+        if (isset($param["enddate"]) && $param["enddate"]) {
+            $this->db->where("created <= ", $param["enddate"]);
+        }
+
+        // presale 售前
+        // selling 售中
+        // sold 售后
+        if (isset($param["sale_status"])) {
+            $now = date("Y-m-d H:i", time());
+            if ($param["sale_status"] == 'presale') {
+                $this->db->where("sale_start_date > ", $now);
+            } else if ($param["sale_status"] == 'selling') {
+                $this->db->where("sale_start_date <= ", $now);
+                $this->db->where("sale_end_date >= ", $now);
+            } else if ($param["sale_status"] == 'sold') {
+                $this->db->where("sale_end_date < ", $now);
+            }
+        }
+
     }
     public function load_all($param, $desc = false) {
         // For search

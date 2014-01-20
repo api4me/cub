@@ -366,9 +366,12 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <td>竞价排名</td>
+                                <td>排名</td>
                                 <td>竞拍ID</td>
+                                <td>竞拍人姓名</td>
+                                <td>竞拍人电话</td>
                                 <td>竞价(人民币)</td>
+                                <td>出价时间</td>
                                 <td>地区</td>
                             </tr>
                         </thead>
@@ -378,7 +381,10 @@
                                 <tr>
                                     <td>{{loop.index}}</td>
                                     <td>{{u.username}}</td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{{val|number_format|default('-')}}元</td>
+                                    <td></td>
                                     <td>{{area_value(u.area)}}</td>
                                 </tr>
                             {% else %}

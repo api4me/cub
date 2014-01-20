@@ -6,6 +6,8 @@
     <span id="msg"></span>
     </h3>
     {{form_open("/admin/car/", "class=\"form-inline\"")|raw}}
+        <span class="label">车型</span>
+        {{form_input("model_name", search.model_name, 'class="input-medium"')|raw}}
         <span class="label">手机号</span>
         {{form_input("phone", search.phone, 'class="input-medium"')|raw}}
         <span class="label">状态</span>

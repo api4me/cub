@@ -24,6 +24,10 @@ class Deal extends Cub_Controller {
         $search = array();
         if ($this->input->post()) {
             $search["phone"] = $this->input->post("phone");
+            $search["model_name"] = $this->input->post("model_name");
+            $search["sale_status"] = $this->input->post("sale_status");
+            $search["startdate"] = $this->input->post("startdate");
+            $search["enddate"] = $this->input->post("enddate");
             $this->lsession->set("deal_search", $search);
         } else {
             // Get search data from session
@@ -36,6 +40,10 @@ class Deal extends Cub_Controller {
         // Only show auction data
         $search["status"] = "auction";
         $out["search"] = $search;
+
+        $param = array();
+        $param["sale_status"] = $this->lcommon->form_option("sale_status");
+        $out['param'] = $param;
 
         // The data of search
         $this->load->model("mcar");

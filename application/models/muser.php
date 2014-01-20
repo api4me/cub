@@ -55,6 +55,18 @@ class MUser extends CI_Model {
             $this->db->where("enable", $param["enable"]);
         }
         $this->db->where("enable <>", 'D');
+
+        if (isset($param["phone"]) && $param["phone"]) {
+            $this->db->like("phone", $param["phone"]);
+        }
+
+        if (isset($param["startdate"]) && $param["startdate"]) {
+            $this->db->where("last_logged >= ", $param["startdate"]);
+        }
+
+        if (isset($param["enddate"]) && $param["enddate"]) {
+            $this->db->where("last_logged <= ", $param["enddate"]);
+        }
     }
     public function select($param) {
         // For search
