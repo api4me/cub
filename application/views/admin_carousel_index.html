@@ -1,0 +1,64 @@
+{% extends "admin.html" %}
+
+{% block operate %}
+<div class="container">
+    <h3>首页动态图片</h3>
+</div>
+{% endblock %}
+
+{% block data %}
+<div class="container">
+    <div class="tab-pane" id="albums">
+        <div class="well">
+            <h3>注意事项</h3>
+            <ul>
+                <li>图片大小不能超过 <strong>2 MB</strong></li>
+                <li>最佳图片宽度 <strong>960px</strong></li>
+                <li>最佳图片高度 <strong>409px</strong></li>
+                <li>图片类型必须为<strong>JPG</strong></li>
+            </ul>
+        </div>
+        <br>
+        <div id="carousels">
+            {% for val in images %}
+            <ul class="thumbnails">
+                <li class="span10">
+                    <img id="{{val}}" src="{{base_url()}}assets/upload/img/carousel/{{val}}" alt="" />
+                </li>
+                <li class="span2">
+                    <a value="{{val}}" href="#carouselModal" role="button" class="btn" data-toggle="modal">上传</a>
+                    <span class="label label-success"></span>
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div id="carouselModal" class="modal hide fade upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">图片上传</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                <input type="file" name="upload" id="upload" />
+                <span class="label"></span>
+            </p>
+            <input type="hidden" name="base" value="{{site_url()}}" />
+            <input type="hidden" name="control" value="carousel" />
+            <input type="hidden" name="base-thumb" value="{{base_url()}}assets/upload/" />
+            <input type="hidden" name="id" value="" />
+            <div class="progress progress-striped">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

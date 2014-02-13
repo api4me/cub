@@ -50,14 +50,29 @@
                             </ul>
                         </li>
                         <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
-                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">内容管理</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容管理<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{site_url()}}/admin/article">文章管理</a></li>
+                                <li><a href="{{site_url()}}/admin/carmodel">车型管理</a></li>
+                                <li><a href="{{site_url()}}/admin/carousel">首页图片管理</a></li>
+                            </ul>
+                        </li>
+
                         <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
 <!--                        <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
 -->
                     {% endif %}
 
                     {% if common.user.role == 'admin' %}
-                        <li{%if common.control == "article" %} class="active"{%endif%}><a href="{{site_url()}}/admin/article">内容管理</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容管理<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{site_url()}}/admin/article">文章管理</a></li>
+                                <li><a href="#">车型管理</a></li>
+                                <li><a href="{{site_url()}}/admin/carousel">首页图片管理</a></li>
+                            </ul>
+                        </li>
                         <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
                     {% endif %}
 
