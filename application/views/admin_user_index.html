@@ -37,6 +37,7 @@
             <th>手机号</th>
             <th>用户类型</th>
             <th>是否可用</th>
+            <th>开通主页</th>
             <th>登录时间</th>
         </tr>
     </thead>
@@ -58,6 +59,17 @@
             {{option_value("enable", item.enable)}}
             </span>
             {% endif %}
+            </td>
+            <td class="center">
+                {% if item.homepage == 'Y' %}
+            <span class="label label-success">
+            {{option_value("homepage", item.homepage)}}
+            </span>
+                {% else %}
+            <span class="label">
+            {{option_value("homepage", item.homepage)}}
+            </span>
+                {% endif %}
             </td>
             <td>{{item.last_logged}}</td>
         </tr>

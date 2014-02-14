@@ -56,6 +56,7 @@ class MUser extends CI_Model {
         }
         $this->db->where("enable <>", 'D');
 
+
         if (isset($param["phone"]) && $param["phone"]) {
             $this->db->like("phone", $param["phone"]);
         }

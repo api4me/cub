@@ -93,6 +93,18 @@
             {% endif %}
         </div>
     </div>
+    {% if user.role == 'buyer' %}
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">是否开通主页 <span class="star">*</span></label>
+        <div class="controls">
+            {% if user.id == common.user.id %}
+            <span class="uneditable-input">{{option_value('homepage', user.homepage)}}</span>
+            {% else %}
+            {{form_dropdown("homepage", param.homepage, user.homepage, "id=\"inputEnable\"")|raw}}
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
     <div class="control-group">
         <label class="control-label" for="inputEnable">是否可用 <span class="star">*</span></label>
         <div class="controls">

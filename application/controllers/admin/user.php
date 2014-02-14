@@ -81,6 +81,7 @@ class User extends Cub_Controller {
             $param["role"] = $this->lcommon->form_option("role", true, array('guest'));
         }
         $param["enable"] = $this->lcommon->form_option("enable");
+        $param["homepage"] = $this->lcommon->form_option("homepage");
         $out["param"] = $param;
 
         if ($id && is_numeric($id)) {
@@ -227,6 +228,16 @@ class User extends Cub_Controller {
             if ($this->lcommon->is_empty($param["enable"])) {
                 $out["status"] = 1;
                 $out["msg"] = "请选择是否可用。";
+                echo json_encode($out);
+
+                return false;
+            }
+
+            // homepage
+            $param["homepage"] = trim($this->input->post("homepage"));
+            if ($this->lcommon->is_empty($param["homepage"])) {
+                $out["status"] = 1;
+                $out["msg"] = "请选择是否开通主页。";
                 echo json_encode($out);
 
                 return false;
