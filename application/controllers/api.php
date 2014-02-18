@@ -218,23 +218,41 @@ class Api extends CI_Controller {
                 return false;
             }
         }
-        // Brand + Model
-        $param["model"] = strval($this->input->post("brand")) . strval($this->input->post("model"));
-        if ($this->lcommon->is_empty($param["model"])) {
+
+        // Content
+        $param['content'] = $this->input->post("content");
+        if ($this->lcommon->is_empty($param["content"])) {
             $out["status"] = 1;
-            $out["msg"] = "请选择品牌车型";
+            $out["msg"] = "请填写代购要求";
             $this->output->set_output(json_encode($out));
 
             return false;
         } else {
-            if(!$this->lcommon->model($param["model"])) {
+            if (!$this->lcommon->get_size($param["content"]) > 200) {
                 $out["status"] = 1;
-                $out["msg"] = "品牌车型有误";
+                $out["msg"] = "代购要求请控制在200字以内。";
                 $this->output->set_output(json_encode($out));
 
                 return false;
             }
         }
+//        // Brand + Model
+//        $param["model"] = strval($this->input->post("brand")) . strval($this->input->post("model"));
+//        if ($this->lcommon->is_empty($param["model"])) {
+//            $out["status"] = 1;
+//            $out["msg"] = "请选择品牌车型";
+//            $this->output->set_output(json_encode($out));
+//
+//            return false;
+//        } else {
+//            if(!$this->lcommon->model($param["model"])) {
+//                $out["status"] = 1;
+//                $out["msg"] = "品牌车型有误";
+//                $this->output->set_output(json_encode($out));
+//
+//                return false;
+//            }
+//        }
 
         $param['ip'] = $this->input->ip_address();
 
@@ -242,7 +260,7 @@ class Api extends CI_Controller {
         // Prevent irrigation
         $arr = array(
             'phone' => $param['phone'],
-            'model' => $param['model'],
+            'content' => $param['content'],
             'status' => 'add',
         );
 
