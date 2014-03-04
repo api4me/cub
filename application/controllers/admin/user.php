@@ -242,6 +242,45 @@ class User extends Cub_Controller {
 
                 return false;
             }
+
+            if ($param["homepage"] == "Y") {
+                $param["agency_name"] = trim($this->input->post("agency_name"));
+                if ($this->lcommon->is_empty($param["agency_name"])) {
+                    $out["status"] = 1;
+                    $out["msg"] = "请填写经销商全名。";
+                    echo json_encode($out);
+
+                    return false;
+                }
+
+                $param["contact_name"] = trim($this->input->post("contact_name"));
+                if ($this->lcommon->is_empty($param["contact_name"])) {
+                    $out["status"] = 1;
+                    $out["msg"] = "请填写联系人。";
+                    echo json_encode($out);
+
+                    return false;
+                }
+
+                $param["contact_phone"] = trim($this->input->post("contact_phone"));
+                if ($this->lcommon->is_empty($param["contact_phone"])) {
+                    $out["status"] = 1;
+                    $out["msg"] = "请填写联系人电话。";
+                    echo json_encode($out);
+
+                    return false;
+                }
+
+                $param["agency_address"] = trim($this->input->post("agency_address"));
+                if ($this->lcommon->is_empty($param["agency_address"])) {
+                    $out["status"] = 1;
+                    $out["msg"] = "请填写经销商详细地址。";
+                    echo json_encode($out);
+
+                    return false;
+                }
+            }
+
         }
         $param["remark"] = trim($this->input->post("remark"));
 

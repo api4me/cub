@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block head %}
+<meta charset="utf-8">
+<title>加盟商管理平台 - 仁人易车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Le styles -->
+<link href="{{base_url()}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{base_url()}}assets/bootstrap/css/datetimepicker.css" rel="stylesheet">
+<link href="{{base_url()}}assets/bootstrap/css/bootstrap-fileupload.min.css" rel="stylesheet">
+<link href="{{base_url()}}assets/css/jquery.simplecolorpicker.css" rel="stylesheet">
+<link href="{{base_url()}}assets/css/agency-admin.css" rel="stylesheet">
+<!--[if lt IE 9]>
+<script src="{{base_url()}}assets/js/html5shiv.js"></script>
+<![endif]-->
+<script src="{{base_url()}}assets/js/jquery.min.js"></script>
+<script src="{{base_url()}}assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{base_url()}}assets/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{base_url()}}assets/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="{{base_url()}}assets/js/jquery.ui.widget.js"></script>
+<script src="{{base_url()}}assets/js/jquery.iframe-transport.js"></script>
+<script src="{{base_url()}}assets/js/jquery.fileupload.js"></script>
+<script src="{{base_url()}}assets/js/jquery.simplecolorpicker.js"></script>
+<script src="{{base_url()}}assets/editor/ckeditor.js"></script>
+<script src="{{base_url()}}assets/editor/ckfinder/ckfinder.js"></script>
+<script src="{{base_url()}}assets/js/highcharts.js"></script>
+<script src="{{base_url()}}assets/js/agency-admin.min.js"></script>
+{{library_src|raw}}
+{{script_head|raw}}
+{% endblock %}
+{% block content %}
+{% block nav %}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="{{site_url()}}" title="返回首页" alt="返回首页"><i class="icon-home icon-white"></i> &nbsp;</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+
+                    {% if common.user.role == 'super' %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle{%if common.control in ['prebook', 'test', 'auction', 'deal'] %} active{%endif%}" data-toggle="dropdown">业务管理<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
+                            <li><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
+                            <li><a href="{{site_url()}}/admin/auction/">拍卖管理</a></li>
+                            <li><a href="{{site_url()}}/admin/deal/">交易管理</a></li>
+                            <li><a href="{{site_url()}}/admin/purchase/">代购查询</a></li>
+                        </ul>
+                    </li>
+                    <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容管理<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{site_url()}}/admin/article">文章管理</a></li>
+                            <li><a href="{{site_url()}}/admin/carmodel">车型管理</a></li>
+                            <li><a href="{{site_url()}}/admin/carousel">首页图片管理</a></li>
+                        </ul>
+                    </li>
+
+                    <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
+                    <!--                        <li{%if common.control == "stat" %} class="active"{%endif%}><a href="{{site_url()}}/admin/stat">统计</a></li>
+                    -->
+                    {% endif %}
+
+                    {% if common.user.role == 'admin' %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容管理<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{site_url()}}/admin/article">文章管理</a></li>
+                            <li><a href="#">车型管理</a></li>
+                            <li><a href="{{site_url()}}/admin/carousel">首页图片管理</a></li>
+                        </ul>
+                    </li>
+                    <li{%if common.control == "user" %} class="active"{%endif%}><a href="{{site_url()}}/admin/user">用户及权限</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'leader' %}
+                    <li{%if common.control == "auction" %} class="active"{%endif%}><a href="{{site_url()}}/admin/auction/">拍卖管理</a></li>
+                    <li{%if common.control == "deal" %} class="active"{%endif%}><a href="{{site_url()}}/admin/deal/">交易登记</a></li>
+                    <li{%if common.control == "car" %} class="active"{%endif%}><a href="{{site_url()}}/admin/car">车辆管理</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'appraiser' %}
+                    <li{%if common.control == "test" %} class="active"{%endif%}><a href="{{site_url()}}/admin/test/">车辆检测</a></li>
+                    {% endif %}
+
+                    {% if common.user.role == 'waiter' %}
+                    <li{%if common.control == "prebook" %} class="active"{%endif%}><a href="{{site_url()}}/admin/prebook/">预约确认</a></li>
+                    <li{%if common.control == "purchase" %} class="active"{%endif%}><a href="{{site_url()}}/admin/purchase/">代购查询</a></li>
+                    {% endif %}
+
+                </ul>
+                <ul class="nav pull-right">
+                    <li><a href="#">您好，{{common.user.name}}</a></li>
+                    <li><a href="{{site_url()}}/logout/" title="退出" alt="退出"><i class="icon-off icon-white"></i> &nbsp;</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+{% endblock %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

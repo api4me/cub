@@ -104,6 +104,30 @@
             {% endif %}
         </div>
     </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">经销商全名 <span class="star">*</span></label>
+        <div class="controls">
+            {{form_input("agency_name", user.agency_name, "id=\"agency_name\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">联系人 <span class="star">*</span></label>
+        <div class="controls">
+            {{form_input("contact_name", user.contact_name, "id=\"contact_name\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">联系电话 <span class="star">*</span></label>
+        <div class="controls">
+            {{form_input("contact_phone", user.contact_phone, "id=\"contact_phone\"")|raw}}
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputEnable">详细地址 <span class="star">*</span></label>
+        <div class="controls">
+            {{form_input("agency_address", user.agency_address, "id=\"agency_address\"")|raw}}
+        </div>
+    </div>
     {% endif %}
     <div class="control-group">
         <label class="control-label" for="inputEnable">是否可用 <span class="star">*</span></label>

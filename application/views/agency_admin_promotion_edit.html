@@ -1,0 +1,74 @@
+{% extends "agency_admin.html" %}
+
+{% block operate %}
+{% endblock %}
+
+{% block data %}
+<div id="promotion" class="container">
+    <h3>促销信息管理: {{promotion.title}}</h3>
+    <hr>
+
+    <p id="msg"></p>
+    {{form_open("/agency/promotion/save/" ~ promotion.id, "class=\"form-horizontal\"")|raw}}
+    <div class="control-group">
+        <label class="control-label" for="inputTitle">标题</label>
+        <div class="controls">
+            {{form_input("title", promotion.title, "id=\"inputTitle\"")|raw}}
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="inputContent">内容</label>
+        <div class="controls">
+            {{form_textarea("content", promotion.content, "id=\"inputContent\"")|raw}}
+        </div>
+    </div>
+
+    {% if article.id %}
+    <div class="control-group">
+        <label class="control-label" for="inputCreated">创建时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{article.created}}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputUpdated">更新时间</label>
+        <div class="controls">
+            <span class="input-medium uneditable-input">{{article.updated}}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="#delete-modal" role="button" class="btn btn-danger" data-toggle="modal">删除</a>
+            <!-- Modal Close -->
+            <div id="delete-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">删除确认</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="delete-modal-msg" class="label label-success"></div>
+                    <div class="well">
+                        <p>
+                            确认需要删除该信息吗？删除后，信息将<span class="label label-inverse">无法找回</span>。如果点错了，按关闭按钮。
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" name="delete" value="delete">确定</button>
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+                </div>
+            </div>
+            <a href="{{site_url()}}/agency/promotion/" class="btn">返回</a>
+        </div>
+    </div>
+    <input type="hidden" name="base" value="{{base_url()}}" />
+    <input type="hidden" name="base-promotion" value="{{site_url()}}" />
+    <input type="hidden" name="id" value="{{promotion.id}}" />
+
+    </form>
+</div>
+{% endblock %}

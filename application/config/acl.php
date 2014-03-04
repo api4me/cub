@@ -50,6 +50,7 @@ $config['role'] = array(
     'buyer' => array(
         'admin' => array('*'),
         'user' => array('sell'),
+        'agency' => array('promotion'),
     ),
     'sell' => array(
         'admin' => array('*'),
