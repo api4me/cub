@@ -179,4 +179,13 @@ class MUser extends CI_Model {
     }
 /*}}}*/
 
+    public function load_for_homepage() {
+        $this->db->where("role", 'buyer');
+        $this->db->where("homepage", "Y");
+        $this->db->where("enable <>", 'D');
+        $query = $this->db->get("##user");
+
+        return $query->result();
+    }
+
 }

@@ -236,11 +236,12 @@ class User extends Cub_Controller {
             // homepage
             $param["homepage"] = trim($this->input->post("homepage"));
             if ($this->lcommon->is_empty($param["homepage"])) {
-                $out["status"] = 1;
-                $out["msg"] = "请选择是否开通主页。";
-                echo json_encode($out);
-
-                return false;
+//                $out["status"] = 1;
+//                $out["msg"] = "请选择是否开通主页。";
+//                echo json_encode($out);
+//
+//                return false;
+                $param["homepage"] = "N";
             }
 
             if ($param["homepage"] == "Y") {

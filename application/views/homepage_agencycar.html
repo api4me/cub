@@ -1,0 +1,224 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="buy-car" class="container">
+<div class="clearfix row-fluid">
+
+<div class="span9">
+{% set extra = json_decode(car.extra, true)%}
+<div class="clearfix">
+    <!-- car-info -->
+    <div class="span4 car-info pull-right">
+        <h4 class="title">{{model_value(car.model)}}</h4>
+
+        <p>行驶里程: {{car.mileage|number_format}}公里</p>
+        <p>上牌时间: {{car.buy_date|date('Y年m月d日')}}</p>
+        <p>排量: {% if car.displacement %}{{option_value('displacement', car.displacement)}} {% endif %}</p>
+        {% if car.color %}
+        <p>颜色: {{option_value('color', car.color)}} <font style="background-color:{{car.color}}">{{str_repeat('&nbsp;', 5)|raw}}</font></p>
+        {% endif %}
+
+        <p>寄售价: 人民币{{car.sale_price|number_format}}元</p>
+
+        <p><a href="http://wpa.qq.com/msgrd?v=3&uin=123341993&site=qq&menu=yes" target="_blank"><i class="icon-hand-right"></i> 咨询或购买，请联系我们</a></p>
+        <p class="text-error">联系电话：400 997 0017</p>
+        <input type="hidden" name="id" value="{{car.id}}" />
+    </div>
+    <!-- image -->
+    <div class="span7 pull-left">
+        {% set images = json_decode(car.images, true) %}
+        {% if images %}
+        <div id="myCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                {% for item in images %}
+                <div class="item{% if loop.first %} active{% endif %}">
+                    <img src="{{base_url()}}assets/upload/{{str_replace('_i', '', item)}}" />
+                </div>
+                {% endfor %}
+            </div>
+            {% if count(images) > 1%}
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            {% endif %}
+            <a href="#" class="carousel-magnifier">看原图</a>
+        </div>
+        <div id="carousel-modal" class="modal hide fade">
+            <div class="modal-header clearfix">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+        {% else %}
+        <div id="myCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <img src="{{base_url()}}assets/upload/fde01e21dd11e3a622836bbe3257893b.jpg" />
+        </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- car detail info -->
+<div class="clearfix car-detail">
+    <div class="head"><span class="title"><i class="icon-ok icon-white"></i> 车辆基本信息</span></div>
+    <table class="table table-bordered">
+        <tbody><tr>
+            <td class="one">车牌号</td>
+            <td>{% if car.car_num %} {{substr(car.car_num, 0, -5) ~ '***' ~substr(car.car_num, -1)}} {% endif %}</td>
+            <td class="one">车辆所在地</td>
+            <td>{% if car.area %} {{area_value(car.area)}} {% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">发动机号</td>
+            <td>{% if car.engine_num %} {{'*' ~ substr(car.engine_num, 1, -1) ~ '*'}} {% endif %}</td>
+            <td class="one">车架号</td>
+            <td>{% if car.chassis_num %} {{substr(car.chassis_num, 0, 3) ~ '***' ~ substr(car.chassis_num, 6, -3) ~ '***'}} {% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">出厂年月</td>
+            <td>{{car.factory_date|date('Y年m月')}}</td>
+            <td class="one">初次登记日期</td>
+            <td>{{car.buy_date|date('Y年m月')}}</td>
+        </tr>
+        <tr>
+            <td class="one">年检证明</td>
+            <td>{% if car.annual_test %}有，至{{car.annual_test|date('Y年m月')}}{% else %}无{% endif %}</td>
+            <td class="one">购置税证书</td>
+            <td>{% if car.tax_cert %}{{option_value('exists', car.tax_cert)}}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">车船税证明</td>
+            <td>{% if car.vv_tax %}有，至{{car.vv_tax|date('Y年m月')}}{% else %}无{% endif %}</td>
+            <td class="one">交强险</td>
+            <td>{% if car.traffic_insurance %}有，至{{car.traffic_insurance|date('Y年m月')}}{% else %}无{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">使用性质</td>
+            <td>{% if car.use_of_nature %} {{option_value('use_of_nature', car.use_of_nature)}} {% endif %}</td>
+            <td class="one">其他法定凭证/证明</td>
+            <td>
+                {% if car.other_cert_type == 'other' %}
+                {{car.other_cert_value}}
+                {% elseif car.other_cert_type %}
+                {{option_value('other_cert_type', car.other_cert_type)}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td class="one">保险/证件信息备注</td>
+            <td colspan="3">{{car.cert_remark|nl2br}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="clearfix car-detail">
+    <div class="head"><span class="title"><i class="icon-ok icon-white"></i> 规格参数</span></div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td class="one">燃料种类</td>
+            <td>{% if car.fuel %}{{option_value('fuel', car.fuel)}}{% endif %}</td>
+            <td class="one">排量</td>
+            <td>{% if car.displacement %}{{option_value('displacement', car.displacement)}} {% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">缸数</td>
+            <td>{% if car.cylinder %}{{option_value('cylinder', car.cylinder)}}{% endif %}</td>
+            <td class="one">发动机功率</td>
+            <td>{% if car.engine_power %}{{car.engine_power}}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">排放标准</td>
+            <td>{% if car.emission_std %}{{option_value('emission_std', car.emission_std)}}{% endif %}</td>
+            <td class="one">变速箱</td>
+            <td>{% if car.transmission %}{{option_value('transmission', car.transmission)}}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">气囊</td>
+            <td>{% if car.air_sac %}{{option_value('air_sac', car.air_sac)}}{% endif %}</td>
+            <td class="one">驱动方式</td>
+            <td>{% if car.drive_mode %}{{option_value('drive_mode', car.drive_mode)}}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">其他重要配置</td>
+            <td colspan="3">{{car.other_conf|nl2br}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% if extra %}
+<div class="clearfix car-detail">
+    <div class="head"><span class="title"><i class="icon-ok icon-white"></i> 技术鉴定</span></div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td class="one">损伤位置/损伤状况</td>
+            <td colspan="2">{% if extra.issue_info %}{{extra.issue_info|nl2br}}{% endif %}</td>
+        </tr>
+        <tr>
+            <td class="one">鉴定科目</td>
+            <td class="score">鉴定结果(得分)</td>
+            <td class="info">缺陷描述</td>
+        </tr>
+        <tr>
+            <td class="one">车身检查</td>
+            <td class="center">{{extra.appraisal_body_score}}</td>
+            <td>{{extra.appraisal_body_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">发动机机检查 评分</td>
+            <td class="center">{{extra.appraisal_engine_score}}</td>
+            <td>{{extra.appraisal_engine_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">车内检查 评分</td>
+            <td class="center">{{extra.appraisal_inner_score}}</td>
+            <td>{{extra.appraisal_inner_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">启动检查 评分</td>
+            <td class="center">{{extra.appraisal_start_score}}</td>
+            <td>{{extra.appraisal_start_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">路试检查 评分</td>
+            <td class="center">{{extra.appraisal_road_score}}</td>
+            <td>{{extra.appraisal_road_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">底盘检查 评分</td>
+            <td class="center">{{extra.appraisal_chassis_score}}</td>
+            <td>{{extra.appraisal_chassis_comment|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">技术鉴定信息备注</td>
+            <td colspan="3">{{extra.remark|nl2br}}</td>
+        </tr>
+        <tr>
+            <td class="one">鉴定结果</td>
+            <td><span class="label label-inverse">{{car.condition_score}}</span> <i class="icon-hand-left"></i> 综合得分</td>
+            <td><span class="label label-inverse">{{car.appraisal_level}}</span> {% if extra.issue_confirm == 'yes' %}事故车{% endif %} <i class="icon-hand-left"></i> 技术状况等级</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
+</div>
+<div class="span3">
+    <div class="list clearfix">
+        <div class="head"><span class="title">{{agency.agency_name}}</span></div>
+        <ul>
+            <li>联&nbsp;系&nbsp;人&nbsp;：{{agency.contact_name}}</li>
+            <li>联系电话：{{agency.contact_phone}}</li>
+            <li>详细地址：{{agency.agency_address}}</li>
+        </ul>
+    </div>
+    <div class="banner">
+        <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+    </div>
+</div>
+
+</div>
+
+</div>
+{% endblock %}

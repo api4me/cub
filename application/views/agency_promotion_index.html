@@ -1,0 +1,67 @@
+{% extends "agency_admin.html" %}
+
+{% block data %}
+<div id="user" class="container profile">
+    <div class="clearfix row-fluid">
+        <div class="span3">
+            <div class="list clearfix">
+                <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 个人中心</span></div>
+                <ul class="clearfix">
+                    {% set route = get_route() %}
+                    <li{% if route.method == 'index' and route.class == 'user' %} class="active" {%endif%}><a href="{{site_url()}}/user/">我的资料</a></li>
+                    {% if user.role == 'buyer' %}
+                    <li{% if route.method == 'buy' %} class="active" {%endif%}><a href="{{site_url()}}/user/buy">我的交易</a></li>
+                    {% if user.homepage == 'Y' %}
+                    <li {% if route.class == 'agencycar' %} class="active" {%endif%}><a href="{{site_url()}}/agency/agencycar">我的待售车辆</a></li>
+                    <li {% if route.class == 'promotion' %} class="active" {%endif%}><a href="{{site_url()}}/agency/promotion">我的促销</a></li>
+                    {% endif %}
+                    {% elseif user.role == 'sell' %}
+                    <li{% if route.method == 'sell' %} class="active" {%endif%}><a href="{{site_url()}}/user/sell">我的爱车</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="banner">
+                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
+            </div>
+        </div>
+
+        <div class="span9">
+            <div class="detail clearfix content_background">
+                <div>
+                    <h3>促销信息一览
+                        <span id="msg"></span>
+                    </h3>
+                </div>
+
+                <div id="car-list">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>标题</th>
+                            <th>编辑时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in promotions %}
+                        <tr>
+                            <td>{{loop.index + search.start}}</td>
+                            <td><a href="{{site_url()}}/agency/promotion/edit/{{item.id}}">{{item.title}}</a></td>
+                            <td>{{item.updated}}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="7"><em>查了半天，没有数据，不如添加一条吧.</em></td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a class="btn span2" href="{{site_url()}}/agency/promotion/edit/0">新增</a>
+                    {{pagination|raw}}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

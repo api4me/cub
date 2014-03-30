@@ -186,36 +186,48 @@
             </div>
 
             <div class="banner">
-                <div class="head"><span class="title">寻车代购</span></div>
-                <div class="data">
-                    <form id="purchase-form" action="{{site_url()}}/api/purchase"  method="post" class="form-horizontal">
-                        <div id="purchase_msg"></div>
-                        <div class="control-group">
-                            <label class="control-label" for="inputName">姓名</label>
-                            <div class="controls">
-                                <input type="text" id="inputName" placeholder="姓名" name="name">
-                            </div>
+            <div class="head"><span class="title">寻车代购</span></div>
+            <div class="data">
+                <form id="purchase-form" action="{{site_url()}}/api/purchase"  method="post" class="form-horizontal">
+                    <div id="purchase_msg"></div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputName">姓名</label>
+                        <div class="controls">
+                            <input type="text" id="inputName" placeholder="姓名" name="name">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="inputPhone">手机</label>
-                            <div class="controls">
-                                <input type="text" id="inputPhone" placeholder="手机" name="phone">
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputPhone">手机</label>
+                        <div class="controls">
+                            <input type="text" id="inputPhone" placeholder="手机" name="phone">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="inputModel">代购要求</label>
-                            <div class="controls">
-                                <textarea style="width: 180px;" rows="5" id="inputContent" placeholder="如10万以内大众手动挡轿车" name="content"></textarea>
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputModel">代购要求</label>
+                        <div class="controls">
+                            <textarea style="width: 180px;" rows="5" id="inputContent" placeholder="如10万以内大众手动挡轿车" name="content"></textarea>
                         </div>
-                        <div class="control-group">
-                            <div class="controls">
-                                <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 确认提交</button>
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> 确认提交</button>
                         </div>
-                    </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+            {% if agency_list %}
+            <div class="banner">
+                <div class="head"><span class="title">诚信销售商</span></div>
+                <div id="agency-list" class="data">
+                    <ul>
+                        {% for agency in agency_list %}
+                        <li><a href="{{site_url()}}/homepage/agency/{{agency.id}}">{{agency.agency_name}}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
+            {% endif %}
 
             <div class="banner">
                 <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />

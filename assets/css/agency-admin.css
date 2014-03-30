@@ -164,3 +164,15 @@ div.money-preview {
 #purchase_search_form div div input {
     width: 135px;
 }
+
+.content_background {
+    background-color: #e4e2e3;
+}
+
+#promotion-edit .control-label {
+    width: 60px;
+}
+
+#promotion-edit .controls {
+    margin-left: 80px;
+}

@@ -1,0 +1,119 @@
+{% extends "site.html" %}
+{% block data %}
+<div id="agency" class="container">
+    <script type="text/javascript">//<![CDATA[
+
+    function resetAll() {
+        $("#model select:first").val("000");
+        $("#model select:eq(1)").empty();
+        var option = $("<option>").val("001").text("不限");
+        $("#model select:eq(1)").append(option);
+        $("#price select:first").val("0");
+        $("#age select:first").val("0");
+        $("#mileage select:first").val("0");
+        $("#gearbox select:first").val("0");
+    }
+    //]]></script>
+    <div class="clearfix row-fluid">
+        <div class="span4">
+            <div id="article">
+                <div class="list clearfix">
+                    <div class="head"><span class="title">{{agency.agency_name}}</span></div>
+                    <ul>
+                        <li>联&nbsp;系&nbsp;人&nbsp;：{{agency.contact_name}}</li>
+                        <li>联系电话：{{agency.contact_phone}}</li>
+                        <li>详细地址：{{agency.agency_address}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="header"><span class="title">检索车辆</span></div>
+            <div class="data">
+                <form id="consign_search_form" action="{{site_url()}}{{link}}"  method="post" class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="inputModel">品牌车型</label>
+                        <div class="controls">
+                            {{model_dropdown2("model", model, "id=\"inputModel\"")|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputPrice">价格</label>
+                        <div class="controls">
+                            {{price_dropdown(price_type)|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputAge">车龄</label>
+                        <div class="controls">
+                            {{age_dropdown(age_type)|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputMileage">里程数</label>
+                        <div class="controls">
+                            {{mileage_dropdown(mileage_type)|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputGearbox">变速箱</label>
+                        <div class="controls">
+                            {{gearbox_dropdown(gearbox_type)|raw}}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="button" class="btn btn-danger pull-left" onclick="resetAll();">&nbsp;重&nbsp;&nbsp;置&nbsp;</button>
+                            &nbsp;
+                            <button type="submit" class="btn btn-primary ">&nbsp;搜&nbsp;&nbsp;索&nbsp;</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="span8">
+            <div class="detail clearfix">
+                <div class="header2"><span class="title">促销信息</span></div>
+                <div class="promotion-data">
+                    <ul>
+                        {% for item in promotions %}
+                        <li><a href="{{site_url()}}/homepage/promotion/{{item.id}}">{{item.updated|date('Y/m/d')}}&nbsp;&nbsp;{{item.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+
+                <div class="header2"><span class="title">精品二手车</span></div>
+                <div id="buy" class="data">
+                <div id="consign" class="sale clearfix">
+                    <ul class="clearfix">
+                        {% for item in cars %}
+                        <li>
+                            <div class="img"><a href="{{site_url()}}/homepage/agencycar/{{item.id}}">
+                            {% if item.images %}
+                            <img src="{{base_url()}}assets/upload/{{array_pop(json_decode(item.images, true))}}" />
+                            {% else %}
+                            <img src="{{base_url()}}assets/upload/fde01e21dd11e3a622836bbe3257893b_i.jpg" />
+                            {% endif %}
+                            </a></div>
+                            <div class="misc">
+                                <p>{{model_value(item.model)}}</p>
+                                <p>出厂年月: {{item.factory_date|date('Y-m')}}</p>
+                                <p>技术等级: {{item.appraisal_level}}</p>
+                                <p>价格: {{item.sale_price|number_format(2, '.', ',')}}</p>
+                            </div>
+                            <div><a href="{{site_url()}}/homepage/agencycar/{{item.id}}" class="btn">查看详情</a></div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {{pagination|raw}}
+            </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

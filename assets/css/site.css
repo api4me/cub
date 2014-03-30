@@ -832,3 +832,47 @@ body {
 .label-style-radio {
     background-image: none;
 }
+#agency div.header {
+    background: url("../img/block-right-bg.png") no-repeat;
+    height: 30px;
+    color: #ffffff;
+}
+
+#agency div.header span.title {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    text-indent: 55px;
+}
+
+#agency div.header2 {
+    background: url("../img/block-left-bg.png") no-repeat;
+    height: 30px;
+    color: #ffffff;
+}
+
+#agency div.header2 span.title {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    text-indent: 55px;
+}
+
+#agency div.data {
+    background-color: #ffffff;
+    padding-top: 8px;
+}
+
+#agency div.promotion-data {
+    background-color: #ffffff;
+    padding-top: 8px;
+    min-height: 106px;
+}
+
+#agency div.promotion-data li {
+    list-style: none;
+}
+
+#agency-list li {
+    list-style: none;
+}

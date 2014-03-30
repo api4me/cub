@@ -16,13 +16,16 @@ class Promotion extends Cub_Controller {
 
     public function index($start = 0)
     {
+        $user = $this->lsession->get('user');
+        if (!$user->homepage || $user->homepage != 'Y') {
+            redirect("/user/");
+        }
         $out = array();
 
         $this->config->load("pagination");
         // Search
         $search["start"] = $start;
         $search["per_page"] = $this->config->item("per_page");
-        $user = $this->lsession->get('user');
         $search["user_id"] = $user->id;
 
         $this->load->model("magencyprom");
@@ -37,7 +40,7 @@ class Promotion extends Cub_Controller {
             $out["pagination"] = $this->pagination->create_links();
         }
 
-        $this->render("agency_admin_promotion_index.html", $out);
+        $this->render("agency_promotion_index.html", $out);
     }
 
     public function edit($id = 0)
@@ -52,7 +55,7 @@ class Promotion extends Cub_Controller {
             }
         }
 
-        $this->render("agency_admin_promotion_edit.html", $out);
+        $this->render("agency_promotion_edit.html", $out);
     }
 
     public function save($id = 0)

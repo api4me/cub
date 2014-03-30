@@ -2,49 +2,103 @@
 
 class Homepage extends CI_Controller {
 
-    /*{{{ index */
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/welcome
-     *	- or -
-     * 		http://example.com/index.php/welcome/index
-     *	- or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
-    public function index() {
-        $this->load->helper(array("form"));
-        $this->load->library("twig");
+    public function agency($agency_id) {
+
+        if (!is_numeric($agency_id)) {
+            redirect("/");
+        }
+
+        $this->load->model("muser");
+        $agency = $this->muser->load($agency_id);
+
         $out = array();
-        $out["title"] = "首页";
+        $out["title"] = "诚信经销商-" . $agency->agency_name;
 
-        // 东风风神
-        $out["default"]["model"] = "127000";
-        // 江苏 南京
-        $out["default"]["area"] = "320101";
-        // Auction
-        $this->load->model("mcar");
-        $auction = $this->mcar->load_for_auction(12);
-        $out["auction"] = $auction;
-        // Consign
-        $b_consign = $this->mcar->load_for_consign(12, "B");
-        $c_consign = $this->mcar->load_for_consign(12, "C");
-        $out["b_consign"] = $b_consign;
-        $out["c_consign"] = $c_consign;
-        // Article
-        $this->load->model("marticle");
-        $article = array();
-        $article["activity"] = $this->marticle->show_by_tag("activity");
-        $article["news"] = $this->marticle->show_by_tag("news");
-        $out["article"] = $article;
+        $out["agency"] = $agency;
 
-        $this->twig->display("home_index.html", $out);
+        $this->config->load("pagination");
+        // Search
+        $car_search = array();
+        $car_search["start"] = 0;
+        $car_search["per_page"] = $this->config->item("per_page");
+        $out["search"] = $car_search;
+        $car_search["user_id"] = $agency_id;
+
+        // The data of search
+        $this->load->model("magencycar");
+        if($data = $this->magencycar->load_all($car_search, true)) {
+            $out["cars"] = $data["data"];
+
+            // Pagaination
+            $this->load->library("pagination");
+            $this->pagination->uri_segment = 4;
+            $this->pagination->total_rows = $data["num"];
+            $this->pagination->base_url = site_url() . "/homepage/agency/" . $agency_id;
+            $out["pagination"] = $this->pagination->create_links();
+        }
+
+        $promotion_search["start"] = 0;
+        $promotion_search["per_page"] = 4;
+        $promotion_search["user_id"] = $agency_id;
+
+        $this->load->model("magencyprom");
+        if ($data = $this->magencyprom->load_all($promotion_search)) {
+            $out["promotions"] = $data["data"];
+        }
+
+        $this->load->library("twig");
+        $this->twig->display("homepage_agency.html", $out);
     }
-/*}}}*/
+
+    public function agencycar($id) {
+        if (!is_numeric($id)) {
+            redirect("/");
+        }
+
+        $this->load->model("magencycar");
+        $car = $this->magencycar->load($id);
+
+        if (!$car) {
+            redirect("/");
+        }
+
+        $out = array();
+        $out["title"] = "车辆详情";
+        $out["car"] = $car;
+
+        $this->load->model("muser");
+        $agency = $this->muser->load($car->user_id);
+
+        $out["agency"] = $agency;
+
+        $this->load->library("twig");
+        $this->twig->display("homepage_agencycar.html", $out);
+    }
+
+
+    public function promotion($id) {
+        if (!is_numeric($id)) {
+            redirect("/");
+        }
+
+        $this->load->model("magencyprom");
+        $promotion = $this->magencyprom->load($id);
+
+        if (!$promotion) {
+            redirect("/");
+        }
+
+        $out = array();
+
+        $out["promotion"] = $promotion;
+
+        $this->load->model("muser");
+        $agency = $this->muser->load($promotion->user_id);
+
+        $out["agency"] = $agency;
+
+        $this->load->library("twig");
+        $this->twig->display("homepage_promotion.html", $out);
+    }
+
 }

@@ -44,6 +44,10 @@ class Home extends CI_Controller {
         $article["news"] = $this->marticle->show_by_tag("news");
         $out["article"] = $article;
 
+        $this->load->model("muser");
+        $agency_list = $this->muser->load_for_homepage();
+        $out["agency_list"] = $agency_list;
+
         $this->twig->display("home_index.html", $out);
 	}
 /*}}}*/

@@ -6,10 +6,14 @@
             <div class="list clearfix">
                 <div class="head"><span class="title"><i class="icon-tag icon-white"></i> 个人中心</span></div>
                 <ul class="clearfix">
-                {% set route = get_route() %}
-                    <li{% if route.method == 'index' %} class="active" {%endif%}><a href="{{site_url()}}/user/">我的资料</a></li>
+                    {% set route = get_route() %}
+                    <li{% if route.method == 'index' and route.class == 'user' %} class="active" {%endif%}><a href="{{site_url()}}/user/">我的资料</a></li>
                     {% if user.role == 'buyer' %}
                     <li{% if route.method == 'buy' %} class="active" {%endif%}><a href="{{site_url()}}/user/buy">我的交易</a></li>
+                    {% if user.homepage == 'Y' %}
+                    <li {% if route.class == 'agencycar' %} class="active" {%endif%}><a href="{{site_url()}}/agency/agencycar">我的待售车辆</a></li>
+                    <li {% if route.class == 'promotion' %} class="active" {%endif%}><a href="{{site_url()}}/agency/promotion">我的促销</a></li>
+                    {% endif %}
                     {% elseif user.role == 'sell' %}
                     <li{% if route.method == 'sell' %} class="active" {%endif%}><a href="{{site_url()}}/user/sell">我的爱车</a></li>
                     {% endif %}

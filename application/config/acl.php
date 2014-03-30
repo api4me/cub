@@ -30,34 +30,40 @@ $config['role'] = array(
     'super' => array(
     //    'admin' => array('index', 'logout'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
     'admin' => array(
         'admin' => array('prebook', 'purchase', 'test', 'auction', 'deal', 'car', 'stat'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
     'leader' => array(
         'admin' => array('prebook', 'purchase', 'test', 'stat', 'user'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
     'appraiser' => array(
         'admin' => array('prebook', 'purchase', 'auction', 'deal', 'car', 'stat', 'user'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
     'waiter' => array(
         'admin' => array('test', 'auction', 'deal', 'car', 'stat', 'user'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
     'buyer' => array(
         'admin' => array('*'),
         'user' => array('sell'),
-        'agency' => array('promotion'),
     ),
     'sell' => array(
         'admin' => array('*'),
         'user' => array('buy'),
+        'agency' => array('*'),
     ),
     'guest' => array(
         'admin' => array('*'),
         'user' => array('*'),
+        'agency' => array('*'),
     ),
 );
