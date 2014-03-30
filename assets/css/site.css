@@ -876,3 +876,16 @@ body {
 #agency-list li {
     list-style: none;
 }
+
+#agency-car ul {
+    margin: 10px 0 0 19px;
+}
+
+#agency-car li {
+    float: left;
+    height: 320px;
+    width: 132px;
+    margin-top: 10px;
+    list-style: none;
+    padding-right: 18px;
+}
