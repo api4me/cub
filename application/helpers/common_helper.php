@@ -429,3 +429,97 @@ if (!function_exists("gearbox_dropdown")) {
     }
 }
 /*}}}*/
+
+if (!function_exists("calc_day")) {
+    function calc_day() {
+        $yesterday = strtotime('-1 day');
+        $weekday = date('w', $yesterday);
+        $value = 0;
+
+        if ($weekday == 1) {
+            $value = 5 * $weekday + 1;
+        } else if ($weekday == 2) {
+            $value = 4 * $weekday - 1;
+        } else if ($weekday == 3) {
+            $value = 3 * $weekday + 2;
+        } else if ($weekday == 4 || $weekday == 5) {
+            $value = 2 * $weekday - 1;
+        }
+
+        return number_format($value);
+
+    }
+}
+
+if (!function_exists("calc_day_amount")) {
+    function calc_day_amount() {
+        $num = calc_day();
+
+        if ($num == 0) {
+            return 0;
+        }
+
+        $weekday = date('w', strtotime('-1 day'));
+        $value = 12300;
+
+        if ($weekday == 1) {
+            $value = 5 * $value + 200;
+        } else if ($weekday == 2) {
+            $value = 6 * $value - 1000;
+        } else if ($weekday == 3) {
+            $value = 8 * $value + 700;
+        } else if ($weekday == 4 || $weekday == 5) {
+            $value = 7 * $value - 300;
+        }
+
+        return number_format($num * $value);
+    }
+}
+
+if (!function_exists("calc_total")) {
+    function calc_total() {
+        $base = 509;
+        $start = strtotime('2014-04-20');
+        $today = time();
+        $days = round(($today - $start)/3600/24);
+        $yesterday = strtotime('-1 day');
+        $daybefore = strtotime('-2 day');
+        $total = $base + $days * 7;
+        if (date('w', $yesterday) == 0 || date('w', $yesterday) == 6) {
+            $total -= 3;
+        }
+
+        if (date('w', $daybefore) == 0 || date('w', $daybefore) == 6) {
+            $total -= 9;
+        }
+        return number_format($total);
+
+    }
+}
+
+if (!function_exists("calc_total_amount")) {
+    function calc_total_amount() {
+        $base = 509;
+        $base_amount = 4272200;
+
+        $days = calc_total() - $base;
+
+        $weekday = date('w', strtotime('-1 day'));
+        $value = 12300;
+
+        if ($weekday == 1) {
+            $value = 5 * $value + 200;
+        } else if ($weekday == 2) {
+            $value = 6 * $value - 1000;
+        } else if ($weekday == 3) {
+            $value = 8 * $value + 700;
+        } else if ($weekday == 4 || $weekday == 5) {
+            $value = 7 * $value - 300;
+        }
+
+        $total = $base_amount + $days * $value;
+
+        return number_format($total);
+
+    }
+}
