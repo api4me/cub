@@ -44,9 +44,9 @@ class LImage {
         $config = array();
         $config["upload_path"] = FCPATH . "assets/upload";
         $config["allowed_types"] = "gif|jpg|png";
-        $config["max_size"] = 2*1024*1024;
-        $config["max_width"] = "1200";
-        $config["max_height"] = "800";
+        $config["max_size"] = 10*1024*1024;
+        $config["max_width"] = "4000";
+        $config["max_height"] = "3000";
         $config["remove_spaces"] = true;
         $config["encrypt_name"] = true;
         $this->CI->load->library("upload", $config);
@@ -114,9 +114,9 @@ class LImage {
         $config = array();
         $config["upload_path"] = FCPATH . "assets/upload";
         $config["allowed_types"] = "gif|jpg|png";
-        $config["max_size"] = 2*1024*1024;
-        $config["max_width"] = "1200";
-        $config["max_height"] = "800";
+        $config["max_size"] = 10*1024*1024;
+        $config["max_width"] = "4000";
+        $config["max_height"] = "3000";
         $config["remove_spaces"] = true;
         $config["encrypt_name"] = true;
         $this->CI->load->library("upload", $config);
