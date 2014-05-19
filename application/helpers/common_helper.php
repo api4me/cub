@@ -432,22 +432,21 @@ if (!function_exists("gearbox_dropdown")) {
 
 if (!function_exists("calc_day")) {
     function calc_day() {
-//        $yesterday = strtotime('-1 day');
-//        $weekday = date('w', $yesterday);
-//        $value = 0;
-//
-//        if ($weekday == 1) {
-//            $value = 5 * $weekday + 1;
-//        } else if ($weekday == 2) {
-//            $value = 4 * $weekday - 1;
-//        } else if ($weekday == 3) {
-//            $value = 1 * $weekday + 2;
-//        } else if ($weekday == 4 || $weekday == 5) {
-//            $value = 1 * $weekday - 1;
-//        }
-//
-//        return number_format($value);
-        return 0;
+        $yesterday = strtotime('-1 day');
+        $weekday = date('w', $yesterday);
+        $value = 0;
+
+        if ($weekday == 1) {
+            $value = 5 * $weekday + 1;
+        } else if ($weekday == 2) {
+            $value = 3 * $weekday - 1;
+        } else if ($weekday == 3) {
+            $value = 1 * $weekday + 2;
+        } else if ($weekday == 4 || $weekday == 5) {
+            $value = 1 * $weekday - 1;
+        }
+
+        return number_format($value);
 
     }
 }
