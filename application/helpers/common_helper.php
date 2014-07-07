@@ -472,7 +472,7 @@ if (!function_exists("calc_day_amount")) {
             $value = 7 * $value - 300;
         }
 
-        return number_format($num * $value);
+        return number_format(abs($num * $value));
     }
 }
 
@@ -517,7 +517,7 @@ if (!function_exists("calc_total_amount")) {
             $value = 7 * $value - 300;
         }
 
-        $total = $base_amount + $days * $value;
+        $total = $base_amount + abs($days * $value);
 
         return number_format($total);
 
