@@ -199,6 +199,8 @@ class MCar extends CI_Model {
             $this->db->where('consign_type', $consign_type);
         }
 
+        $this->db->order_by('UPDATED', 'DESC');
+
         $query = $this->db->get("##car", $count);
 
         return $query->result();
