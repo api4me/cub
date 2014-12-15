@@ -9,26 +9,70 @@
 <title>仁人易车尊容卡服务网点</title>
 <style type="text/css">
 body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+#r-result{height:100%;width:20%;float:left;}
 </style>
 </head>
 <body>
-<div id="allmap"></div>
+<div id="l-map"></div>
+<div id="r-result">
+    <h3> 会员服务 </h3>
+    <div>
+        仁人易车旗下车友会品牌：尊荣汇。尊荣汇会员可在如下合作商户享受优惠与尊荣服务, 加入尊荣汇，汽车优惠享不停。
+    </div>
+    <form>
+        <input type="radio" name="service" value="all" onclick="changeLayer('all');" checked="true">所有服务</input>
+        <br/>
+        <input type="radio" name="service" value="xiche" onclick="changeLayer('xiche');">洗车与美容</input>
+        <br/>
+        <input type="radio" name="service" onclick="changeLayer('xiuli');" value="xiuli">修理与换胎</input>
+    </form>
+    <br/>
+    <a href="http://www.renrenyiche.com/service.xlsx" target="_blank">合作伙伴目录下载</a>
+</div>
 </body>
 </html>
 <script type="text/javascript">
 
 // 百度地图API功能
-var map = new BMap.Map("allmap");                // 创建Map实例
+var map = new BMap.Map("l-map");                // 创建Map实例
 
-var customLayer=new BMap.CustomLayer({  
-    geotableId: 66426,   
-    q: '', //检索关键字  
-    tags: '', //空格分隔的多字符串  
-    filter: '' //过滤条件,参考http://developer.baidu.com/map/lbs-geosearch.htm#.search.nearby  
-}); 
+var xicheLayer = new BMap.CustomLayer({
+    geotableId: 70634,   
+    q: '',  
+    tags: '',  
+    filter: ''
+});
+xicheLayer.addEventListener('onhotspotclick',callback);//单击图层事件
 
-map.addTileLayer(customLayer);  //添加自定义图层 
-customLayer.addEventListener('onhotspotclick',callback);//单击图层事件
+var xiuliLayer = new BMap.CustomLayer({
+    geotableId: 70633,   
+    q: '',  
+    tags: '',  
+    filter: ''
+});
+xiuliLayer.addEventListener('onhotspotclick',callback);
+
+var allLayer = new BMap.CustomLayer({
+    geotableId: 70635,   
+    q: '',  
+    tags: '',  
+    filter: ''
+});
+allLayer.addEventListener('onhotspotclick',callback);
+
+// var customLayer=new BMap.CustomLayer({  
+//     geotableId: 66426,   
+//     q: '', //检索关键字  
+//     tags: '', //空格分隔的多字符串  
+//     filter: '' //过滤条件,参考http://developer.baidu.com/map/lbs-geosearch.htm#.search.nearby  
+// }); 
+
+var currentLayer = 'all';
+map.addTileLayer(xiuliLayer);
+map.addTileLayer(xicheLayer);  //添加自定义图层 
+
+// customLayer.addEventListener('onhotspotclick',callback);//单击图层事件
 
 var point = new BMap.Point(118.790435,32.048177);     // 创建点坐标
 map.centerAndZoom(point,14);                     // 初始化地图,设置中心点坐标和地图级别。
@@ -44,7 +88,7 @@ function callback(e)//单击热点图层
 {
         var customPoi = e.customPoi;//poi的默认字段
         var contentPoi=e.content;//poi的自定义字段
-        var content = '<p style="width:280px;margin:0;line-height:20px;">地址：' + customPoi.title + '<br/>Address:'+contentPoi.address+'</p>';
+        var content = '<p style="width:280px;margin:0;line-height:20px;">地址：'+contentPoi.address + '<br/>优惠内容：'+contentPoi.vipcontent+'</p>';
         var searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
             title: customPoi.title, //标题
             width: 290, //宽度
@@ -62,5 +106,40 @@ function callback(e)//单击热点图层
         searchInfoWindow.open(point);
 }
 
+function changeLayer(type) {
+    if (type === currentLayer) {
+        return;
+    }
 
+    var srcLayer = getLayer(currentLayer);
+    var targetLayer = getLayer(type);
+
+    if (type === 'all') {
+        map.removeTileLayer(srcLayer);
+        map.addTileLayer(xiuliLayer);
+        map.addTileLayer(xicheLayer); 
+    } else {
+        if (currentLayer === 'all') {
+            map.removeTileLayer(xiuliLayer);
+            map.removeTileLayer(xicheLayer);
+        } else {
+            map.removeTileLayer(srcLayer);  
+        }
+         map.addTileLayer(targetLayer);
+    }
+
+    
+    currentLayer = type;
+
+}
+
+function getLayer(type) {
+    if (type === 'all') {
+        return allLayer;    
+    } else if (type === 'xiche') {
+        return xicheLayer;
+    } else if (type === 'xiuli') {
+        return xiuliLayer;
+    }
+}
 </script>
