@@ -193,7 +193,7 @@ class MCar extends CI_Model {
         $this->db->where('status', 'auction');
         $this->db->where('sale_type', 'consign');
         $this->db->where('sale_start_date <=', 'now()', false);
-        $this->db->where('sale_end_date >=', 'now()', false);
+//        $this->db->where('sale_end_date >=', 'now()', false);
 
         if (isset($consign_type)) {
             $this->db->where('consign_type', $consign_type);
@@ -244,7 +244,7 @@ class MCar extends CI_Model {
 /*{{{ load_consign_by_condition */
     public function load_consign_by_condition($param) {
         $q = "
-            SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign' AND sale_start_date<=now() AND sale_end_date>=now()
+            SELECT ? FROM ##car WHERE status='auction' AND sale_type='consign' AND sale_start_date<=now()
         ";
 
         $where = '';

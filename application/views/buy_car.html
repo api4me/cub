@@ -32,6 +32,9 @@
                     <p>寄售价: 人民币{{car.sale_price|number_format}}元</p>
                     {% endif %}
                     <p class="tooltip-show">等级: {{car.appraisal_level}}</p>
+                    {% if car.status == 'auction' %}
+                    <p>联系电话: {{car.user_phone}}</p>
+                    {% endif %}
 
                     {% if car.status == 'auction' and sale_status == 'selling' %}
                     {% if car.sale_type == 'auction' %}
@@ -264,9 +267,6 @@
                     </li>
                 {% endfor %}
                 </ul>
-            </div>
-            <div class="banner">
-                <img src="{{base_url()}}assets/img/purpose-ad.jpg" alt="4步骤让您轻松买车" title="4步骤让您轻松买车" />
             </div>
         </div>
 
