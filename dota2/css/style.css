@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ font-size:14px; font-family:"Microsoft Yahei"; background:#000000;}
+body,div,h1,h2,h3,h4,h5,h6,form,input,p,th,td,img,ul,li,em,dl,dt,dd,ol{padding:0;margin:0; font-weight:normal; font-family:"Microsoft Yahei";}
+body em{ font-style:normal;}
+body input{ outline:none;}
+body i{ font-style:normal;}
+body a{ text-decoration:none; color:#000;}
+table{ border-collapse: collapse;border-spacing: 0;} 
+img{border:0;} 
+ul,li{ list-style:none}
+.header{ width:100%; overflow:hidden;}
+.header img{ width:100%;}
+.wrap{ width:1246px; margin:0 auto; position:relative; margin-top:-4%; overflow:hidden;}
+.advertisement{ float:left; width:120px; height:260px;}
+.advertisement a{ display:block; width:120px; height:260px;}
+.advertisement img{ width:120px; height:260px;}
+.main{ float:left; width:982px; margin:0 8px; border:3px solid #ed402c; background:#181818;overflow:hidden; *display:inline;}
+.content{ width:930px; overflow:hidden; padding:0 10px 23px 10px; margin:16px auto; border:2px solid #141414; border-top:3px solid #3c3c3c; border-bottom:3px solid #0c0c0c;}
+.content-top{ width:100%; overflow:hidden; padding-bottom:20px;}
+.league,.registration{ float:left; width:610px;}
+.league h3,.game-mode h3,.registration h3,.video h3{ width:100%; height:48px; border-bottom:1px solid #303030; overflow:hidden;}
+.league h3 span,.game-mode h3 span,.registration h3 span,.video h3 span{ display:block; margin-top:15px; height:20px; line-height:20px; font-size:20px; border-left:1px solid #ed402c; color:#ed402c; padding-left:13px;}
+.league-intro{ width:100%; margin-top:34px; overflow:hidden;}
+.league-intro a{ float:left; width:218px; height:148px; border:2px solid #505050; margin-right:19px;  *display:inline;}
+.league-intro a img{ width:100%; height:100%; transition: all 1s ease 0s;}
+.league-intro a img:hover{ -webkit-transform:scale(1.06);-moz-transform:scale(1.06);-o-transform:scale(1.06); }
+.league-intro ul{ float:left; width:368px;}
+.league-intro ul li{ font-size:16px; line-height:26px; color:#808080;}
+.league-intro ul li span{ color:#f55555;}
+.game-mode,.video{ float:right; width:303px; }
+.online{ float:right; width:288px; background:#745637; box-shadow:0 1px 5px #876d52 inset; position:relative; margin:27px 0 32px;}
+.online p{ font-size:12px; color:#c9b199; overflow:hidden; padding:13px 15px 13px 32px; line-height:24px;}
+.online i{ display:block; width:48px; height:49px; background:url(../images/online_bg.png) no-repeat; text-align:center; line-height:49px; font-size:13px; position:absolute; left:-16px; top:-20px; color:#9c8079;}
+.offline{ float:right; width:288px; background:#745637; box-shadow:0 1px 5px #876d52 inset; position:relative; }
+.offline i{ display:block; width:48px; height:49px; background:url(../images/offline_bg.png) no-repeat; text-align:center; line-height:49px; font-size:13px; position:absolute; left:-16px; top:-20px; color:#9ba0c8;}
+.offline-title{ width:100%; height:50px; line-height:54px; border-bottom:1px solid #8b6845;}
+.offline-title span{ display:inline-block; width:120px; color:#e5bd93; text-align:center;}
+.offline-title span.time{ width:140px;}
+.offline-list{ width:100%; height:345px; overflow:hidden;border-bottom:1px solid #8b6845; position:relative; margin-top:-1px;}
+.offline-list ul li{ float:left; width:100%; height:22px; line-height:22px; font-size:12px; color:#c9b199; border-top:1px solid #8b6845; overflow:hidden;}
+.offline-list ul li span{ float:left; width:93px; padding-left:30px;}
+.offline-list ul li em{ float:left; width:123px; padding-left:30px;}
+.notice{ width:100%; overflow:hidden;}
+.notice p{ font-size:12px; color:#d1ae8b; overflow:hidden; padding:15px 35px 15px 30px; line-height:16px; }
+.advertisement-photo{ width:100%; height:100px;}
+.advertisement-photo a{ display:block; width:100%; height:100px; overflow:hidden;}
+.advertisement-photo img{ width:100%; height:100%;}
+.content-down{ width:100%; overflow:hidden;}
+.form{ width:100%; overflow:hidden; background:#000000; padding:23px 0 27px; margin-top:15px;}
+.form-list{ float:left; width:300px;}
+.form-list p{ margin-left:18px; margin-bottom:36px; background:url(../images/personal-title.png) no-repeat; width:108px; height:43px;}
+.form-list p.group{ background:url(../images/group-title.png) no-repeat;}
+.form-list ul li{ width:100%; height:30px; padding-bottom:17px;}
+.form-list ul li span{ float:left; width:68px; line-height:30px; padding-right:8px; color:#715b45; text-align:right;}
+.form-list ul li input{ float:left; font-size:14px; width:210px; height:30px; line-height:30px; padding:0 5px; background:#715b45; border:none;}
+.submit{ width:100%; height:47px; padding-top:20px; overflow:hidden;}
+.submit a{ display:block; width:205px; height:45px; line-height:47px; background:url(../images/submit_btn.png) repeat-x; border-radius:3px; text-align:center; margin:0 auto; color:#e4af5a; font-size:16px; border:1px solid #b63921;}
+.submit a:hover{ text-decoration:underline;}
+.video-play{ width:304px; height:184px; margin-top:15px; position:relative; cursor:pointer;}
+.video-play-first{ margin-bottom:10px;}
+.video-play i{ display:block; background:url(../images/play_btn.png) no-repeat; width:70px; height:70px; position:absolute; left:115px; top:55px;}
