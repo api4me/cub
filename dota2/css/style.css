@@ -17,7 +17,7 @@ ul,li{ list-style:none}
 .advertisement a{ display:block; width:120px; height:260px;}
 .advertisement img{ width:120px; height:260px;}
 .main{ float:left; width:982px; margin:0 8px; border:3px solid #ed402c; background:#181818;overflow:hidden; *display:inline;}
-.content{ width:930px; overflow:hidden; padding:0 10px 23px 10px; margin:16px auto; border:2px solid #141414; border-top:3px solid #3c3c3c; border-bottom:3px solid #0c0c0c;}
+.content{ width:930px; overflow:hidden; padding:0 10px 23px 10px; margin:17px auto 16px; border:2px solid #141414; border-top:3px solid #3c3c3c; border-bottom:3px solid #0c0c0c;}
 .content-top{ width:100%; overflow:hidden; padding-bottom:20px;}
 .league,.registration{ float:left; width:610px;}
 .league h3,.game-mode h3,.registration h3,.video h3{ width:100%; height:48px; border-bottom:1px solid #303030; overflow:hidden;}
@@ -61,3 +61,10 @@ ul,li{ list-style:none}
 .video-play{ width:304px; height:184px; margin-top:15px; position:relative; cursor:pointer;}
 .video-play-first{ margin-bottom:10px;}
 .video-play i{ display:block; background:url(../images/play_btn.png) no-repeat; width:70px; height:70px; position:absolute; left:115px; top:55px;}
+.active_review_list{ width:950px; height:120px; overflow:hidden; white-space: nowrap;  margin:18px auto 0;}
+.active_review_list ul li{ display:inline-block; width:200px; height:120px; overflow:hidden; padding-right:12px;}
+.active_review_list ul li a{ display:inline-block; overflow:hidden; width:200px; height:120px; cursor:pointer; color:#000000;}
+.active_review_list ul li a:hover{ text-decoration:underline; color:#808080;}
+.active_review_list ul li img{ display:inline-block; margin-bottom:6px; width:100%;}
+.active_review_list ul li p{ text-align:center; color:#808080;}
+#scroll_begin, #scroll_end, #scroll_begin ul, #scroll_end ul, #scroll_begin ul li, #scroll_end ul li{display:inline;}

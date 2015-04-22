@@ -7,6 +7,7 @@
 <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="js/Marquee.js"></script>
 <script type="text/javascript" src="js/scrollfix.js"></script>
+<script type="text/javascript" src="js/is.min.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 </head>
 
@@ -19,6 +20,50 @@
          <a href="#" id="fix-left"><img src="images/advertisement_left.jpg" /></a>
       </div><!--advertisement end-->
       <div class="main">
+      
+      
+         <div class="active_review_list" id="scroll_div">
+               <div id="scroll_begin">
+                   <ul>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_cocola.jpg" height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_qindao.jpg"  height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_zst.jpg"  height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_ms.jpg" height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_jsb.jpg"  height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_didi.jpg"  height="120" />
+                         </a>
+                      </li>
+                      <li>
+                         <a href="#">
+                            <img src="images/h_renren.png"  height="120" />
+                         </a>
+                      </li>
+                   </ul>
+                </div>
+             <div id="scroll_end"></div>
+         </div><!--active_review_list end-->
          <div class="content">
             <div class="content-top">
                 <div class="league">
@@ -140,19 +185,19 @@
                         <ul>
                            <li>
                               <span>手机号</span>
-                              <input type="text" />
+                              <input type="text" name="mobile" />
                            </li>
                            <li>
                               <span>QQ号</span>
-                              <input type="text" />
+                              <input type="text" name="qq" />
                            </li>
                            <li>
                               <span>称呼</span>
-                              <input type="text" />
+                              <input type="text" name="name" />
                            </li>
                            <li>
                               <span>天梯分数</span>
-                              <input type="text" />
+                              <input type="text" name="score" />
                            </li>
                         </ul>
                      </div><!--form-list end-->
@@ -161,19 +206,19 @@
                         <ul>
                            <li>
                               <span>手机号</span>
-                              <input type="text" />
+                              <input type="text" name="gmobile" />
                            </li>
                            <li>
                               <span>QQ号</span>
-                              <input type="text" />
+                              <input type="text" name="gqq" />
                            </li>
                            <li>
                               <span>称呼</span>
-                              <input type="text" />
+                              <input type="text" name="gname" />
                            </li>
                            <li>
                               <span>战队名称</span>
-                              <input type="text" />
+                              <input type="text" name="gteam" />
                            </li>
                         </ul>
                      </div><!--form-list end-->
@@ -185,13 +230,13 @@
                <div class="video">
                   <h3><span>精彩视频</span></h3>
                   <div class="video-play video-play-first">
-                     <iframe height=184 width=304 src="http://player.youku.com/embed/XODg3NTE4MjI0" frameborder=0 allowfullscreen></iframe>
-                     <!-- <img src="images/video1.png" width="304" height="184" /> -->
+                      <iframe height=184 width=304 src="http://player.youku.com/embed/XODg3NTE4MjI0" frameborder=0 allowfullscreen></iframe>
+                      <!-- <img src="images/video1.png" width="304" height="184" /> -->
                      <i></i>
                   </div><!--video-play end--> 
                   <div class="video-play">
-                    <iframe height=184 width=304 src="http://player.youku.com/embed/XOTIyNTE3NDA0" frameborder=0 allowfullscreen></iframe>
-                     <!-- <img src="images/video1.png" width="304" height="184" /> -->
+                      <!-- <iframe height=184 width=304 src="http://player.youku.com/embed/XOTIyNTE3NDA0" frameborder=0 allowfullscreen></iframe> -->
+                     <img src="images/video1.png" width="304" height="184" />
                      <i></i>
                   </div><!--video-play end-->
                </div><!--video end--> 
