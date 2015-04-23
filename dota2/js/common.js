@@ -59,41 +59,40 @@ $(document).ready(function() {
             'gteam': $.trim($(f + 'input[name="gteam"]').val())
         };
 
+        var ism = function(str) {
+            return /^1\d{10}$/.test(str);
+        }
+        var isn = function(str) {
+            return /^[0-9]*$/.test(str);
+        }
+
         if (is.empty(data.mobile) && is.empty(data.gmobile)) {
             alert('请输入手机号');
             return false;
         }
 
-        if (!is.empty(data.mobile) && !is.number(data.mobile)) {
+        if (!is.empty(data.mobile) && !ism(data.mobile)) {
             alert('请输入正确的手机号(个人报名)');
             return false;
         }
-        if (!is.empty(data.qq) && !is.number(data.qq)) {
-            alert('请输入正确的QQ号(个人报名)');
-            return false;
-        }
-        if (!is.empty(data.score) && !is.number(data.score)) {
+        if (!is.empty(data.score) && !isn(data.score)) {
             alert('请输入正确的天梯分数');
             return false;
         }
 
-        if (!is.empty(data.mobile) && !is.number(data.mobile)) {
+        if (!is.empty(data.mobile) && !ism(data.mobile)) {
             alert('请输入正确的手机号(组队报名)');
             return false;
         }
-        if (!is.empty(data.qq) && !is.number(data.qq)) {
-            alert('请输入正确的QQ号(组队报名)');
-            return false;
-        }
 
-        $.post('dota2/regist.php', {data: data}, function(resp) {
+        $.post('/dota2/regist.php', {data: data}, function(resp) {
             alert(resp.msg);
             if (resp.status == 200) {
                 $('.registration .form input[type="text"]').each(function() {
                     $(this).val('');
                 });
             }
-        });
+        }, 'json');
 
         return false;
     });
