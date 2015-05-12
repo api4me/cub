@@ -80,7 +80,7 @@ $(document).ready(function() {
             return false;
         }
 
-        if (!is.empty(data.mobile) && !ism(data.mobile)) {
+        if (!is.empty(data.gmobile) && !ism(data.gmobile)) {
             alert('请输入正确的手机号(组队报名)');
             return false;
         }
